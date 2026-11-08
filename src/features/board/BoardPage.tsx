@@ -7,13 +7,14 @@ import { arrayMove } from '@dnd-kit/sortable'
 import { BoardColumn } from './BoardColumn'
 import { CardBody } from './IssueCard'
 import { CreateIssueDialog } from './CreateIssueDialog'
-import { useBoard, useMoveIssue, useWorkspaceMembers, type BoardIssue, type BoardMember } from './useBoard'
+import { useBoard, useMoveIssue, useProjectSprints, useWorkspaceMembers, type BoardIssue, type BoardMember, type ProjectOption } from './useBoard'
 
 // Columns come from the project's statuses. Cards are sorted by rank within each column.
 export function BoardPage() {
   const { workspace = '', key = '' } = useParams()
   const board = useBoard(workspace, key)
   const members = useWorkspaceMembers(board.data?.project.workspace_id)
+  const sprints = useProjectSprints(board.data?.project.id)
   const move = useMoveIssue({ workspaceSlug: workspace, projectKey: key })
   const [createOpen, setCreateOpen] = useState(false)
   const [activeId, setActiveId] = useState<string | null>(null)
@@ -61,6 +62,10 @@ export function BoardPage() {
   const { project, statuses, issues } = board.data
   const todo = statuses.find((s) => s.category === 'todo')
   const cards = issues
+  const toOption = (i: BoardIssue): ProjectOption => ({ id: i.id, key: i.key, title: i.title })
+  const epicOptions = issues.filter((i) => i.type === 'epic').map(toOption)
+  // Only stories, tasks and bugs can be the parent of a sub-task.
+  const parentOptions = issues.filter((i) => i.type === 'story' || i.type === 'task' || i.type === 'bug').map(toOption)
   const activeIssue = activeId ? cards.find((i) => i.id === activeId) : undefined
 
   const byStatus = new Map<string, BoardIssue[]>()
@@ -122,7 +127,7 @@ export function BoardPage() {
           <p className="font-mono text-xs text-text-secondary">{project.key} · {project.name}</p>
         </div>
         <Button variant="primary" className="ml-auto" onClick={() => setCreateOpen(true)}>
-          Create issue
+          Create
         </Button>
       </div>
 
@@ -171,6 +176,10 @@ export function BoardPage() {
         workspaceSlug={workspace}
         projectKey={key}
         members={members.data ?? []}
+        statuses={statuses}
+        sprints={sprints.data ?? []}
+        epics={epicOptions}
+        parents={parentOptions}
         todoStatusId={todo?.id}
       />
     </div>

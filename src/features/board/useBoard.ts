@@ -26,6 +26,32 @@ export type BoardIssue = {
 
 export type BoardMember = { id: string; name: string }
 
+// One choice in a select: an epic or parent issue (key and title), or a sprint (title and state).
+export type ProjectOption = {
+  id: string
+  key: string
+  title: string
+  state?: 'planned' | 'active' | 'completed'
+}
+
+// Sprints that can take an issue: planned and active. Completed sprints are not offered.
+export function useProjectSprints(projectId: string | undefined) {
+  return useQuery({
+    queryKey: ['sprints', projectId],
+    enabled: Boolean(projectId),
+    queryFn: async (): Promise<ProjectOption[]> => {
+      const { data, error } = await supabase
+        .from('sprints')
+        .select('id, name, state')
+        .eq('project_id', projectId!)
+        .neq('state', 'completed')
+        .order('created_at')
+      if (error) throw error
+      return (data ?? []).map((s) => ({ id: s.id, key: '', title: s.name, state: s.state as ProjectOption['state'] }))
+    },
+  })
+}
+
 export type Board = {
   project: { id: string; key: string; name: string; workspace_id: string }
   statuses: BoardStatus[]

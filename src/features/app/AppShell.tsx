@@ -71,8 +71,8 @@ export function AppShell() {
             <span className="ml-auto font-mono text-xs">Ctrl K</span>
           </Button>
           <div className="ml-auto flex items-center gap-2">
-            <Button variant="primary" onClick={() => toast('Create issue arrives with the Board in M5')}>
-              Create issue
+            <Button variant="primary" onClick={() => toast('Create is available on the Board')}>
+              Create
             </Button>
             <div className="relative">
               <button
