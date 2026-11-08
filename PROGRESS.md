@@ -81,7 +81,19 @@
 - None for M3.
 - None for M1.
 
+## M5 Board and Create issue (PR #7)
+
+- [x] Board: sprint header with dates, goal, progress and Complete sprint; filter bar; status-pill columns; cards per the design.
+- [x] Drag between and within columns with dnd-kit, via move_issue. Optimistic, rolls back on error.
+- [x] Create dialog: type menu with descriptions, description toolbar, attachments, Ctrl+Enter, Create another, C shortcut.
+- [x] Side panel: status menu, Watch, Share, details, description, attachments, sub-tasks, linked issues, activity.
+- [x] Attachments: private bucket issue-attachments, migration 20261108123901 applied; policies verified on the Tikka project.
+- [x] typecheck, lint, build pass.
+- [ ] Browser check of drag and reload (user). Create was confirmed working.
+- [ ] Merge PR #7 into dev (after the browser check).
+
 ## Next
 
-- M4 browser test and the seed (after sign-up).
-- M5 Board and Create issue (`feature/m5-board-create-issue`).
+- M5: browser check of drag and reload, then merge PR #7.
+- M4 seed on the Tikka project (needs the owner user id).
+- M6 quick search (Ctrl+K), then M7 and M8.
