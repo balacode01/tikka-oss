@@ -81,7 +81,17 @@
 - None for M3.
 - None for M1.
 
+## M5 Board and Create issue (branch `feature/m5-board-create-issue`)
+
+- [x] Board columns come from the project's statuses. Cards show the key, type icon, two-line title, priority icon, points, sub-task and comment counts, and the assignee's initials.
+- [x] Drag between columns and reorder within a column with dnd-kit. Calls `move_issue` with the neighbours. The card moves at once and rolls back on error.
+- [x] Create issue dialog (Base UI) with type, title, priority, assignee, points, and "Create another". Keyboard shortcut C.
+- [x] `npm run typecheck`, `npm run lint`, `npm run build` pass.
+- [ ] Browser check: a dragged card stays put after reload, and a new issue gets the next key. The user runs this.
+- [ ] PR into `dev` reported and merged after review.
+
 ## Next
 
-- M4 browser test and the seed (after sign-up).
-- M5 Board and Create issue (`feature/m5-board-create-issue`).
+- Browser check of M5 (drag, reload, create).
+- M4 seed on the Tikka project (needs the owner's user id).
+- M6 Issue detail and search (`feature/m6-issue-search`).
