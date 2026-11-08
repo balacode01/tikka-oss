@@ -1,9 +1,10 @@
-import { DndContext, PointerSensor, KeyboardSensor, useSensor, useSensors, type DragEndEvent } from '@dnd-kit/core'
+import { DndContext, DragOverlay, PointerSensor, KeyboardSensor, useSensor, useSensors, type DragEndEvent, type DragStartEvent } from '@dnd-kit/core'
 import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
 import { BoardColumn } from './BoardColumn'
+import { CardBody } from './IssueCard'
 import { CreateIssueDialog } from './CreateIssueDialog'
 import { useBoard, useMoveIssue, useWorkspaceMembers, type BoardIssue, type BoardMember } from './useBoard'
 
@@ -14,6 +15,7 @@ export function BoardPage() {
   const members = useWorkspaceMembers(board.data?.project.workspace_id)
   const move = useMoveIssue({ workspaceSlug: workspace, projectKey: key })
   const [createOpen, setCreateOpen] = useState(false)
+  const [activeId, setActiveId] = useState<string | null>(null)
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -58,12 +60,18 @@ export function BoardPage() {
   const { project, statuses, issues } = board.data
   const todo = statuses.find((s) => s.category === 'todo')
   const cards = issues
+  const activeIssue = activeId ? cards.find((i) => i.id === activeId) : undefined
 
   const byStatus = new Map<string, BoardIssue[]>()
   for (const status of statuses) byStatus.set(status.id, [])
   for (const issue of cards) byStatus.get(issue.status_id)?.push(issue)
 
+  function onDragStart(event: DragStartEvent) {
+    setActiveId(String(event.active.id))
+  }
+
   function onDragEnd(event: DragEndEvent) {
+    setActiveId(null)
     const { active, over } = event
     if (!over) return
 
@@ -114,7 +122,12 @@ export function BoardPage() {
         </section>
       ) : null}
 
-      <DndContext sensors={sensors} onDragEnd={onDragEnd}>
+      <DndContext
+        sensors={sensors}
+        onDragStart={onDragStart}
+        onDragEnd={onDragEnd}
+        onDragCancel={() => setActiveId(null)}
+      >
         <div className="flex min-h-0 flex-1 gap-4 overflow-x-auto pb-4">
           {statuses.map((status) => (
             <BoardColumn
@@ -126,6 +139,18 @@ export function BoardPage() {
             />
           ))}
         </div>
+
+        <DragOverlay dropAnimation={{ duration: 180, easing: 'ease-out' }}>
+          {activeIssue && (
+            <div className="flex w-[264px] cursor-grabbing flex-col gap-2 rounded-md border border-border-strong bg-surface-raised p-3 text-sm shadow-modal">
+              <CardBody
+                issue={activeIssue}
+                assignee={activeIssue.assignee_id ? memberMap.get(activeIssue.assignee_id) : undefined}
+                subtasks={subtaskCounts.get(activeIssue.id) ?? 0}
+              />
+            </div>
+          )}
+        </DragOverlay>
       </DndContext>
 
       <CreateIssueDialog

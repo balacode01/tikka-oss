@@ -21,40 +21,15 @@ function initials(name: string) {
   return name.split(' ').map((p) => p[0]).join('').slice(0, 2).toUpperCase()
 }
 
-type Props = {
-  issue: BoardIssue
-  assignee?: BoardMember
-  subtasks: number
-  onOpen?: (issue: BoardIssue) => void
-}
-
-// One card. dnd-kit moves it; the handle is the whole card, so keyboard drag works too.
-export function IssueCard({ issue, assignee, subtasks, onOpen }: Props) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: issue.id,
-    data: { statusId: issue.status_id },
-  })
-
+// The visible card. Used in the column and as the floating preview while dragging.
+export function CardBody({ issue, assignee, subtasks }: { issue: BoardIssue; assignee?: BoardMember; subtasks: number }) {
   const type = TYPE_ICON[issue.type]
   const priority = PRIORITY[issue.priority]
   const TypeIcon = type.icon
   const PriorityIcon = priority.icon
 
   return (
-    <article
-      ref={setNodeRef}
-      style={{
-        transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
-        transition,
-      }}
-      {...attributes}
-      {...listeners}
-      onClick={() => onOpen?.(issue)}
-      className={[
-        'flex cursor-grab flex-col gap-2 rounded-md border border-border bg-surface-raised p-3 text-sm',
-        isDragging ? 'opacity-50 shadow-modal' : 'hover:border-border-strong',
-      ].join(' ')}
-    >
+    <>
       <div className="flex items-center gap-1.5">
         <TypeIcon className={`size-4 shrink-0 ${type.color}`} aria-hidden="true" />
         <span className="sr-only">{type.label}</span>
@@ -89,6 +64,41 @@ export function IssueCard({ issue, assignee, subtasks, onOpen }: Props) {
           )}
         </span>
       </div>
+    </>
+  )
+}
+
+type Props = {
+  issue: BoardIssue
+  assignee?: BoardMember
+  subtasks: number
+}
+
+// A card in its column. While it is dragged, the column keeps an empty slot and the
+// floating preview (DragOverlay in BoardPage) follows the pointer. The real card never moves.
+export function IssueCard({ issue, assignee, subtasks }: Props) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: issue.id,
+    data: { statusId: issue.status_id },
+  })
+
+  return (
+    <article
+      ref={setNodeRef}
+      style={{
+        transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
+        transition,
+      }}
+      {...attributes}
+      {...listeners}
+      className={[
+        'flex touch-none cursor-grab flex-col gap-2 rounded-md border p-3 text-sm',
+        isDragging
+          ? 'border-dashed border-primary bg-surface-selected text-transparent'
+          : 'border-border bg-surface-raised hover:border-border-strong',
+      ].join(' ')}
+    >
+      {isDragging ? <span className="block h-16" aria-hidden="true" /> : <CardBody issue={issue} assignee={assignee} subtasks={subtasks} />}
     </article>
   )
 }
