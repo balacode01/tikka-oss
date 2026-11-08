@@ -1,4 +1,5 @@
 import { Bell, ChevronDown, ChevronRight, ChevronsUpDown, LayoutGrid, Layers, List, Search, Settings, User, UserPlus } from 'lucide-react'
+import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router'
 import { toast } from 'sonner'
@@ -7,6 +8,8 @@ import { useSession } from '../../app/session-context'
 import { readThemePreference, applyTheme, saveThemePreference, type ThemePreference } from '../../app/theme'
 import { useWorkspaceProjects } from './useWorkspaceProjects'
 import { QuickSearch } from '../search/QuickSearch'
+import { InviteDialog } from '../invites/InviteDialog'
+import { useMyWorkspaceRole } from '../invites/useInvites'
 
 // Sidebar and top bar follow the "Board" artboard in the design canvas (indigo sidebar).
 const navBase = 'flex h-8 items-center gap-2.5 rounded-sm px-2.5 text-[13px] leading-[18px] text-on-primary hover:bg-primary-hover'
@@ -25,11 +28,23 @@ export function AppShell() {
   const navigate = useNavigate()
   const location = useLocation()
   const { session } = useSession()
-  const { data } = useWorkspaceProjects(workspace || undefined)
+  // The sidebar shows the workspace in the URL, or the user's first workspace on Your work.
+  const myWorkspaces = useQuery({
+    queryKey: ['my-workspaces'],
+    queryFn: async () => {
+      const { data: rows, error } = await supabase.from('workspaces').select('id, name, slug').order('created_at')
+      if (error) throw error
+      return rows
+    },
+  })
+  const activeSlug = workspace || myWorkspaces.data?.[0]?.slug
+  const { data } = useWorkspaceProjects(activeSlug)
   const [menuOpen, setMenuOpen] = useState(false)
   const [theme, setTheme] = useState<ThemePreference>(() => readThemePreference())
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
   const [searchOpen, setSearchOpen] = useState(false)
+  const [inviteOpen, setInviteOpen] = useState(false)
+  const myRole = useMyWorkspaceRole(data?.workspace?.id).data
 
   // Ctrl+K (or Cmd+K) opens quick search from anywhere in the app.
   useEffect(() => {
@@ -97,14 +112,14 @@ export function AppShell() {
                 {open && (
                   <div className="ml-6 flex flex-col gap-0.5 border-white/30 border-l pl-2">
                     <NavLink
-                      to={`/w/${workspace}/p/${p.key}/board`}
+                      to={`/w/${activeSlug}/p/${p.key}/board`}
                       className={({ isActive }) => `${navBase} ${isActive || (isCurrent && location.pathname.endsWith('/board')) ? navActive : ''}`}
                     >
                       <LayoutGrid className="size-4" aria-hidden="true" />
                       Board
                     </NavLink>
                     <NavLink
-                      to={`/w/${workspace}/p/${p.key}/backlog`}
+                      to={`/w/${activeSlug}/p/${p.key}/backlog`}
                       className={({ isActive }) => `${navBase} ${isActive ? navActive : ''}`}
                     >
                       <Layers className="size-4" aria-hidden="true" />
@@ -124,10 +139,12 @@ export function AppShell() {
         </div>
 
         <div className="flex shrink-0 flex-col gap-0.5 border-white/15 border-t p-2">
-          <button type="button" onClick={() => toast('Invites are not part of the MVP')} className={navBase}>
-            <UserPlus className="size-4" aria-hidden="true" />
-            Invite people
-          </button>
+          {(myRole === 'owner' || myRole === 'admin') && (
+            <button type="button" onClick={() => setInviteOpen(true)} className={navBase}>
+              <UserPlus className="size-4" aria-hidden="true" />
+              Invite people
+            </button>
+          )}
           <button type="button" onClick={() => toast('Workspace settings are not part of the MVP')} className={navBase}>
             <Settings className="size-4" aria-hidden="true" />
             Workspace settings
@@ -191,11 +208,20 @@ export function AppShell() {
             </div>
           </div>
         </header>
+        {data?.workspace && myRole && (
+          <InviteDialog
+            open={inviteOpen}
+            onOpenChange={setInviteOpen}
+            workspaceId={data.workspace.id}
+            myRole={myRole}
+            projects={data.projects}
+          />
+        )}
         <QuickSearch
           open={searchOpen}
           onOpenChange={setSearchOpen}
           workspaceId={data?.workspace?.id}
-          workspaceSlug={workspace}
+          workspaceSlug={activeSlug ?? ''}
           projects={data?.projects ?? []}
         />
         <main className="flex min-w-0 flex-1 flex-col p-6">

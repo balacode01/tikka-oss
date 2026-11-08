@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router'
 import { AppShell } from '../features/app/AppShell'
 import { ComingSoon } from '../features/app/ComingSoon'
 import { BacklogPage } from '../features/backlog/BacklogPage'
+import { AcceptInvitePage } from '../features/invites/AcceptInvitePage'
 import { BoardPage } from '../features/board/BoardPage'
 import { CreateProjectPage } from '../features/projects/CreateProjectPage'
 import { ForgotPasswordPage, ResetPasswordPage } from '../features/auth/PasswordPages'
@@ -18,6 +19,7 @@ export const router = createBrowserRouter([
   { path: '/login', element: <LogInPage /> },
   { path: '/forgot', element: <ForgotPasswordPage /> },
   { path: '/reset', element: <ResetPasswordPage /> },
+  { path: '/invite/:token', element: <AcceptInvitePage /> },
   {
     path: '/onboarding',
     element: (

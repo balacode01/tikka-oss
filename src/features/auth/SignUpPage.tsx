@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router'
+import { safeNext } from './safeNext'
 import { Button } from '../../components/Button'
 import { Field } from '../../components/Field'
 import { supabase } from '../../lib/supabase'
@@ -8,8 +9,9 @@ import { authErrorMessage, EMAIL_PATTERN } from './authErrors'
 
 export function SignUpPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [name, setName] = useState('')
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState(() => searchParams.get('email') ?? '')
   const [password, setPassword] = useState('')
   const [agreed, setAgreed] = useState(false)
   const [submitted, setSubmitted] = useState(false)
@@ -44,7 +46,7 @@ export function SignUpPage() {
     }
     // With "Confirm email" on, there is no session yet: show the check-email screen.
     if (data.session) {
-      navigate('/onboarding', { replace: true })
+      navigate(safeNext(searchParams.get('next'), '/onboarding'), { replace: true })
     } else {
       setAwaitingEmail(true)
     }
