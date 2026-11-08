@@ -84,7 +84,7 @@ export function LinksSection({ canEdit, statuses, extras, currentUserId }: Props
 
       {canEdit && adding && (
         <form onSubmit={addLink} className="flex items-center gap-2">
-          <Select value={type} onChange={(e) => setType(e.target.value as LinkedIssue['link_type'])} className="w-36">
+          <Select value={type} onChange={(e) => setType(e.target.value as LinkedIssue['link_type'])} wrapperClassName="w-36">
             <option value="relates_to">Relates to</option>
             <option value="blocks">Blocks</option>
           </Select>

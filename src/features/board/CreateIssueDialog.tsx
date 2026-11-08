@@ -4,6 +4,7 @@ import { Bold, Bookmark, Bug, Check, ChevronDown, Code, Italic, List, Upload, Za
 import { useRef, useState, type FormEvent, type ReactNode } from 'react'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
+import { DatePicker } from '../../components/DatePicker'
 import { Select } from '../../components/Select'
 import { supabase } from '../../lib/supabase'
 import { MAX_ATTACHMENT_BYTES, uploadAttachment } from './attachments'
@@ -323,7 +324,7 @@ export function CreateIssueDialog({
               </label>
               <label className={labelClass}>
                 Due date
-                <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className={inputClass} />
+                <DatePicker value={dueDate} onChange={setDueDate} aria-label="Due date" />
               </label>
               <label className={labelClass}>
                 Labels

@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useParams, useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
+import { Select } from '../../components/Select'
 import { useSession } from '../../app/session-context'
 import { supabase } from '../../lib/supabase'
 import { BoardColumn } from './BoardColumn'
@@ -284,31 +285,23 @@ export function BoardPage() {
 
         <label className="h-8">
           <span className="sr-only">Type</span>
-          <select
-            value={typeFilter}
-            onChange={(e) => setTypeFilter(e.target.value)}
-            className="h-8 rounded-sm border border-border-strong bg-surface-raised px-3 text-sm text-text-primary"
-          >
+          <Select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} wrapperClassName="w-36">
             <option value="">Type</option>
             <option value="story">Story</option>
             <option value="task">Task</option>
             <option value="bug">Bug</option>
             <option value="epic">Epic</option>
-          </select>
+          </Select>
         </label>
 
         <label className="h-8">
           <span className="sr-only">Epic</span>
-          <select
-            value={epicFilter}
-            onChange={(e) => setEpicFilter(e.target.value)}
-            className="h-8 rounded-sm border border-border-strong bg-surface-raised px-3 text-sm text-text-primary"
-          >
+          <Select value={epicFilter} onChange={(e) => setEpicFilter(e.target.value)} wrapperClassName="w-44">
             <option value="">Epic</option>
             {epicOptions.map((e) => (
               <option key={e.id} value={e.id}>{e.title}</option>
             ))}
-          </select>
+          </Select>
         </label>
 
         <span className="ml-auto text-[13px] text-text-secondary tabular-nums">{cards.length} issues</span>
