@@ -7,6 +7,8 @@ export type LinkedIssue = {
   id: string
   key: string
   title: string
+  type: 'epic' | 'story' | 'task' | 'bug' | 'subtask'
+  status_id: string
   link_type: 'blocks' | 'relates_to'
   direction: 'outgoing' | 'incoming'
 }
@@ -46,16 +48,18 @@ export function useIssueExtras(issueId: string | null, projectId: string | null)
     queryFn: async (): Promise<LinkedIssue[]> => {
       const { data, error } = await supabase
         .from('issue_links')
-        .select('id, link_type, source_issue_id, target_issue_id, source:issues!source_issue_id(key, title), target:issues!target_issue_id(key, title)')
+        .select('id, link_type, source_issue_id, target_issue_id, source:issues!source_issue_id(key, title, type, status_id), target:issues!target_issue_id(key, title, type, status_id)')
         .or(`source_issue_id.eq.${issueId},target_issue_id.eq.${issueId}`)
       if (error) throw error
       return (data ?? []).map((row) => {
         const outgoing = row.source_issue_id === issueId
-        const other = (outgoing ? row.target : row.source) as unknown as { key: string; title: string }
+        const other = (outgoing ? row.target : row.source) as unknown as { key: string; title: string; type: LinkedIssue['type']; status_id: string }
         return {
           id: row.id,
           key: other.key,
           title: other.title,
+          type: other.type,
+          status_id: other.status_id,
           link_type: row.link_type as LinkedIssue['link_type'],
           direction: outgoing ? 'outgoing' : 'incoming',
         }
