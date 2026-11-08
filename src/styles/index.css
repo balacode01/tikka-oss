@@ -5,6 +5,7 @@
   --color-surface-raised: var(--surface-raised);
   --color-surface-hover: var(--surface-hover);
   --color-surface-selected: var(--surface-selected);
+  --color-surface-header: var(--surface-header);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
   --color-text-primary: var(--text-primary);
@@ -36,7 +37,7 @@
 }
 
 :root {
-  --surface-page:#eeeeee; --surface-raised:#ffffff; --surface-hover:#e2e6e9; --surface-selected:#d6d9de;
+  --surface-page:#eeeeee; --surface-raised:#ffffff; --surface-hover:#e2e6e9; --surface-selected:#d6d9de; --surface-header:#f7f7f7;
   --border:#dcdcdc; --border-strong:#9a9a9a; --text-primary:#2b2b29; --text-secondary:#6b6b6b;
   --primary:#071b2b; --primary-hover:#13324d; --on-primary:#ffffff; --primary-subtle-text:#0c2d45;
   --status-todo:#71717a; --status-todo-bg:#f4f4f5; --status-todo-text:#3f3f46;
@@ -49,7 +50,7 @@
   color-scheme: light;
 }
 :root[data-theme="dark"] {
-  --surface-page:#0b1118; --surface-raised:#12202b; --surface-hover:#1b2c38; --surface-selected:#16303f;
+  --surface-page:#0b1118; --surface-raised:#12202b; --surface-hover:#1b2c38; --surface-selected:#16303f; --surface-header:#0f1a22;
   --border:#213340; --border-strong:#4a6172; --text-primary:#eef2f4; --text-secondary:#9fb0bb;
   --primary:#8fb8d1; --primary-hover:#b3d2e3; --on-primary:#071b2b; --primary-subtle-text:#cfe4f0;
   --status-todo:#a1a1aa; --status-todo-bg:#27272a; --status-todo-text:#d4d4d8;

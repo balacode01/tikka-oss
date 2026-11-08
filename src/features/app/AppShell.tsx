@@ -153,7 +153,7 @@ export function AppShell() {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-12 items-center gap-3 border-border border-b bg-surface-selected px-6">
+        <header className="flex h-12 items-center gap-3 border-border border-b bg-surface-header px-6">
           <button
             type="button"
             onClick={() => setSearchOpen(true)}
