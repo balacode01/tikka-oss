@@ -39,7 +39,7 @@ export function IssuePanel(props: Props) {
     <Dialog.Root open={props.issueId !== null} onOpenChange={(open) => { if (!open) props.onClose() }}>
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 bg-black/20" />
-        <Dialog.Popup className="fixed top-0 right-0 z-50 flex h-full w-[560px] max-w-full flex-col overflow-y-auto border-border border-l bg-surface-raised text-text-primary shadow-modal">
+        <Dialog.Popup className="fixed top-0 right-0 z-50 flex h-full w-[560px] max-w-full flex-col overflow-y-auto border-border border-l bg-surface-raised text-text-primary">
           {detail.data ? (
             <IssueForm key={`${detail.data.id}-${detail.data.updated_at}`} issue={detail.data} {...props} />
           ) : (

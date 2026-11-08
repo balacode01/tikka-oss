@@ -40,7 +40,7 @@ export function CardBody({ issue, assignee, subtasks }: { issue: BoardIssue; ass
         {issue.title}
       </p>
 
-      <div className="flex items-center gap-2 text-xs text-text-secondary tabular-nums">
+      <div className="flex items-center gap-2 text-[13px] leading-[18px] text-text-secondary tabular-nums">
         <PriorityIcon className={`size-4 ${priority.color}`} aria-hidden="true" />
         <span className="sr-only">{priority.label} priority</span>
         {issue.story_points !== null && <span>{issue.story_points} pts</span>}

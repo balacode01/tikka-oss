@@ -36,7 +36,7 @@ export function AppShell() {
         <NavLink
           to="/home"
           className={({ isActive }) =>
-            `rounded-sm px-2 py-1.5 text-sm ${isActive ? 'bg-surface-selected font-medium text-primary-subtle-text' : 'text-text-primary hover:bg-surface-hover'}`
+            `rounded-sm px-2 py-1.5 text-[13px] leading-[18px] ${isActive ? 'bg-surface-selected font-medium text-primary-subtle-text' : 'text-text-primary hover:bg-surface-hover'}`
           }
         >
           Your work
@@ -50,7 +50,7 @@ export function AppShell() {
                 key={p.id}
                 to={`/w/${data.workspace!.slug}/p/${p.key}/board`}
                 className={({ isActive }) =>
-                  `rounded-sm px-2 py-1.5 text-sm ${isActive ? 'bg-surface-selected font-medium text-primary-subtle-text' : 'text-text-primary hover:bg-surface-hover'}`
+                  `rounded-sm px-2 py-1.5 text-[13px] leading-[18px] ${isActive ? 'bg-surface-selected font-medium text-primary-subtle-text' : 'text-text-primary hover:bg-surface-hover'}`
                 }
               >
                 {p.name}
@@ -71,7 +71,7 @@ export function AppShell() {
             <span className="ml-auto font-mono text-xs">Ctrl K</span>
           </Button>
           <div className="ml-auto flex items-center gap-2">
-            <Button variant="primary" onClick={() => toast('Create is available on the Board')}>
+            <Button onClick={() => toast('Create is available on the Board')}>
               Create
             </Button>
             <div className="relative">
