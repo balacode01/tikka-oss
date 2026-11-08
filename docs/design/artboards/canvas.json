@@ -1,0 +1,265 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Indigo-sidebar.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Board, indigo sidebar",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "IssuePanel.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Issue side panel",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "IssueDetail.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Issue detail",
+      "w": 1440,
+      "x": 4560,
+      "y": 0
+    },
+    "Backlog.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Backlog",
+      "w": 1440,
+      "x": 1520,
+      "y": 1020
+    },
+    "Backlog-empty.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "title": "Backlog empty",
+      "w": 1440,
+      "x": 3040,
+      "y": 1020
+    },
+    "CreateIssue.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Create issue",
+      "w": 1440,
+      "x": 1520,
+      "y": 2040
+    },
+    "CreateIssue-error.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Create issue with errors",
+      "w": 1440,
+      "x": 3040,
+      "y": 2040
+    },
+    "QuickSearch.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Quick search",
+      "w": 1440,
+      "x": 1520,
+      "y": 3060
+    },
+    "QuickSearch-recent.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Quick search, before typing",
+      "w": 1440,
+      "x": 3040,
+      "y": 3060
+    },
+    "Home.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Your work",
+      "w": 1440,
+      "x": 1520,
+      "y": 4080
+    },
+    "Home-new.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "title": "Your work, new workspace",
+      "w": 1440,
+      "x": 3040,
+      "y": 4080
+    },
+    "CreateProject.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Create project",
+      "w": 1440,
+      "x": 4560,
+      "y": 4080
+    },
+    "SignUp.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Sign up",
+      "w": 1440,
+      "x": 1520,
+      "y": 5100
+    },
+    "SignUp-errors.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Sign up with errors",
+      "w": 1440,
+      "x": 3040,
+      "y": 5100
+    },
+    "SignUp-verify.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Check your email",
+      "w": 1440,
+      "x": 4560,
+      "y": 5100
+    },
+    "LogIn.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Log in",
+      "w": 1440,
+      "x": 1520,
+      "y": 6120
+    },
+    "ForgotPassword.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Forgot password",
+      "w": 1440,
+      "x": 3040,
+      "y": 6120
+    },
+    "ResetPassword.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Reset password",
+      "w": 1440,
+      "x": 4560,
+      "y": 6120
+    },
+    "CreateWorkspace.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Create workspace",
+      "w": 1920,
+      "x": 1520,
+      "y": 7140
+    },
+    "AcceptInvite.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Accept invite",
+      "w": 1440,
+      "x": 1520,
+      "y": 8160
+    },
+    "AcceptInvite-expired.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Invite expired",
+      "w": 1440,
+      "x": 3040,
+      "y": 8160
+    },
+    "Profile.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Profile settings",
+      "w": 1440,
+      "x": 1520,
+      "y": 9445
+    },
+    "WorkspaceSettings.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Workspace settings",
+      "w": 1440,
+      "x": 3040,
+      "y": 9445
+    },
+    "InviteMembers.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Invite people",
+      "w": 1440,
+      "x": 4560,
+      "y": 9445
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-11-06T06:20:00Z",
+    "v": 1
+  },
+  "designSystems": [
+    {
+      "artifact": "https://claude.ai/code/artifact/24c479da-457e-414a-8c1a-30396d8d1958",
+      "copiedAt": "2026-11-06T06:20:00Z",
+      "namespace": "tikka",
+      "title": "Tikka",
+      "version": "1793942662-7c23"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {},
+  "order": [
+    "Indigo-sidebar.dc.html",
+    "IssuePanel.dc.html",
+    "IssueDetail.dc.html",
+    "Backlog.dc.html",
+    "Backlog-empty.dc.html",
+    "CreateIssue.dc.html",
+    "CreateIssue-error.dc.html",
+    "QuickSearch.dc.html",
+    "QuickSearch-recent.dc.html",
+    "Home.dc.html",
+    "Home-new.dc.html",
+    "CreateProject.dc.html",
+    "SignUp.dc.html",
+    "SignUp-errors.dc.html",
+    "SignUp-verify.dc.html",
+    "LogIn.dc.html",
+    "ForgotPassword.dc.html",
+    "ResetPassword.dc.html",
+    "CreateWorkspace.dc.html",
+    "AcceptInvite.dc.html",
+    "AcceptInvite-expired.dc.html",
+    "Profile.dc.html",
+    "WorkspaceSettings.dc.html",
+    "InviteMembers.dc.html"
+  ],
+  "pages": [],
+  "title": "Tikka board redesign"
+}

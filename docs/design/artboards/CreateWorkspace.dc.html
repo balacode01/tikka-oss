@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Create workspace</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Montserrat:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+[data-theme]{--surface-page:#fafafa;--surface-raised:#ffffff;--surface-hover:#f4f4f5;--surface-selected:#eef2ff;--border:#e4e4e7;--border-strong:#8e8e96;--text-primary:#18181b;--text-secondary:#6b6b73;--primary:#4f46e5;--primary-hover:#4338ca;--on-primary:#ffffff;--primary-subtle-text:#3730a3;--status-todo:#71717a;--status-todo-bg:#f4f4f5;--status-todo-text:#3f3f46;--status-progress:#c2620a;--status-progress-bg:#fef3c7;--status-progress-text:#92400e;--status-done:#15963f;--status-done-bg:#dcfce7;--status-done-text:#166534;--danger:#dc2626;--on-danger:#ffffff;--danger-bg:#fee2e2;--danger-text:#991b1b;--type-epic:#7c3aed;--type-story:#15963f;--type-task:#2563eb;--type-bug:#dc2626;--type-subtask:#71717a;--font-sans:Montserrat,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;color-scheme:light}
+[data-theme="dark"]{--surface-page:#09090b;--surface-raised:#18181b;--surface-hover:#27272a;--surface-selected:#1e1b4b;--border:#27272a;--border-strong:#71717a;--text-primary:#fafafa;--text-secondary:#a1a1aa;--primary:#818cf8;--primary-hover:#a5b4fc;--on-primary:#1e1b4b;--primary-subtle-text:#c7d2fe;--status-todo:#a1a1aa;--status-todo-bg:#27272a;--status-todo-text:#d4d4d8;--status-progress:#f59e0b;--status-progress-bg:#422006;--status-progress-text:#fcd34d;--status-done:#4ade80;--status-done-bg:#052e16;--status-done-text:#86efac;--danger:#f87171;--on-danger:#450a0a;--danger-bg:#450a0a;--danger-text:#fca5a5;--type-epic:#a78bfa;--type-story:#4ade80;--type-task:#60a5fa;--type-bug:#f87171;--type-subtask:#a1a1aa;color-scheme:dark}
+[data-theme] *,[data-theme] *::before,[data-theme] *::after{box-sizing:border-box}
+a{color:var(--primary)}a:hover{color:var(--primary-hover)}
+.ic{display:block;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.tk-hover:hover{background:var(--surface-hover)!important}
+.tk-primary:hover{background:var(--primary-hover)!important;border-color:var(--primary-hover)!important}
+.tk-link:hover{color:var(--primary-hover)!important;text-decoration:underline}
+input::placeholder,textarea::placeholder{color:var(--text-secondary);opacity:1}
+.cw-root{min-height:100vh;box-sizing:border-box;display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:40px 80px;padding:64px 40px;background:var(--surface-page);color:var(--text-primary);font-family:var(--font-sans);font-size:14px;line-height:20px}
+.cw-col{width:560px;max-width:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:24px}
+.cw-card{width:100%;box-sizing:border-box;display:flex;flex-direction:column;gap:24px;padding:32px;border:1px solid var(--border);border-radius:8px;background:var(--surface-raised)}
+.cw-group:focus-within{outline:2px solid var(--primary);outline-offset:2px}
+.cw-choice:has(input:focus-visible){outline:2px solid var(--primary);outline-offset:2px}
+@media (max-width:640px){.cw-root{padding:32px 16px;gap:40px}.cw-card{padding:24px}}
+</style>
+</helmet>
+<div data-theme="{{ theme }}" class="cw-root">
+  <section class="cw-col" aria-labelledby="cw-h1">
+    <p style="margin: 0; font: 600 20px/28px var(--font-sans); letter-spacing: -0.01em; color: var(--text-primary);">Tikka</p>
+    <div class="cw-card">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span aria-hidden="true" style="display: flex; gap: 4px;"><span style="width: 40px; height: 4px; border-radius: 9999px; background: var(--primary);"></span><span style="width: 40px; height: 4px; border-radius: 9999px; background: var(--border);"></span><span style="width: 40px; height: 4px; border-radius: 9999px; background: var(--border);"></span></span>
+        <p style="margin: 0; font: 500 12px/16px var(--font-sans); color: var(--text-secondary); font-variant-numeric: tabular-nums;">Step 1 of 3</p>
+      </div>
+      <h2 id="cw-h1" style="margin: 0; font: 600 20px/28px var(--font-sans); letter-spacing: -0.01em; color: var(--text-primary);">Name your workspace</h2>
+    <form noValidate="{{ yes }}" onSubmit="{{ onSubmit }}" style="display: flex; flex-direction: column; gap: 16px; margin: 0;">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <label for="cw-name" style="font: 500 14px/20px var(--font-sans); color: var(--text-primary);">Workspace name</label>
+        <input id="cw-name" type="text" autoComplete="organization" placeholder="Your workspace name" value="{{ name }}" onChange="{{ onName }}" style="width: 100%; height: 32px; margin: 0; padding: 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary); font: 400 14px/20px var(--font-sans);">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <label for="cw-slug" style="font: 500 14px/20px var(--font-sans); color: var(--text-primary);">Workspace URL</label>
+        <div class="cw-group" style="display: flex; align-items: stretch; height: 32px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); overflow: hidden;">
+          <span style="display: flex; align-items: center; padding: 0 12px; border-right: 1px solid var(--border); background: var(--surface-hover); color: var(--text-secondary); font: 400 14px/20px var(--font-sans); white-space: nowrap;">[YOUR DOMAIN]/</span>
+          <input id="cw-slug" type="text" value="{{ slug }}" onChange="{{ onSlug }}" style="flex: 1 1 auto; min-width: 0; height: 100%; margin: 0; padding: 0 12px; border: 0; background: transparent; color: var(--text-primary); font: 500 14px/20px var(--font-mono);">
+        </div>
+        <p style="margin: 0; display: flex; align-items: center; gap: 4px; font: 500 12px/16px var(--font-sans); color: var(--status-done-text);"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--status-done);"><circle cx="12" cy="12" r="10"></circle><path d="m9 12 2 2 4-4"></path></svg><span>Available</span></p>
+      </div>
+    <fieldset style="min-width: 0; margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px;"><legend style="padding: 0; margin-bottom: 4px; font: 500 14px/20px var(--font-sans); color: var(--text-primary);">Team size</legend>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <sc-for list="{{ teamChips }}" as="t" hint-placeholder-count="4"><button type="button" aria-pressed="{{ t.on }}" onClick="{{ t.pick }}" class="{{ t.cls }}" style="height: 32px; display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; border: 1px solid {{ t.border }}; border-radius: 6px; background: {{ t.bg }}; color: {{ t.color }}; font: 500 14px/20px var(--font-sans); white-space: nowrap; cursor: pointer;"><sc-if value="{{ t.on }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></sc-if><span>{{ t.label }}</span></button></sc-for>
+      </div>
+    </fieldset>
+    <fieldset style="min-width: 0; margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px;"><legend style="padding: 0; margin-bottom: 4px; font: 500 14px/20px var(--font-sans); color: var(--text-primary);">What will your team use Tikka for?</legend>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+        <sc-for list="{{ useChips }}" as="t" hint-placeholder-count="4"><button type="button" aria-pressed="{{ t.on }}" onClick="{{ t.pick }}" class="{{ t.cls }}" style="height: 32px; display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; border: 1px solid {{ t.border }}; border-radius: 6px; background: {{ t.bg }}; color: {{ t.color }}; font: 500 14px/20px var(--font-sans); white-space: nowrap; cursor: pointer;"><sc-if value="{{ t.on }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg></sc-if><span>{{ t.label }}</span></button></sc-for>
+      </div>
+    </fieldset>
+      <button type="submit" class="tk-primary" style="width: 100%; height: 32px; display: flex; align-items: center; justify-content: center; padding: 0 12px; border: 1px solid var(--primary); border-radius: 6px; background: var(--primary); color: var(--on-primary); font: 500 14px/20px var(--font-sans); cursor: pointer;">Continue</button>
+    </form>
+    </div>
+  </section>
+  <section class="cw-col" aria-labelledby="cw-h2">
+    <p style="margin: 0; font: 600 20px/28px var(--font-sans); letter-spacing: -0.01em; color: var(--text-primary);">Tikka</p>
+    <div class="cw-card">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span aria-hidden="true" style="display: flex; gap: 4px;"><span style="width: 40px; height: 4px; border-radius: 9999px; background: var(--primary);"></span><span style="width: 40px; height: 4px; border-radius: 9999px; background: var(--primary);"></span><span style="width: 40px; height: 4px; border-radius: 9999px; background: var(--border);"></span></span>
+        <p style="margin: 0; font: 500 12px/16px var(--font-sans); color: var(--text-secondary); font-variant-numeric: tabular-nums;">Step 2 of 3</p>
+      </div>
+      <h2 id="cw-h2" style="margin: 0; font: 600 20px/28px var(--font-sans); letter-spacing: -0.01em; color: var(--text-primary);">Invite your team</h2>
+    <form noValidate="{{ yes }}" onSubmit="{{ onSubmit }}" style="display: flex; flex-direction: column; gap: 16px; margin: 0;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <input id="cw-email-1" type="email" placeholder="name@company.com" aria-label="Email for invitee 1" style="flex: 1 1 auto; min-width: 0; width: 100%; height: 32px; margin: 0; padding: 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary); font: 400 14px/20px var(--font-sans);">
+        <span style="position: relative; display: inline-flex; flex-shrink: 0;">
+          <select aria-label="Role for invitee 1" class="tk-hover" style="appearance: none; height: 32px; margin: 0; padding: 0 32px 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary); font: 500 14px/20px var(--font-sans); cursor: pointer;">
+            <option selected>Member</option><option>Admin</option><option>Viewer</option>
+          </select>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="position: absolute; top: 8px; right: 10px; pointer-events: none; color: var(--text-secondary);"><path d="m6 9 6 6 6-6"></path></svg>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <input id="cw-email-2" type="email" placeholder="name@company.com" aria-label="Email for invitee 2" style="flex: 1 1 auto; min-width: 0; width: 100%; height: 32px; margin: 0; padding: 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary); font: 400 14px/20px var(--font-sans);">
+        <span style="position: relative; display: inline-flex; flex-shrink: 0;">
+          <select aria-label="Role for invitee 2" class="tk-hover" style="appearance: none; height: 32px; margin: 0; padding: 0 32px 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary); font: 500 14px/20px var(--font-sans); cursor: pointer;">
+            <option selected>Member</option><option>Admin</option><option>Viewer</option>
+          </select>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="position: absolute; top: 8px; right: 10px; pointer-events: none; color: var(--text-secondary);"><path d="m6 9 6 6 6-6"></path></svg>
+        </span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <input id="cw-email-3" type="email" placeholder="name@company.com" aria-label="Email for invitee 3" style="flex: 1 1 auto; min-width: 0; width: 100%; height: 32px; margin: 0; padding: 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary); font: 400 14px/20px var(--font-sans);">
+        <span style="position: relative; display: inline-flex; flex-shrink: 0;">
+          <select aria-label="Role for invitee 3" class="tk-hover" style="appearance: none; height: 32px; margin: 0; padding: 0 32px 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary); font: 500 14px/20px var(--font-sans); cursor: pointer;">
+            <option selected>Member</option><option>Admin</option><option>Viewer</option>
+          </select>
+          <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="position: absolute; top: 8px; right: 10px; pointer-events: none; color: var(--text-secondary);"><path d="m6 9 6 6 6-6"></path></svg>
+        </span>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;">
+        <button type="button" class="tk-hover" style="height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--primary); font: 500 14px/20px var(--font-sans); white-space: nowrap; cursor: pointer;"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg><span>Add another</span></button>
+        <button type="button" class="tk-hover" style="height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--primary); font: 500 14px/20px var(--font-sans); white-space: nowrap; cursor: pointer;"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg><span>Copy invite link</span></button>
+      </div>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+        <button type="button" class="tk-hover" style="height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--text-secondary); font: 500 14px/20px var(--font-sans); white-space: nowrap; cursor: pointer;">Skip for now</button>
+        <button type="submit" class="tk-primary" style="height: 32px; display: flex; align-items: center; padding: 0 12px; border: 1px solid var(--primary); border-radius: 6px; background: var(--primary); color: var(--on-primary); font: 500 14px/20px var(--font-sans); white-space: nowrap; cursor: pointer;">Send invites</button>
+      </div>
+    </form>
+    </div>
+  </section>
+  <section class="cw-col" aria-labelledby="cw-h3">
+    <p style="margin: 0; font: 600 20px/28px var(--font-sans); letter-spacing: -0.01em; color: var(--text-primary);">Tikka</p>
+    <div class="cw-card">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span aria-hidden="true" style="display: flex; gap: 4px;"><span style="width: 40px; height: 4px; border-radius: 9999px; background: var(--primary);"></span><span style="width: 40px; height: 4px; border-radius: 9999px; background: var(--primary);"></span><span style="width: 40px; height: 4px; border-radius: 9999px; background: var(--primary);"></span></span>
+        <p style="margin: 0; font: 500 12px/16px var(--font-sans); color: var(--text-secondary); font-variant-numeric: tabular-nums;">Step 3 of 3</p>
+      </div>
+      <h2 id="cw-h3" style="margin: 0; font: 600 20px/28px var(--font-sans); letter-spacing: -0.01em; color: var(--text-primary);">Create your first project</h2>
+    <form noValidate="{{ yes }}" onSubmit="{{ onSubmit }}" style="display: flex; flex-direction: column; gap: 16px; margin: 0;">
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <label for="cw-proj" style="font: 500 14px/20px var(--font-sans); color: var(--text-primary);">Project name</label>
+        <input id="cw-proj" type="text" placeholder="Project name" value="{{ projName }}" onChange="{{ onProj }}" style="width: 100%; height: 32px; margin: 0; padding: 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary); font: 400 14px/20px var(--font-sans);">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <label for="cw-key" style="font: 500 14px/20px var(--font-sans); color: var(--text-primary);">Key</label>
+        <input id="cw-key" type="text" maxLength="10" autoComplete="off" aria-describedby="cw-key-help" value="{{ key }}" onChange="{{ onKey }}" style="width: 160px; max-width: 100%; height: 32px; margin: 0; padding: 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary); font: 500 14px/20px var(--font-mono); letter-spacing: 0.02em;">
+        <p id="cw-key-help" style="margin: 0; font: 400 12px/16px var(--font-sans); color: var(--text-secondary);">Issue keys will look like <span style="font: 500 12px/16px var(--font-mono); color: var(--text-primary);">{{ keySample }}</span>. Use 2 to 10 capital letters.</p>
+      </div>
+    <fieldset style="min-width: 0; margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 8px;"><legend style="padding: 0; margin-bottom: 4px; font: 500 14px/20px var(--font-sans); color: var(--text-primary);">Template</legend>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr)); gap: 12px;">
+        <sc-for list="{{ templates }}" as="t" hint-placeholder-count="2">
+          <label class="{{ t.cls }}" style="min-width: 0; display: flex; flex-direction: column; gap: 8px; padding: 12px; border: 1px solid {{ t.border }}; border-radius: 8px; background: {{ t.bg }}; cursor: pointer;">
+            <span style="display: flex; align-items: center; justify-content: space-between;">
+              <span aria-hidden="true" style="width: 32px; height: 32px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary);">
+                <sc-if value="{{ t.isScrum }}" hint-placeholder-val="{{ true }}"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="m17 2 4 4-4 4"></path><path d="M3 11v-1a4 4 0 0 1 4-4h14"></path><path d="m7 22-4-4 4-4"></path><path d="M21 13v1a4 4 0 0 1-4 4H3"></path></svg></sc-if>
+                <sc-if value="{{ t.isKanban }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="M8 7v7"></path><path d="M12 7v4"></path><path d="M16 7v9"></path></svg></sc-if>
+              </span>
+              <input type="radio" name="cw-template" value="{{ t.id }}" checked="{{ t.checked }}" onChange="{{ t.pick }}" aria-describedby="{{ t.descId }}" style="width: 16px; height: 16px; margin: 0; accent-color: var(--primary); cursor: pointer;">
+            </span>
+            <span style="font: 500 14px/20px var(--font-sans); color: {{ t.nameColor }};">{{ t.name }}</span>
+            <span id="{{ t.descId }}" style="font: 400 13px/18px var(--font-sans); color: var(--text-secondary);">{{ t.desc }}</span>
+          </label>
+        </sc-for>
+      </div>
+    </fieldset>
+      <button type="submit" class="tk-primary" style="width: 100%; height: 32px; display: flex; align-items: center; justify-content: center; padding: 0 12px; border: 1px solid var(--primary); border-radius: 6px; background: var(--primary); color: var(--on-primary); font: 500 14px/20px var(--font-sans); cursor: pointer;">Create project</button>
+      <p style="margin: 0; text-align: center; font: 400 12px/16px var(--font-sans); color: var(--text-secondary);">You'll land on your new board.</p>
+    </form>
+    </div>
+  </section>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Light","Dark"],"default":"Light","section":"Theme"},"$preview":{"width":1920,"height":900}}'>
+class Component extends DCLogic {
+  constructor(...args) {
+    super(...args);
+    this.state = {};
+  }
+
+  renderVals() {
+    const s = this.state || {};
+    const theme = String(this.props.theme ?? 'Light').toLowerCase() === 'dark' ? 'dark' : 'light';
+    const name = s.name === undefined ? 'Lumen Labs' : s.name;
+    const slugDerived = name.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    const slug = s.slug === undefined ? slugDerived : s.slug;
+    const team = s.team === undefined ? '1-10' : s.team;
+    const use = s.use === undefined ? 'software' : s.use;
+    const projName = s.projName === undefined ? 'Mobile app' : s.projName;
+    const key = s.key === undefined ? 'MOB' : s.key;
+    const template = s.template === undefined ? 'scrum' : s.template;
+
+    const pick = (on) => ({
+      cls: on ? '' : 'tk-hover',
+      border: on ? 'var(--primary)' : 'var(--border-strong)',
+      bg: on ? 'var(--surface-selected)' : 'var(--surface-raised)',
+      color: on ? 'var(--primary-subtle-text)' : 'var(--text-primary)'
+    });
+    const teamChips = [['1-10', '1–10'], ['11-50', '11–50'], ['51-200', '51–200'], ['200+', '200+']].map(([id, label]) =>
+      Object.assign({ id: id, label: label, on: team === id, pick: () => this.setState({ team: id }) }, pick(team === id)));
+    const useChips = [['software', 'Software development'], ['marketing', 'Marketing'], ['operations', 'Operations'], ['other', 'Something else']].map(([id, label]) =>
+      Object.assign({ id: id, label: label, on: use === id, pick: () => this.setState({ use: id }) }, pick(use === id)));
+    const templates = [
+      { id: 'scrum', name: 'Scrum', desc: 'Plan work in sprints with a backlog and a board.' },
+      { id: 'kanban', name: 'Kanban', desc: 'Work flows continuously across a board. No sprints.' }
+    ].map((t) => {
+      const on = t.id === template;
+      return {
+        id: t.id, name: t.name, desc: t.desc, descId: 'cw-template-' + t.id,
+        isScrum: t.id === 'scrum', isKanban: t.id === 'kanban',
+        checked: on,
+        cls: on ? 'cw-choice' : 'cw-choice tk-hover',
+        border: on ? 'var(--primary)' : 'var(--border-strong)',
+        bg: on ? 'var(--surface-selected)' : 'var(--surface-raised)',
+        nameColor: on ? 'var(--primary-subtle-text)' : 'var(--text-primary)',
+        pick: () => this.setState({ template: t.id })
+      };
+    });
+
+    return {
+      yes: true,
+      theme: theme,
+      name: name,
+      slug: slug,
+      onName: (e) => this.setState({ name: e.target.value, slug: undefined }),
+      onSlug: (e) => this.setState({ slug: e.target.value.toLowerCase().replace(/\s+/g, '-') }),
+      teamChips: teamChips,
+      useChips: useChips,
+      templates: templates,
+      projName: projName,
+      onProj: (e) => this.setState({ projName: e.target.value }),
+      key: key,
+      keySample: (key || 'MOB') + '-1',
+      onKey: (e) => this.setState({ key: e.target.value.toUpperCase() }),
+      onSubmit: (e) => e.preventDefault()
+    };
+  }
+}
+</script>
+</body>
+</html>
