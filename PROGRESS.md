@@ -45,12 +45,21 @@
 - [x] Applied to the Tikka project (`db push --remote --yes`): 25 policies, 6 helpers, no `anon` table grants, anonymous read denied.
 - [ ] PR into `dev` reported and merged after your review.
 
+## M3 Functions (branch `feature/m3-functions-v2`)
+
+- [x] `supabase/migrations/20261108110920_functions.sql`: all BRD §6.4 functions. Invoker for issue work (RLS applies); definer only for workspace, project and sprint-state writes, each checking `auth.uid()` and permission itself.
+- [x] Execute granted to `authenticated` only.
+- [x] `supabase/tests/functions.sql` passes, rolled back. Covers: anonymous denied; duplicate and bad keys rejected with clear messages; project creation adds statuses and the lead; numbering; default status; labels; rank midpoint; status move writes history; second active sprint refused; completion moves open issues; bulk update; recently viewed kept to one row; search literal and visible-only; soft delete; home; another workspace sees nothing.
+- [x] Applied to the Tikka project (`db push --remote --yes`): 11 functions, none callable by `anon`.
+- [x] M2 merged into `dev` (#3). M3 rebuilt on a clean branch from `dev` (the first branch, stacked on M2, was closed when its base branch was deleted).
+- [ ] PR into `dev` reported and merged after your review.
+
 ## Blockers
 
-- None for M2. The policies are live; PR #3 is waiting for review.
+- None for M3.
 - None for M1.
 - Dashboard checks for Supabase Auth (see PLAN.md, human steps).
 
 ## Next
 
-- M3 Functions (`feature/m3-functions`): §6.4 functions and `supabase/tests/functions.sql`. `create_project` must also add the caller to `project_members`, so the invite-only project stays visible to its lead.
+- M4 App shell and auth (`feature/m4-app-shell-auth`): session provider, routes, sign up, log in, workspace wizard, and the seed. Needs the design files in `docs/design/` first (human step).
