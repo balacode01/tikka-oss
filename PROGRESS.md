@@ -54,12 +54,34 @@
 - [x] M2 merged into `dev` (#3). M3 rebuilt on a clean branch from `dev` (the first branch, stacked on M2, was closed when its base branch was deleted).
 - [ ] PR into `dev` reported and merged after your review.
 
+## M4 App shell and auth (branch `feature/m4-app-shell-auth`)
+
+- [x] Design files in `docs/design/`: `tokens.json`, `README.md`, and the auth and home artboards in `docs/design/artboards/`. The Board artboard was not in the canvas.
+- [x] Routes from BRD §7.1; protected routes need a session.
+- [x] Sign up, log in, forgot and reset password (email and password only).
+- [x] Workspace wizard: steps 1 and 3 real, step 2 skip-only.
+- [x] App shell: neutral sidebar, top bar with search and Create issue placeholders, avatar menu with Light, Dark and System.
+- [x] Theme follows the OS by default; the choice is stored in `localStorage` with try/catch.
+- [x] Home ("Your work") uses the `home` function.
+- [x] Board shows the project and an empty state (issues arrive in M5).
+- [x] `supabase/seed.sql` (BRD §6.6), tested in a rolled-back transaction: 60 issues, 3 projects.
+- [x] `npm run typecheck`, `npm run lint`, `npm run build` pass. The bundle is over 500 kB; code-splitting is left for later.
+- [ ] Sign-up tested in a browser: needs the Supabase dashboard change (turn off "Confirm email", add `http://localhost:5173` to redirect URLs).
+- [ ] Seed run on the Tikka project: needs your user id after the first sign-up.
+- [ ] PR into `dev` reported and merged after your review.
+
+## Deviations (M4)
+
+- The avatar menu is a plain popover, not Base UI. Switch to a Base UI menu when Board dialogs are added in M5.
+- The Board artboard is not in the design canvas. M5 needs it (or a decision to design the Board from the tokens and README).
+
 ## Blockers
 
+- M4 browser test and seed need the Supabase dashboard settings and your user id.
 - None for M3.
 - None for M1.
-- Dashboard checks for Supabase Auth (see PLAN.md, human steps).
 
 ## Next
 
-- M4 App shell and auth (`feature/m4-app-shell-auth`): session provider, routes, sign up, log in, workspace wizard, and the seed. Needs the design files in `docs/design/` first (human step).
+- M4 browser test and the seed (after sign-up).
+- M5 Board and Create issue (`feature/m5-board-create-issue`).

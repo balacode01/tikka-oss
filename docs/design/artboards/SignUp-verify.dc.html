@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Check your email</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Montserrat:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+[data-theme]{--surface-page:#fafafa;--surface-raised:#ffffff;--surface-hover:#f4f4f5;--surface-selected:#eef2ff;--border:#e4e4e7;--border-strong:#8e8e96;--text-primary:#18181b;--text-secondary:#6b6b73;--primary:#4f46e5;--primary-hover:#4338ca;--on-primary:#ffffff;--primary-subtle-text:#3730a3;--status-todo:#71717a;--status-todo-bg:#f4f4f5;--status-todo-text:#3f3f46;--status-progress:#c2620a;--status-progress-bg:#fef3c7;--status-progress-text:#92400e;--status-done:#15963f;--status-done-bg:#dcfce7;--status-done-text:#166534;--danger:#dc2626;--on-danger:#ffffff;--danger-bg:#fee2e2;--danger-text:#991b1b;--type-epic:#7c3aed;--type-story:#15963f;--type-task:#2563eb;--type-bug:#dc2626;--type-subtask:#71717a;--font-sans:Montserrat,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;color-scheme:light}
+[data-theme="dark"]{--surface-page:#09090b;--surface-raised:#18181b;--surface-hover:#27272a;--surface-selected:#1e1b4b;--border:#27272a;--border-strong:#71717a;--text-primary:#fafafa;--text-secondary:#a1a1aa;--primary:#818cf8;--primary-hover:#a5b4fc;--on-primary:#1e1b4b;--primary-subtle-text:#c7d2fe;--status-todo:#a1a1aa;--status-todo-bg:#27272a;--status-todo-text:#d4d4d8;--status-progress:#f59e0b;--status-progress-bg:#422006;--status-progress-text:#fcd34d;--status-done:#4ade80;--status-done-bg:#052e16;--status-done-text:#86efac;--danger:#f87171;--on-danger:#450a0a;--danger-bg:#450a0a;--danger-text:#fca5a5;--type-epic:#a78bfa;--type-story:#4ade80;--type-task:#60a5fa;--type-bug:#f87171;--type-subtask:#a1a1aa;color-scheme:dark}
+[data-theme] *,[data-theme] *::before,[data-theme] *::after{box-sizing:border-box}
+a{color:var(--primary)}a:hover{color:var(--primary-hover)}
+.ic{display:block;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.tk-hover:hover{background:var(--surface-hover)!important}
+.tk-primary:hover{background:var(--primary-hover)!important;border-color:var(--primary-hover)!important}
+.tk-link:hover{color:var(--primary-hover)!important;text-decoration:underline}
+input::placeholder,textarea::placeholder{color:var(--text-secondary);opacity:1}
+.su-form{flex:0 0 560px;max-width:100%;min-width:0;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;padding:48px 80px}
+.su-brand{flex:1 1 0;min-width:0;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:40px;padding:64px;background:var(--surface-selected)}
+.su-board{width:100%;max-width:520px;box-sizing:border-box;padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--surface-raised);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.su-col{display:flex;flex-direction:column;gap:8px;padding:8px;border-radius:8px;background:var(--surface-hover)}
+.su-col-head{display:flex;align-items:center;gap:6px;height:12px}
+.su-dot{width:8px;height:8px;flex-shrink:0;border-radius:9999px}
+.su-tile{display:flex;flex-direction:column;justify-content:center;gap:6px;padding:0 10px;border-radius:8px}
+.su-bar{display:block;height:6px;border-radius:9999px;background:var(--surface-raised)}
+.su-mark{display:none}
+@media (max-width:959px){.su-brand{display:none}.su-form{flex-basis:100%;padding:32px 16px}.su-mark{display:block}}
+</style>
+</helmet>
+<div data-theme="{{ theme }}" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: var(--surface-page); color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; line-height: 20px;">
+
+  <main class="su-form">
+    <div style="width: 100%; max-width: 400px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px;">
+      <p class="su-mark" style="margin: 0; font: 600 20px/28px var(--font-sans); letter-spacing: -0.01em; color: var(--text-primary);">Tikka</p>
+
+      <span aria-hidden="true" style="width: 48px; height: 48px; display: grid; place-items: center; border-radius: 9999px; background: var(--surface-selected); color: var(--primary-subtle-text);">
+        <svg class="ic" width="24" height="24" viewBox="0 0 24 24"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+      </span>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <h1 style="margin: 0; font: 600 20px/28px var(--font-sans); letter-spacing: -0.01em; color: var(--text-primary);">Check your email</h1>
+        <p style="margin: 0; font: 400 14px/20px var(--font-sans); color: var(--text-secondary);">We sent a verification link to <span style="font-weight: 500; color: var(--text-primary);">priya@lumenlabs.example</span>. It expires in 24 hours.</p>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button type="button" onClick="{{ resend }}" class="tk-hover" style="width: 100%; height: 32px; display: flex; align-items: center; justify-content: center; padding: 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary); font: 500 14px/20px var(--font-sans); cursor: pointer;">Resend email</button>
+        <div role="status" style="min-height: 16px;">
+          <sc-if value="{{ resent }}" hint-placeholder-val="{{ false }}">
+            <p style="margin: 0; text-align: center; font: 400 12px/16px var(--font-sans); color: var(--text-secondary);">Link sent again</p>
+          </sc-if>
+        </div>
+      </div>
+
+      <p style="margin: 0; text-align: center; font: 400 14px/20px var(--font-sans);"><a href="SignUp.dc.html" class="tk-link" style="color: var(--primary); font-weight: 500; text-decoration: underline;">Use a different email</a></p>
+    </div>
+  </main>
+
+  <aside class="su-brand" aria-label="Tikka">
+    <div style="display: flex; flex-direction: column; gap: 12px; max-width: 520px;">
+      <p style="margin: 0; font: 600 56px/64px var(--font-sans); letter-spacing: -0.02em; color: var(--text-primary);">Tikka</p>
+      <p style="margin: 0; font: 400 20px/28px var(--font-sans); color: var(--primary-subtle-text);">Plan, track and ship work with your team.</p>
+    </div>
+
+    <div aria-hidden="true" class="su-board">
+      <div class="su-col">
+        <div class="su-col-head"><span class="su-dot" style="background: var(--status-todo);"></span><span class="su-bar" style="width: 50%; background: var(--border-strong);"></span></div>
+        <div class="su-tile" style="height: 64px; background: var(--text-primary);"><span class="su-bar" style="width: 60%;"></span><span class="su-bar" style="width: 36%;"></span></div>
+        <div class="su-tile" style="height: 44px; background: var(--primary);"><span class="su-bar" style="width: 48%;"></span></div>
+      </div>
+      <div class="su-col">
+        <div class="su-col-head"><span class="su-dot" style="background: var(--status-progress);"></span><span class="su-bar" style="width: 50%; background: var(--border-strong);"></span></div>
+        <div class="su-tile" style="height: 72px; background: var(--status-progress);"><span class="su-bar" style="width: 56%;"></span><span class="su-bar" style="width: 30%;"></span></div>
+        <div class="su-tile" style="height: 44px; background: var(--primary);"><span class="su-bar" style="width: 42%;"></span></div>
+      </div>
+      <div class="su-col">
+        <div class="su-col-head"><span class="su-dot" style="background: var(--status-done);"></span><span class="su-bar" style="width: 50%; background: var(--border-strong);"></span></div>
+        <div class="su-tile" style="height: 56px; background: var(--status-done);"><span class="su-bar" style="width: 52%;"></span></div>
+        <div class="su-tile" style="height: 44px; background: var(--status-done);"><span class="su-bar" style="width: 64%;"></span><span class="su-bar" style="width: 30%;"></span></div>
+      </div>
+    </div>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Light","Dark"],"default":"Light","section":"Theme"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(...args) {
+    super(...args);
+    this.state = { resent: false };
+  }
+
+  renderVals() {
+    const s = this.state || {};
+    const theme = String(this.props.theme ?? 'Light').toLowerCase() === 'dark' ? 'dark' : 'light';
+    return {
+      theme: theme,
+      resent: !!s.resent,
+      resend: () => this.setState({ resent: true })
+    };
+  }
+}
+</script>
+</body>
+</html>

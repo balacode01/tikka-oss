@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Your work</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Montserrat:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+[data-theme]{--surface-page:#fafafa;--surface-raised:#ffffff;--surface-hover:#f4f4f5;--surface-selected:#eef2ff;--border:#e4e4e7;--border-strong:#8e8e96;--text-primary:#18181b;--text-secondary:#6b6b73;--primary:#4f46e5;--primary-hover:#4338ca;--on-primary:#ffffff;--primary-subtle-text:#3730a3;--status-todo:#71717a;--status-todo-bg:#f4f4f5;--status-todo-text:#3f3f46;--status-progress:#c2620a;--status-progress-bg:#fef3c7;--status-progress-text:#92400e;--status-done:#15963f;--status-done-bg:#dcfce7;--status-done-text:#166534;--danger:#dc2626;--on-danger:#ffffff;--danger-bg:#fee2e2;--danger-text:#991b1b;--type-epic:#7c3aed;--type-story:#15963f;--type-task:#2563eb;--type-bug:#dc2626;--type-subtask:#71717a;--font-sans:Montserrat,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;color-scheme:light}
+[data-theme="dark"]{--surface-page:#09090b;--surface-raised:#18181b;--surface-hover:#27272a;--surface-selected:#1e1b4b;--border:#27272a;--border-strong:#71717a;--text-primary:#fafafa;--text-secondary:#a1a1aa;--primary:#818cf8;--primary-hover:#a5b4fc;--on-primary:#1e1b4b;--primary-subtle-text:#c7d2fe;--status-todo:#a1a1aa;--status-todo-bg:#27272a;--status-todo-text:#d4d4d8;--status-progress:#f59e0b;--status-progress-bg:#422006;--status-progress-text:#fcd34d;--status-done:#4ade80;--status-done-bg:#052e16;--status-done-text:#86efac;--danger:#f87171;--on-danger:#450a0a;--danger-bg:#450a0a;--danger-text:#fca5a5;--type-epic:#a78bfa;--type-story:#4ade80;--type-task:#60a5fa;--type-bug:#f87171;--type-subtask:#a1a1aa;color-scheme:dark}
+[data-theme] *,[data-theme] *::before,[data-theme] *::after{box-sizing:border-box}
+a{color:var(--primary)}a:hover{color:var(--primary-hover)}
+.ic{display:block;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.tk-field:focus-within{outline:2px solid var(--primary);outline-offset:2px}
+.tk-field input:focus{outline:none}
+.tk-field input::placeholder{color:var(--text-secondary);opacity:1}
+.tk-field input::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none}
+.tk-hover:hover{background:var(--surface-hover)!important}
+.tk-side .tk-hover:hover{background:var(--primary-hover)!important}
+.tk-side :focus-visible{outline-color:var(--on-primary)}
+.tk-primary:hover{background:var(--primary-hover)!important;border-color:var(--primary-hover)!important}
+.tk-col-btn:hover{background:var(--surface-raised)!important;color:var(--text-primary)!important}
+.tk-crumb:hover{color:var(--primary-hover)!important;text-decoration:underline!important}
+.tk-stack>*+*{margin-left:-8px}
+.tk-card:hover{border-color:var(--border-strong)!important}
+.tk-card:has(.tk-card-link:focus-visible){outline:2px solid var(--primary);outline-offset:2px}
+.tk-card-link{color:inherit;text-decoration:none}
+.tk-card-link:hover{color:inherit}
+.tk-card-link:focus-visible{outline:none}
+.tk-card-link::after{content:"";position:absolute;inset:0;border-radius:8px}
+.tk-clamp2{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden}
+.tk-board{scrollbar-width:thin}
+.tk-rows>li+li{border-top:1px solid var(--border)}
+.tk-tab:hover{color:var(--text-primary)!important}
+.tk-text-link:hover{color:var(--primary-hover)!important;text-decoration:underline!important}
+</style>
+</helmet>
+
+<div data-theme="{{ theme }}" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: var(--surface-page); color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; line-height: 20px;">
+
+  <nav aria-label="Main" class="tk-side" style="flex: 1 1 240px; display: flex; flex-direction: column; background: var(--primary); color: var(--on-primary);">
+    <div style="height: 48px; display: flex; align-items: center; padding: 0 8px; border-bottom: 1px solid color-mix(in srgb, var(--on-primary) 24%, transparent);">
+      <button type="button" class="tk-hover" aria-haspopup="menu" style="flex: 1 1 auto; min-width: 0; height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--on-primary); font: 500 14px/20px var(--font-sans); text-align: left; cursor: pointer;">
+        <span aria-hidden="true" style="width: 24px; height: 24px; flex-shrink: 0; display: grid; place-items: center; border-radius: 6px; background: var(--on-primary); color: var(--primary); font: 500 12px/16px var(--font-sans);">LL</span>
+        <span style="flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">Lumen Labs</span>
+        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--on-primary);"><path d="m7 15 5 5 5-5"></path><path d="m7 9 5-5 5 5"></path></svg>
+      </button>
+    </div>
+
+    <div style="flex: 1 1 auto; display: flex; flex-direction: column; gap: 16px; padding: 12px 8px;">
+      <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column;">
+        <li>
+          <a href="#your-work" aria-current="page" style="height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 8px; border-radius: 6px; background: var(--on-primary); color: var(--primary); text-decoration: none; font: 500 14px/20px var(--font-sans);">
+            <svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            <span>Your work</span>
+          </a>
+        </li>
+        <li>
+          <a href="#notifications" class="tk-hover" style="height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 8px; border-radius: 6px; color: var(--on-primary); text-decoration: none; font: 400 13px/18px var(--font-sans);">
+            <svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--on-primary);"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+            <span style="flex: 1 1 auto;">Notifications</span>
+            <span style="min-width: 20px; height: 20px; padding: 0 6px; border-radius: 9999px; background: var(--on-primary); color: var(--primary); font: 500 12px/20px var(--font-sans); text-align: center; font-variant-numeric: tabular-nums;">3<span class="sr-only"> unread</span></span>
+          </a>
+        </li>
+      </ul>
+
+      <div style="display: flex; flex-direction: column; gap: 4px;">
+        <h2 style="margin: 0; padding: 0 8px; font: 500 12px/16px var(--font-sans); color: var(--on-primary);">Projects</h2>
+        <ul style="list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column;">
+          <li>
+            <button type="button" class="tk-hover" aria-expanded="false" style="width: 100%; height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--on-primary); font: 400 13px/18px var(--font-sans); text-align: left; cursor: pointer;">
+              <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--on-primary);"><path d="m9 18 6-6-6-6"></path></svg>
+              <span aria-hidden="true" style="width: 20px; height: 20px; flex-shrink: 0; display: grid; place-items: center; border-radius: 6px; background: var(--on-primary); color: var(--primary); font: 500 12px/16px var(--font-sans);">M</span>
+              <span>Mobile app</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="tk-hover" aria-expanded="false" style="width: 100%; height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--on-primary); font: 400 13px/18px var(--font-sans); text-align: left; cursor: pointer;">
+              <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--on-primary);"><path d="m9 18 6-6-6-6"></path></svg>
+              <span aria-hidden="true" style="width: 20px; height: 20px; flex-shrink: 0; display: grid; place-items: center; border-radius: 6px; background: var(--on-primary); color: var(--primary); font: 500 12px/16px var(--font-sans);">W</span>
+              <span>Web platform</span>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="tk-hover" aria-expanded="false" style="width: 100%; height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--on-primary); font: 400 13px/18px var(--font-sans); text-align: left; cursor: pointer;">
+              <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--on-primary);"><path d="m9 18 6-6-6-6"></path></svg>
+              <span aria-hidden="true" style="width: 20px; height: 20px; flex-shrink: 0; display: grid; place-items: center; border-radius: 6px; background: var(--on-primary); color: var(--primary); font: 500 12px/16px var(--font-sans);">D</span>
+              <span>Design system</span>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <ul style="list-style: none; margin: 0; padding: 8px; display: flex; flex-direction: column; border-top: 1px solid color-mix(in srgb, var(--on-primary) 24%, transparent);">
+      <li>
+        <button type="button" class="tk-hover" style="width: 100%; height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 8px; border: 0; border-radius: 6px; background: transparent; color: var(--on-primary); font: 400 13px/18px var(--font-sans); text-align: left; cursor: pointer;">
+          <svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--on-primary);"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><line x1="19" x2="19" y1="8" y2="14"></line><line x1="22" x2="16" y1="11" y2="11"></line></svg>
+          <span>Invite people</span>
+        </button>
+      </li>
+      <li>
+        <a href="#workspace-settings" class="tk-hover" style="height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 8px; border-radius: 6px; color: var(--on-primary); text-decoration: none; font: 400 13px/18px var(--font-sans);">
+          <svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--on-primary);"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+          <span>Workspace settings</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <div style="flex: 999 1 560px; min-width: 0; display: flex; flex-direction: column;">
+
+    <div style="background: var(--surface-selected); border-bottom: 1px solid var(--border);">
+    <header style="min-height: 48px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 4px 24px; border-bottom: 1px solid var(--border);">
+      <label class="tk-field" style="flex: 0 1 400px; min-width: 0; height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 6px 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-secondary); cursor: text;">
+        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+        <span class="sr-only">Search issues</span>
+        <input type="search" placeholder="Search issues" style="flex: 1 1 auto; min-width: 0; height: 100%; margin: 0; padding: 0; border: 0; background: transparent; color: var(--text-primary); font: 400 14px/20px var(--font-sans);">
+        <kbd style="flex-shrink: 0; height: 20px; padding: 0 6px; border: 1px solid var(--border); border-radius: 6px; background: var(--surface-page); color: var(--text-secondary); font: 400 12px/18px var(--font-sans);">Ctrl K</kbd>
+      </label>
+      <div style="flex: 1 1 0; min-width: 0;"></div>
+      <button type="button" class="tk-primary" style="height: 32px; display: flex; align-items: center; gap: 8px; padding: 0 12px; border: 1px solid var(--primary); border-radius: 6px; background: var(--primary); color: var(--on-primary); font: 500 14px/20px var(--font-sans); white-space: nowrap; cursor: pointer;">
+        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path><path d="M12 5v14"></path></svg>
+        <span>Create issue</span>
+      </button>
+      <button type="button" class="tk-hover" aria-label="Notifications, 3 unread" style="position: relative; width: 32px; height: 32px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--text-secondary); cursor: pointer;">
+        <svg class="ic" width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>
+        <span aria-hidden="true" style="position: absolute; top: 4px; right: 5px; width: 10px; height: 10px; border-radius: 9999px; border: 2px solid var(--surface-selected); background: var(--text-primary);"></span>
+      </button>
+      <button type="button" aria-haspopup="menu" aria-label="Your profile and settings, Priya R" title="Priya R" style="width: 32px; height: 32px; flex-shrink: 0; padding: 0; border: 0; border-radius: 9999px; background: var(--surface-selected); color: var(--primary-subtle-text); font: 500 12px/16px var(--font-sans); cursor: pointer;">PR</button>
+    </header>
+
+      <div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; padding: 20px 24px;">
+        <h1 style="margin: 0; font: 600 20px/28px var(--font-sans); letter-spacing: -0.01em; color: var(--text-primary);">Your work</h1>
+        <p style="margin: 0; font: 400 12px/16px var(--font-sans); color: var(--text-secondary);"><time datetime="2026-11-06">Friday, November 6, 2026</time></p>
+      </div>
+    </div>
+
+    <main style="flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 24px;">
+      <div style="display: flex; flex-wrap: wrap; align-items: flex-start; gap: 32px;">
+
+        <div style="flex: 999 1 480px; min-width: 0; display: flex; flex-direction: column; gap: 32px;">
+
+          <section aria-labelledby="assigned-heading" style="display: flex; flex-direction: column; gap: 8px;">
+            <h2 id="assigned-heading" style="margin: 0; font: 500 14px/20px var(--font-sans); color: var(--text-primary);">Assigned to you</h2>
+            <div role="tablist" aria-label="Assigned to you" style="display: flex; gap: 24px; border-bottom: 1px solid var(--border);">
+              <button type="button" role="tab" id="tab-open" aria-controls="panel-open" aria-selected="{{ openSelected }}" onClick="{{ showOpen }}" class="tk-tab" style="height: 40px; display: flex; align-items: center; gap: 8px; margin-bottom: -1px; padding: 0 2px; border: 0; border-bottom: 2px solid {{ openEdge }}; background: transparent; color: {{ openColor }}; font: 500 14px/20px var(--font-sans); cursor: pointer;">
+                <span>Open</span>
+                <span style="min-width: 20px; height: 20px; padding: 0 6px; border-radius: 9999px; background: var(--surface-hover); color: var(--text-secondary); font: 500 12px/20px var(--font-sans); text-align: center; font-variant-numeric: tabular-nums;">{{ openCount }}</span>
+              </button>
+              <button type="button" role="tab" id="tab-done" aria-controls="panel-done" aria-selected="{{ doneSelected }}" onClick="{{ showDone }}" class="tk-tab" style="height: 40px; display: flex; align-items: center; margin-bottom: -1px; padding: 0 2px; border: 0; border-bottom: 2px solid {{ doneEdge }}; background: transparent; color: {{ doneColor }}; font: 500 14px/20px var(--font-sans); cursor: pointer;">Done recently</button>
+            </div>
+
+            <section role="tabpanel" id="{{ panelId }}" aria-labelledby="{{ panelLabel }}">
+              <ul class="tk-rows" style="list-style: none; margin: 0; padding: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-raised);">
+                <sc-for list="{{ assigned }}" as="r" hint-placeholder-count="6">
+                  <li>
+                    <a href="{{ r.href }}" class="tk-hover" style="min-height: 40px; display: grid; grid-template-columns: 16px 64px minmax(0, 1fr) 104px 104px 16px 132px; align-items: center; gap: 12px; padding: 4px 12px; color: var(--text-primary); text-decoration: none;">
+                      <span style="display: flex;">
+                        <sc-if value="{{ r.isStory }}" hint-placeholder-val="{{ true }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Story" style="color: var(--type-story);"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg></sc-if>
+                        <sc-if value="{{ r.isTask }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Task" style="color: var(--type-task);"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="m9 12 2 2 4-4"></path></svg></sc-if>
+                        <sc-if value="{{ r.isBug }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Bug" style="color: var(--type-bug);"><path d="m8 2 1.88 1.88"></path><path d="M14.12 3.88 16 2"></path><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"></path><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"></path><path d="M12 20v-9"></path><path d="M6.53 9C4.6 8.8 3 7.1 3 5"></path><path d="M6 13H2"></path><path d="M3 21c0-2.1 1.7-3.9 3.8-4"></path><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"></path><path d="M22 13h-4"></path><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"></path></svg></sc-if>
+                        <sc-if value="{{ r.isSubtask }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Sub-task" style="color: var(--type-subtask);"><polyline points="15 10 20 15 15 20"></polyline><path d="M4 4v7a4 4 0 0 0 4 4h12"></path></svg></sc-if>
+                      </span>
+                      <span style="font: 500 12px/16px var(--font-mono); color: var(--text-secondary); white-space: nowrap;">{{ r.key }}</span>
+                      <span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 14px/20px var(--font-sans);">{{ r.title }}</span>
+                      <span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 12px/16px var(--font-sans); color: var(--text-secondary);">{{ r.project }}</span>
+                      <span style="display: flex;"><span style="height: 20px; display: inline-flex; align-items: center; gap: 4px; padding: 0 8px; border-radius: 9999px; background: {{ r.pillBg }}; color: {{ r.pillFg }}; font: 500 12px/16px var(--font-sans); white-space: nowrap;"><span aria-hidden="true" style="width: 6px; height: 6px; flex-shrink: 0; border-radius: 9999px; background: {{ r.pillDot }};"></span>{{ r.statusName }}</span></span>
+                      <span title="{{ r.priorityLabel }}" style="display: flex;">
+                        <sc-if value="{{ r.isUrgent }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Priority: Urgent" style="color: var(--danger);"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg></sc-if>
+                        <sc-if value="{{ r.isHigh }}" hint-placeholder-val="{{ true }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Priority: High" style="color: var(--text-secondary);"><path d="M2 20h.01"></path><path d="M7 20v-4"></path><path d="M12 20v-8"></path><path d="M17 20V8"></path></svg></sc-if>
+                        <sc-if value="{{ r.isMedium }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Priority: Medium" style="color: var(--text-secondary);"><path d="M2 20h.01"></path><path d="M7 20v-4"></path><path d="M12 20v-8"></path></svg></sc-if>
+                        <sc-if value="{{ r.isLow }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Priority: Low" style="color: var(--text-secondary);"><path d="M2 20h.01"></path><path d="M7 20v-4"></path></svg></sc-if>
+                      </span>
+                      <span style="display: flex; justify-content: flex-end;">
+                        <sc-if value="{{ r.isOverdue }}" hint-placeholder-val="{{ false }}">
+                          <span style="display: inline-flex; align-items: center; gap: 4px; font: 500 12px/16px var(--font-sans); color: var(--danger-text); white-space: nowrap;"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--danger);"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>Overdue · <time datetime="{{ r.dueIso }}">{{ r.due }}</time></span>
+                        </sc-if>
+                        <sc-if value="{{ r.isDueSoon }}" hint-placeholder-val="{{ true }}">
+                          <span style="font: 400 12px/16px var(--font-sans); color: var(--text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap;"><span class="sr-only">Due </span><time datetime="{{ r.dueIso }}">{{ r.due }}</time></span>
+                        </sc-if>
+                        <sc-if value="{{ r.noDue }}" hint-placeholder-val="{{ false }}">
+                          <span style="font: 400 12px/16px var(--font-sans); color: var(--text-secondary);">No due date</span>
+                        </sc-if>
+                        <sc-if value="{{ r.isDone }}" hint-placeholder-val="{{ false }}">
+                          <span style="font: 400 12px/16px var(--font-sans); color: var(--text-secondary); white-space: nowrap;">Done <time datetime="{{ r.dueIso }}">{{ r.due }}</time></span>
+                        </sc-if>
+                      </span>
+                    </a>
+                  </li>
+                </sc-for>
+              </ul>
+            </section>
+          </section>
+
+          <section aria-labelledby="projects-heading" style="display: flex; flex-direction: column; gap: 8px;">
+            <h2 id="projects-heading" style="margin: 0; font: 500 14px/20px var(--font-sans); color: var(--text-primary);">Your projects</h2>
+            <ul style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 16px;">
+              <sc-for list="{{ projects }}" as="c" hint-placeholder-count="3">
+                <li style="min-width: 0; display: flex; flex-direction: column; gap: 16px; padding: 16px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-raised);">
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <span aria-hidden="true" style="width: 32px; height: 32px; flex-shrink: 0; display: grid; place-items: center; border-radius: 6px; background: var(--surface-selected); color: var(--primary-subtle-text); font: 500 14px/20px var(--font-sans);">{{ c.initial }}</span>
+                    <div style="min-width: 0; display: flex; flex-direction: column;">
+                      <h3 style="margin: 0; font: 500 14px/20px var(--font-sans); color: var(--text-primary);">{{ c.name }}</h3>
+                      <p style="margin: 0; display: flex; align-items: center; gap: 4px; font: 400 12px/16px var(--font-sans); color: var(--text-secondary);"><span style="font: 500 12px/16px var(--font-mono);">{{ c.key }}</span><span aria-hidden="true">·</span><span>{{ c.method }}</span></p>
+                    </div>
+                  </div>
+                  <sc-if value="{{ c.isScrum }}" hint-placeholder-val="{{ true }}">
+                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 8px; font: 400 12px/16px var(--font-sans); color: var(--text-secondary); font-variant-numeric: tabular-nums;">
+                        <span><span style="font-weight: 500; color: var(--text-primary);">{{ c.sprint }}</span> · {{ c.daysLeft }}</span>
+                        <span>{{ c.pointsLabel }}</span>
+                      </div>
+                      <div aria-hidden="true" style="height: 6px; overflow: hidden; border-radius: 9999px; background: var(--border);"><div style="width: {{ c.pct }}; height: 100%; border-radius: 9999px; background: var(--status-done);"></div></div>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ c.isKanban }}" hint-placeholder-val="{{ false }}">
+                    <p style="margin: 0; font: 400 12px/16px var(--font-sans); color: var(--text-secondary); font-variant-numeric: tabular-nums;">{{ c.kanbanNote }}</p>
+                  </sc-if>
+                  <div style="margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 8px;">
+                    <ul class="tk-stack" aria-label="{{ c.membersLabel }}" style="list-style: none; margin: 0; padding: 0; display: flex; align-items: center;">
+                      <sc-for list="{{ c.members }}" as="m" hint-placeholder-count="3">
+                        <li title="{{ m.name }}" style="width: 28px; height: 28px; display: grid; place-items: center; border: 2px solid var(--surface-raised); border-radius: 9999px; background: var(--surface-selected); color: var(--primary-subtle-text); font: 500 12px/16px var(--font-sans);"><span aria-hidden="true">{{ m.initials }}</span><span class="sr-only">{{ m.name }}</span></li>
+                      </sc-for>
+                      <sc-if value="{{ c.hasMore }}" hint-placeholder-val="{{ false }}">
+                        <li title="{{ c.moreTitle }}" style="height: 28px; min-width: 28px; display: grid; place-items: center; padding: 0 6px; border: 2px solid var(--surface-raised); border-radius: 9999px; background: var(--surface-hover); color: var(--text-secondary); font: 500 12px/16px var(--font-sans);">{{ c.more }}</li>
+                      </sc-if>
+                    </ul>
+                    <a href="{{ c.href }}" class="tk-text-link" aria-label="{{ c.openLabel }}" style="display: inline-flex; align-items: center; gap: 4px; color: var(--primary); text-decoration: none; font: 500 14px/20px var(--font-sans);">Open board<svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg></a>
+                  </div>
+                </li>
+              </sc-for>
+            </ul>
+          </section>
+
+          <section aria-labelledby="recent-heading" style="display: flex; flex-direction: column; gap: 8px;">
+            <h2 id="recent-heading" style="margin: 0; font: 500 14px/20px var(--font-sans); color: var(--text-primary);">Recently viewed</h2>
+            <ul class="tk-rows" style="list-style: none; margin: 0; padding: 0; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-raised);">
+              <sc-for list="{{ recent }}" as="r" hint-placeholder-count="4">
+                <li>
+                  <a href="{{ r.href }}" class="tk-hover" style="min-height: 36px; display: grid; grid-template-columns: 16px 64px minmax(0, 1fr) 104px 88px; align-items: center; gap: 12px; padding: 4px 12px; color: var(--text-primary); text-decoration: none;">
+                    <span style="display: flex;">
+                      <sc-if value="{{ r.isStory }}" hint-placeholder-val="{{ true }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Story" style="color: var(--type-story);"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg></sc-if>
+                      <sc-if value="{{ r.isTask }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Task" style="color: var(--type-task);"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="m9 12 2 2 4-4"></path></svg></sc-if>
+                      <sc-if value="{{ r.isBug }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Bug" style="color: var(--type-bug);"><path d="m8 2 1.88 1.88"></path><path d="M14.12 3.88 16 2"></path><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"></path><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"></path><path d="M12 20v-9"></path><path d="M6.53 9C4.6 8.8 3 7.1 3 5"></path><path d="M6 13H2"></path><path d="M3 21c0-2.1 1.7-3.9 3.8-4"></path><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"></path><path d="M22 13h-4"></path><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"></path></svg></sc-if>
+                      <sc-if value="{{ r.isSubtask }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Sub-task" style="color: var(--type-subtask);"><polyline points="15 10 20 15 15 20"></polyline><path d="M4 4v7a4 4 0 0 0 4 4h12"></path></svg></sc-if>
+                    </span>
+                    <span style="font: 500 12px/16px var(--font-mono); color: var(--text-secondary); white-space: nowrap;">{{ r.key }}</span>
+                    <span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 14px/20px var(--font-sans);">{{ r.title }}</span>
+                    <span style="min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 12px/16px var(--font-sans); color: var(--text-secondary);">{{ r.project }}</span>
+                    <span style="text-align: right; font: 400 12px/16px var(--font-sans); color: var(--text-secondary); white-space: nowrap;">{{ r.viewed }}</span>
+                  </a>
+                </li>
+              </sc-for>
+            </ul>
+          </section>
+        </div>
+
+        <div style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 24px;">
+
+          <section aria-labelledby="due-heading" style="display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-raised);">
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; border-bottom: 1px solid var(--border);">
+              <h2 id="due-heading" style="margin: 0; font: 500 14px/20px var(--font-sans); color: var(--text-primary);">Due this week</h2>
+              <span style="font: 400 12px/16px var(--font-sans); color: var(--text-secondary); font-variant-numeric: tabular-nums;">Nov 6 – Nov 13</span>
+            </div>
+            <ul class="tk-rows" style="list-style: none; margin: 0; padding: 0;">
+              <sc-for list="{{ dueSoon }}" as="d" hint-placeholder-count="4">
+                <li>
+                  <a href="{{ d.href }}" class="tk-hover" style="display: grid; grid-template-columns: 16px minmax(0, 1fr) auto; align-items: start; gap: 4px 12px; padding: 10px 16px; color: var(--text-primary); text-decoration: none;">
+                    <span style="display: flex; padding-top: 2px;">
+                      <sc-if value="{{ d.isStory }}" hint-placeholder-val="{{ true }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Story" style="color: var(--type-story);"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"></path></svg></sc-if>
+                      <sc-if value="{{ d.isTask }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Task" style="color: var(--type-task);"><rect width="18" height="18" x="3" y="3" rx="2"></rect><path d="m9 12 2 2 4-4"></path></svg></sc-if>
+                      <sc-if value="{{ d.isBug }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Bug" style="color: var(--type-bug);"><path d="m8 2 1.88 1.88"></path><path d="M14.12 3.88 16 2"></path><path d="M9 7.13v-1a3.003 3.003 0 1 1 6 0v1"></path><path d="M12 20c-3.3 0-6-2.7-6-6v-3a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v3c0 3.3-2.7 6-6 6"></path><path d="M12 20v-9"></path><path d="M6.53 9C4.6 8.8 3 7.1 3 5"></path><path d="M6 13H2"></path><path d="M3 21c0-2.1 1.7-3.9 3.8-4"></path><path d="M20.97 5c0 2.1-1.6 3.8-3.5 4"></path><path d="M22 13h-4"></path><path d="M17.2 17c2.1.1 3.8 1.9 3.8 4"></path></svg></sc-if>
+                      <sc-if value="{{ d.isSubtask }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" role="img" aria-label="Sub-task" style="color: var(--type-subtask);"><polyline points="15 10 20 15 15 20"></polyline><path d="M4 4v7a4 4 0 0 0 4 4h12"></path></svg></sc-if>
+                    </span>
+                    <span style="min-width: 0; display: flex; flex-direction: column;">
+                      <span style="font: 500 12px/16px var(--font-mono); color: var(--text-secondary);">{{ d.key }}</span>
+                      <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: 400 14px/20px var(--font-sans);">{{ d.title }}</span>
+                    </span>
+                    <span style="font: 400 12px/16px var(--font-sans); color: var(--text-secondary); font-variant-numeric: tabular-nums; white-space: nowrap;"><time datetime="{{ d.dueIso }}">{{ d.dueLong }}</time></span>
+                  </a>
+                </li>
+              </sc-for>
+            </ul>
+          </section>
+
+          <section aria-labelledby="activity-heading" style="display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-raised);">
+            <h2 id="activity-heading" style="margin: 0; padding: 12px 16px; border-bottom: 1px solid var(--border); font: 500 14px/20px var(--font-sans); color: var(--text-primary);">Activity</h2>
+            <ol style="list-style: none; margin: 0; padding: 12px 16px 16px; display: flex; flex-direction: column; gap: 16px; font: 400 14px/20px var(--font-sans); color: var(--text-primary);">
+              <li style="display: flex; align-items: flex-start; gap: 12px;">
+                <span aria-hidden="true" style="width: 24px; height: 24px; flex-shrink: 0; display: grid; place-items: center; border-radius: 9999px; background: var(--surface-selected); color: var(--primary-subtle-text); font: 500 12px/16px var(--font-sans);">SM</span>
+                <p style="margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px;"><span style="font-weight: 500;">Sara M</span> moved <span style="font: 500 12px/16px var(--font-mono); color: var(--text-secondary);">MOB-144</span> to <span style="height: 20px; display: inline-flex; align-items: center; gap: 4px; padding: 0 8px; border-radius: 9999px; background: var(--status-progress-bg); color: var(--status-progress-text); font: 500 12px/16px var(--font-sans);"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 9999px; background: var(--status-progress);"></span>In review</span><span style="font: 400 12px/16px var(--font-sans); color: var(--text-secondary);">· 3 h ago</span></p>
+              </li>
+              <li style="display: flex; align-items: flex-start; gap: 12px;">
+                <span aria-hidden="true" style="width: 24px; height: 24px; flex-shrink: 0; display: grid; place-items: center; border-radius: 9999px; background: var(--surface-selected); color: var(--primary-subtle-text); font: 500 12px/16px var(--font-sans);">AK</span>
+                <p style="margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px;"><span style="font-weight: 500;">Arjun K</span> commented on <span style="font: 500 12px/16px var(--font-mono); color: var(--text-secondary);">MOB-142</span><span style="font: 400 12px/16px var(--font-sans); color: var(--text-secondary);">· 3 h ago</span></p>
+              </li>
+              <li style="display: flex; align-items: flex-start; gap: 12px;">
+                <span aria-hidden="true" style="width: 24px; height: 24px; flex-shrink: 0; display: grid; place-items: center; border-radius: 9999px; background: var(--surface-selected); color: var(--primary-subtle-text); font: 500 12px/16px var(--font-sans);">DN</span>
+                <p style="margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px;"><span style="font-weight: 500;">Divya N</span> assigned <span style="font: 500 12px/16px var(--font-mono); color: var(--text-secondary);">WEB-91</span> to you<span style="font: 400 12px/16px var(--font-sans); color: var(--text-secondary);">· 5 h ago</span></p>
+              </li>
+              <li style="display: flex; align-items: flex-start; gap: 12px;">
+                <span aria-hidden="true" style="width: 24px; height: 24px; flex-shrink: 0; display: grid; place-items: center; border-radius: 9999px; background: var(--surface-selected); color: var(--primary-subtle-text); font: 500 12px/16px var(--font-sans);">DK</span>
+                <p style="margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px;"><span style="font-weight: 500;">Daniel K</span> moved <span style="font: 500 12px/16px var(--font-mono); color: var(--text-secondary);">MOB-146</span> to <span style="height: 20px; display: inline-flex; align-items: center; gap: 4px; padding: 0 8px; border-radius: 9999px; background: var(--status-progress-bg); color: var(--status-progress-text); font: 500 12px/16px var(--font-sans);"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 9999px; background: var(--status-progress);"></span>In review</span><span style="font: 400 12px/16px var(--font-sans); color: var(--text-secondary);">· Yesterday</span></p>
+              </li>
+              <li style="display: flex; align-items: flex-start; gap: 12px;">
+                <span aria-hidden="true" style="width: 24px; height: 24px; flex-shrink: 0; display: grid; place-items: center; border-radius: 9999px; background: var(--surface-selected); color: var(--primary-subtle-text); font: 500 12px/16px var(--font-sans);">MT</span>
+                <p style="margin: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 4px;"><span style="font-weight: 500;">Mei T</span> moved <span style="font: 500 12px/16px var(--font-mono); color: var(--text-secondary);">DS-18</span> to <span style="height: 20px; display: inline-flex; align-items: center; gap: 4px; padding: 0 8px; border-radius: 9999px; background: var(--status-done-bg); color: var(--status-done-text); font: 500 12px/16px var(--font-sans);"><span aria-hidden="true" style="width: 6px; height: 6px; border-radius: 9999px; background: var(--status-done);"></span>Done</span><span style="font: 400 12px/16px var(--font-sans); color: var(--text-secondary);">· Yesterday</span></p>
+              </li>
+            </ol>
+          </section>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Light","Dark"],"default":"Light","section":"Theme"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(...args) {
+    super(...args);
+    this.state = { tab: 'open' };
+  }
+
+  renderVals() {
+    const s = this.state || {};
+    const theme = String(this.props.theme ?? 'Light').toLowerCase() === 'dark' ? 'dark' : 'light';
+    const tab = s.tab || 'open';
+
+    const statuses = {
+      todo: { name: 'To do', bg: 'var(--status-todo-bg)', fg: 'var(--status-todo-text)', dot: 'var(--status-todo)' },
+      progress: { name: 'In progress', bg: 'var(--status-progress-bg)', fg: 'var(--status-progress-text)', dot: 'var(--status-progress)' },
+      review: { name: 'In review', bg: 'var(--status-progress-bg)', fg: 'var(--status-progress-text)', dot: 'var(--status-progress)' },
+      done: { name: 'Done', bg: 'var(--status-done-bg)', fg: 'var(--status-done-text)', dot: 'var(--status-done)' }
+    };
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const fmt = (iso) => { const d = new Date(iso + 'T12:00:00'); return months[d.getMonth()] + ' ' + d.getDate(); };
+    const fmtLong = (iso) => { const d = new Date(iso + 'T12:00:00'); return days[d.getDay()] + ', ' + months[d.getMonth()] + ' ' + d.getDate(); };
+    const today = '2026-11-06';
+
+    const open = [
+      { key: 'WEB-88', title: 'Reset 2FA from account settings', type: 'Story', project: 'Web platform', status: 'todo', priority: 'High', due: '2026-11-04' },
+      { key: 'MOB-147', title: 'Build the new password screen', type: 'Sub-task', project: 'Mobile app', status: 'progress', priority: 'Medium', due: '2026-11-09' },
+      { key: 'DS-21', title: 'Document the button component', type: 'Task', project: 'Design system', status: 'review', priority: 'Low', due: '2026-11-11' },
+      { key: 'MOB-142', title: 'Add password reset flow', type: 'Story', project: 'Mobile app', status: 'progress', priority: 'High', due: '2026-11-12', href: 'IssueDetail.dc.html' },
+      { key: 'MOB-170', title: 'Show password strength while typing', type: 'Task', project: 'Mobile app', status: 'todo', priority: 'Medium', due: '2026-11-13' },
+      { key: 'WEB-91', title: 'Export the audit log as CSV', type: 'Story', project: 'Web platform', status: 'todo', priority: 'Medium', due: null }
+    ];
+    const doneRecently = [
+      { key: 'MOB-141', title: 'Add analytics events to each onboarding step', type: 'Task', project: 'Mobile app', status: 'done', priority: 'Low', done: '2026-11-05' },
+      { key: 'DS-18', title: 'Add a focus ring to icon buttons', type: 'Task', project: 'Design system', status: 'done', priority: 'Medium', done: '2026-11-05' },
+      { key: 'WEB-80', title: 'Fix the broken link in the footer', type: 'Bug', project: 'Web platform', status: 'done', priority: 'Low', done: '2026-11-03' }
+    ];
+
+    const typeFlags = (t) => ({ isStory: t === 'Story', isTask: t === 'Task', isBug: t === 'Bug', isSubtask: t === 'Sub-task' });
+    const toRow = (i) => {
+      const st = statuses[i.status];
+      const isDone = i.status === 'done';
+      const overdue = !isDone && !!i.due && i.due < today;
+      return Object.assign(typeFlags(i.type), {
+        key: i.key,
+        title: i.title,
+        href: i.href || '#' + i.key.toLowerCase(),
+        project: i.project,
+        statusName: st.name, pillBg: st.bg, pillFg: st.fg, pillDot: st.dot,
+        priorityLabel: 'Priority: ' + i.priority,
+        isUrgent: i.priority === 'Urgent', isHigh: i.priority === 'High', isMedium: i.priority === 'Medium', isLow: i.priority === 'Low',
+        isDone: isDone,
+        isOverdue: overdue,
+        isDueSoon: !isDone && !!i.due && !overdue,
+        noDue: !isDone && !i.due,
+        due: isDone ? fmt(i.done) : (i.due ? fmt(i.due) : ''),
+        dueIso: isDone ? i.done : (i.due || '')
+      });
+    };
+
+    const dueSoon = open.filter((i) => i.due && i.due >= today && i.due <= '2026-11-13').map((i) => Object.assign(typeFlags(i.type), {
+      key: i.key, title: i.title, href: i.href || '#' + i.key.toLowerCase(), dueIso: i.due, dueLong: fmtLong(i.due)
+    }));
+
+    const recent = [
+      { key: 'MOB-142', title: 'Add password reset flow', type: 'Story', project: 'Mobile app', viewed: '10 min ago', href: 'IssueDetail.dc.html' },
+      { key: 'MOB-146', title: "Cart total doesn't refresh after removing an item", type: 'Bug', project: 'Mobile app', viewed: '1 h ago' },
+      { key: 'WEB-88', title: 'Reset 2FA from account settings', type: 'Story', project: 'Web platform', viewed: '2 h ago' },
+      { key: 'DS-14', title: 'Add a date picker component', type: 'Story', project: 'Design system', viewed: 'Yesterday' }
+    ].map((i) => Object.assign(typeFlags(i.type), { key: i.key, title: i.title, project: i.project, viewed: i.viewed, href: i.href || '#' + i.key.toLowerCase() }));
+
+    const people = { PR: 'Priya R', AK: 'Arjun K', SL: 'Sofia L', DK: 'Daniel K', DN: 'Divya N', SM: 'Sara M', MT: 'Mei T' };
+    const projects = [
+      { name: 'Mobile app', key: 'MOB', initial: 'M', method: 'Scrum', sprint: 'Sprint 14', daysLeft: '8 days left', done: 8, total: 41, members: ['PR', 'AK', 'SL', 'DK'], more: 2, href: 'Indigo-sidebar.dc.html' },
+      { name: 'Web platform', key: 'WEB', initial: 'W', method: 'Scrum', sprint: 'Sprint 14', daysLeft: '8 days left', done: 14, total: 30, members: ['DN', 'PR', 'SM'], more: 0, href: '#web-platform' },
+      { name: 'Design system', key: 'DS', initial: 'D', method: 'Kanban', kanbanNote: '12 open issues · 3 in review', members: ['MT', 'PR', 'SM'], more: 0, href: '#design-system' }
+    ].map((c) => ({
+      name: c.name, key: c.key, initial: c.initial, method: c.method,
+      isScrum: c.method === 'Scrum', isKanban: c.method === 'Kanban',
+      sprint: c.sprint || '', daysLeft: c.daysLeft || '',
+      pointsLabel: c.total ? c.done + ' of ' + c.total + ' points done' : '',
+      pct: c.total ? Math.round((c.done / c.total) * 100) + '%' : '0%',
+      kanbanNote: c.kanbanNote || '',
+      members: c.members.map((m) => ({ initials: m, name: people[m] })),
+      membersLabel: (c.members.length + c.more) + ' members',
+      hasMore: c.more > 0,
+      more: '+' + c.more,
+      moreTitle: c.more + ' more members',
+      href: c.href,
+      openLabel: 'Open ' + c.name + ' board'
+    }));
+
+    const isOpen = tab === 'open';
+    return {
+      theme: theme,
+      openCount: open.length,
+      openSelected: isOpen ? 'true' : 'false',
+      doneSelected: isOpen ? 'false' : 'true',
+      openEdge: isOpen ? 'var(--primary)' : 'transparent',
+      doneEdge: isOpen ? 'transparent' : 'var(--primary)',
+      openColor: isOpen ? 'var(--text-primary)' : 'var(--text-secondary)',
+      doneColor: isOpen ? 'var(--text-secondary)' : 'var(--text-primary)',
+      showOpen: () => this.setState({ tab: 'open' }),
+      showDone: () => this.setState({ tab: 'done' }),
+      panelId: isOpen ? 'panel-open' : 'panel-done',
+      panelLabel: isOpen ? 'tab-open' : 'tab-done',
+      assigned: (isOpen ? open : doneRecently).map(toRow),
+      projects: projects,
+      recent: recent,
+      dueSoon: dueSoon
+    };
+  }
+}
+</script>
+</body>
+</html>
