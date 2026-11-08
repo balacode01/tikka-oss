@@ -81,17 +81,19 @@
 - None for M3.
 - None for M1.
 
-## M5 Board and Create issue (branch `feature/m5-board-create-issue`)
+## M5 Board and Create issue (PR #7)
 
-- [x] Board columns come from the project's statuses. Cards show the key, type icon, two-line title, priority icon, points, sub-task and comment counts, and the assignee's initials.
-- [x] Drag between columns and reorder within a column with dnd-kit. Calls `move_issue` with the neighbours. The card moves at once and rolls back on error.
-- [x] Create issue dialog (Base UI) with type, title, priority, assignee, points, and "Create another". Keyboard shortcut C.
-- [x] `npm run typecheck`, `npm run lint`, `npm run build` pass.
-- [ ] Browser check: a dragged card stays put after reload, and a new issue gets the next key. The user runs this.
-- [ ] PR into `dev` reported and merged after review.
+- [x] Board: sprint header with dates, goal, progress and Complete sprint; filter bar; status-pill columns; cards per the design.
+- [x] Drag between and within columns with dnd-kit, via move_issue. Optimistic, rolls back on error.
+- [x] Create dialog: type menu with descriptions, description toolbar, attachments, Ctrl+Enter, Create another, C shortcut.
+- [x] Side panel: status menu, Watch, Share, details, description, attachments, sub-tasks, linked issues, activity.
+- [x] Attachments: private bucket issue-attachments, migration 20261108123901 applied; policies verified on the Tikka project.
+- [x] typecheck, lint, build pass.
+- [ ] Browser check of drag and reload (user). Create was confirmed working.
+- [ ] Merge PR #7 into dev (after the browser check).
 
 ## Next
 
-- Browser check of M5 (drag, reload, create).
-- M4 seed on the Tikka project (needs the owner's user id).
-- M6 Issue detail and search (`feature/m6-issue-search`).
+- M5: browser check of drag and reload, then merge PR #7.
+- M4 seed on the Tikka project (needs the owner user id).
+- M6 quick search (Ctrl+K), then M7 and M8.
