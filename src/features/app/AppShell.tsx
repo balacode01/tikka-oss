@@ -127,10 +127,13 @@ export function AppShell() {
                       <Layers className="size-4" aria-hidden="true" />
                       Backlog
                     </NavLink>
-                    <button type="button" onClick={() => toast('List view is not part of the MVP')} className={navBase}>
+                    <NavLink
+                      to={`/w/${activeSlug}/p/${p.key}/list`}
+                      className={({ isActive }) => `${navBase} ${isActive ? navActive : ''}`}
+                    >
                       <List className="size-4" aria-hidden="true" />
                       List
-                    </button>
+                    </NavLink>
                   </div>
                 )}
               </div>

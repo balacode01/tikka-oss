@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from 'react-router'
 import { AppShell } from '../features/app/AppShell'
 import { ComingSoon } from '../features/app/ComingSoon'
 import { BacklogPage } from '../features/backlog/BacklogPage'
+import { ListPage } from '../features/list/ListPage'
 import { AcceptInvitePage } from '../features/invites/AcceptInvitePage'
 import { BoardPage } from '../features/board/BoardPage'
 import { CreateProjectPage } from '../features/projects/CreateProjectPage'
@@ -38,6 +39,7 @@ export const router = createBrowserRouter([
       { path: '/home', element: <HomePage /> },
       { path: '/w/:workspace/p/:key/board', element: <BoardPage /> },
       { path: '/w/:workspace/p/:key/backlog', element: <BacklogPage /> },
+      { path: '/w/:workspace/p/:key/list', element: <ListPage /> },
       {
         path: '/w/:workspace/p/:key/issues/:issueKey',
         element: <ComingSoon title="Issue" milestone="M6" />,

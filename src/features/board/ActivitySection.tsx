@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
+import { relativeTime } from '../../lib/relativeTime'
 import type { BoardMember, BoardStatus, ProjectOption } from './useBoard'
 import type { useIssueExtras } from './useIssueExtras'
 
@@ -32,18 +33,6 @@ function initials(name: string) {
 }
 
 // "3 hours ago", "Yesterday", or a date for anything older.
-function relativeTime(iso: string, now = new Date()) {
-  const diffMs = now.getTime() - new Date(iso).getTime()
-  const minutes = Math.round(diffMs / 60000)
-  if (minutes < 1) return 'Just now'
-  if (minutes < 60) return `${minutes} min ago`
-  const hours = Math.round(minutes / 60)
-  if (hours < 24) return `${hours} ${hours === 1 ? 'hour' : 'hours'} ago`
-  const days = Math.round(hours / 24)
-  if (days === 1) return 'Yesterday'
-  if (days < 7) return `${days} days ago`
-  return new Date(iso).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
-}
 
 // Activity tabs: comments (anyone who can see the issue can add one) and history.
 export function ActivitySection({ currentUserId, members, statuses, sprints, extras }: Props) {
