@@ -9,6 +9,7 @@ import { readThemePreference, applyTheme, saveThemePreference, type ThemePrefere
 import { useWorkspaceProjects } from './useWorkspaceProjects'
 import { QuickSearch } from '../search/QuickSearch'
 import { InviteDialog } from '../invites/InviteDialog'
+import { GlobalCreateIssue } from '../board/GlobalCreateIssue'
 import { useMyWorkspaceRole } from '../invites/useInvites'
 
 // Sidebar and top bar follow the "Board" artboard in the design canvas (indigo sidebar).
@@ -43,6 +44,7 @@ export function AppShell() {
   const [theme, setTheme] = useState<ThemePreference>(() => readThemePreference())
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
   const [searchOpen, setSearchOpen] = useState(false)
+  const [createOpen, setCreateOpen] = useState(false)
   const [inviteOpen, setInviteOpen] = useState(false)
   const myRole = useMyWorkspaceRole(data?.workspace?.id).data
 
@@ -168,7 +170,7 @@ export function AppShell() {
           <div className="ml-auto flex items-center gap-3">
             <button
               type="button"
-              onClick={() => toast('Create is available on the Board')}
+              onClick={() => (data?.projects.length ? setCreateOpen(true) : toast('Create a project first'))}
               className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-sm bg-primary px-3 text-sm font-medium text-on-primary hover:bg-primary-hover"
             >
               + Create
@@ -215,6 +217,14 @@ export function AppShell() {
             workspaceId={data.workspace.id}
             myRole={myRole}
             projects={data.projects}
+          />
+        )}
+        {createOpen && data?.workspace && data.projects.length > 0 && (
+          <GlobalCreateIssue
+            workspaceSlug={data.workspace.slug}
+            projects={data.projects}
+            initialProjectKey={key || data.projects[0].key}
+            onClose={() => setCreateOpen(false)}
           />
         )}
         <QuickSearch

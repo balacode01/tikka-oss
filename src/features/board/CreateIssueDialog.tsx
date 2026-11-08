@@ -23,6 +23,9 @@ type Props = {
   epics: ProjectOption[]
   todoStatusId?: string
   defaultStatusId?: string
+  // Optional project picker, used when the dialog is opened from outside a board (top bar).
+  projects?: { key: string; name: string }[]
+  onProjectChange?: (key: string) => void
 }
 
 // Issue types with the icon, colour and description from the "Create issue" artboard.
@@ -55,6 +58,8 @@ export function CreateIssueDialog({
   epics,
   todoStatusId,
   defaultStatusId,
+  projects,
+  onProjectChange,
 }: Props) {
   const queryClient = useQueryClient()
   const descriptionRef = useRef<HTMLTextAreaElement>(null)
@@ -182,6 +187,17 @@ export function CreateIssueDialog({
             }}
             className="flex min-h-0 flex-1 flex-col gap-5 overflow-y-auto px-6 pb-2"
           >
+            {projects && onProjectChange && (
+              <label className={labelClass}>
+                Project
+                <Select value={projectKey} onChange={(e) => onProjectChange(e.target.value)}>
+                  {projects.map((p) => (
+                    <option key={p.key} value={p.key}>{p.name}</option>
+                  ))}
+                </Select>
+              </label>
+            )}
+
             <div className={labelClass}>
               <span>Issue type</span>
               <div className="relative">
