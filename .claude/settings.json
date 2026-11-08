@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)", "Bash(gh *)", "Bash(npm *)", "Bash(npx *)",
+      "Bash(npx supabase *)", "Bash(npx vercel *)", "Bash(psql *)", "Bash(node *)"
+    ],
+    "deny": [
+      "Bash(npx supabase db reset*)",
+      "Bash(npx supabase projects delete*)",
+      "Bash(gh repo delete*)",
+      "Bash(npx vercel remove*)",
+      "Bash(git push --force*)",
+      "Bash(git push -f*)",
+      "Bash(rm -rf*)"
+    ]
+  }
+}
