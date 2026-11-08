@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Check, Plus } from 'lucide-react'
 import { useState } from 'react'
-import { Link, Navigate } from 'react-router'
+import { Link } from 'react-router'
 import { supabase } from '../../lib/supabase'
 
 type HomeIssue = { id: string; key: string; title: string; due_date: string | null; status: string }
@@ -67,7 +67,7 @@ export function HomePage() {
   })
 
   if (workspaces.isPending) return <p className="text-sm text-text-secondary">Loading your work</p>
-  if (!workspace) return <Navigate to="/onboarding" replace />
+  if (!workspace) return <NoWorkspace />
 
   const data = home.data
   const noProjects = data && data.projects.length === 0
@@ -213,6 +213,20 @@ function IssueRow({ issue }: { issue: HomeIssue }) {
 
 function formatDay(value: string) {
   return new Date(value).toLocaleDateString(undefined, { day: 'numeric', month: 'short' })
+}
+
+// Shown when the user has no workspace yet, for example after skipping onboarding. They can wait for
+// an invite or create their own workspace.
+function NoWorkspace() {
+  return (
+    <section className="mx-auto flex w-full max-w-md flex-col items-center gap-4 rounded-md border border-border bg-surface-raised p-8 text-center">
+      <h1 className="font-semibold text-xl">You&rsquo;re not in a workspace yet</h1>
+      <p className="text-sm text-text-secondary">Ask your team for an invite, or create a workspace of your own.</p>
+      <Link to="/onboarding" className="flex h-8 items-center rounded-sm bg-primary px-3 text-sm font-medium text-on-primary hover:bg-primary-hover">
+        Create workspace
+      </Link>
+    </section>
+  )
 }
 
 // Welcome checklist for a new workspace with no projects yet. The first step is already done.

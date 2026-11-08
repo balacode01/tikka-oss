@@ -111,6 +111,9 @@ export function CreateWorkspacePage() {
             <Button variant="primary" type="submit" disabled={pending}>
               {pending ? 'Creating workspace' : 'Continue'}
             </Button>
+            <Button type="button" onClick={() => navigate('/home', { replace: true })}>
+              Skip for now
+            </Button>
           </form>
         )}
 
