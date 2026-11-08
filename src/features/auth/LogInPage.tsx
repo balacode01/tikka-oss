@@ -1,5 +1,6 @@
 import { useState, type FormEvent } from 'react'
-import { Link, useNavigate } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router'
+import { safeNext } from './safeNext'
 import { Button } from '../../components/Button'
 import { Field } from '../../components/Field'
 import { supabase } from '../../lib/supabase'
@@ -8,6 +9,7 @@ import { authErrorMessage, EMAIL_PATTERN } from './authErrors'
 
 export function LogInPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [submitted, setSubmitted] = useState(false)
@@ -31,7 +33,7 @@ export function LogInPage() {
       setServerError(authErrorMessage(error.message))
       return
     }
-    navigate('/home', { replace: true })
+    navigate(safeNext(searchParams.get('next'), '/home'), { replace: true })
   }
 
   return (
