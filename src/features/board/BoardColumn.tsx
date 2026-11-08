@@ -14,10 +14,11 @@ type Props = {
   issues: BoardIssue[]
   members: Map<string, BoardMember>
   subtaskCounts: Map<string, number>
+  onOpen: (issueId: string) => void
 }
 
 // A column is a drop target, and its cards are sortable inside it.
-export function BoardColumn({ status, issues, members, subtaskCounts }: Props) {
+export function BoardColumn({ status, issues, members, subtaskCounts, onOpen }: Props) {
   const { setNodeRef, isOver } = useDroppable({ id: `column:${status.id}`, data: { statusId: status.id } })
 
   return (
@@ -45,6 +46,7 @@ export function BoardColumn({ status, issues, members, subtaskCounts }: Props) {
               issue={issue}
               assignee={issue.assignee_id ? members.get(issue.assignee_id) : undefined}
               subtasks={subtaskCounts.get(issue.id) ?? 0}
+              onOpen={onOpen}
             />
           ))}
         </SortableContext>

@@ -7,6 +7,8 @@ import { arrayMove } from '@dnd-kit/sortable'
 import { BoardColumn } from './BoardColumn'
 import { CardBody } from './IssueCard'
 import { CreateIssueDialog } from './CreateIssueDialog'
+import { IssuePanel } from './IssuePanel'
+import { useSession } from '../../app/session-context'
 import { useBoard, useMoveIssue, useProjectSprints, useWorkspaceMembers, type BoardIssue, type BoardMember, type ProjectOption } from './useBoard'
 
 // Columns come from the project's statuses. Cards are sorted by rank within each column.
@@ -18,6 +20,8 @@ export function BoardPage() {
   const move = useMoveIssue({ workspaceSlug: workspace, projectKey: key })
   const [createOpen, setCreateOpen] = useState(false)
   const [activeId, setActiveId] = useState<string | null>(null)
+  const [openIssueId, setOpenIssueId] = useState<string | null>(null)
+  const { session } = useSession()
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } }),
@@ -152,6 +156,7 @@ export function BoardPage() {
               issues={byStatus.get(status.id) ?? []}
               members={memberMap}
               subtaskCounts={subtaskCounts}
+              onOpen={setOpenIssueId}
             />
           ))}
         </div>
@@ -181,6 +186,18 @@ export function BoardPage() {
         epics={epicOptions}
         parents={parentOptions}
         todoStatusId={todo?.id}
+      />
+
+      <IssuePanel
+        issueId={openIssueId}
+        onClose={() => setOpenIssueId(null)}
+        workspaceSlug={workspace}
+        projectKey={key}
+        currentUserId={session?.user.id}
+        statuses={statuses}
+        members={members.data ?? []}
+        sprints={sprints.data ?? []}
+        epics={epicOptions}
       />
     </div>
   )

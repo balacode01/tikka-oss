@@ -72,11 +72,13 @@ type Props = {
   issue: BoardIssue
   assignee?: BoardMember
   subtasks: number
+  onOpen?: (issueId: string) => void
 }
 
 // A card in its column. While it is dragged, the column keeps an empty slot and the
 // floating preview (DragOverlay in BoardPage) follows the pointer. The real card never moves.
-export function IssueCard({ issue, assignee, subtasks }: Props) {
+// A click (not a drag) opens the issue panel.
+export function IssueCard({ issue, assignee, subtasks, onOpen }: Props) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: issue.id,
     data: { statusId: issue.status_id },
@@ -91,6 +93,7 @@ export function IssueCard({ issue, assignee, subtasks }: Props) {
       }}
       {...attributes}
       {...listeners}
+      onClick={() => onOpen?.(issue.id)}
       className={[
         'flex touch-none cursor-grab flex-col gap-2 rounded-md border p-3 text-sm',
         isDragging
