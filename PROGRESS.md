@@ -45,9 +45,17 @@
 - [x] Applied to the Tikka project (`db push --remote --yes`): 25 policies, 6 helpers, no `anon` table grants, anonymous read denied.
 - [ ] PR into `dev` reported and merged after your review.
 
+## M3 Functions (branch `feature/m3-functions`, stacked on `feature/m2-security`)
+
+- [x] `supabase/migrations/20261108110920_functions.sql`: all BRD §6.4 functions. Invoker for issue work (RLS applies); definer only for workspace, project and sprint-state writes, each checking `auth.uid()` and permission itself.
+- [x] Execute granted to `authenticated` only.
+- [x] `supabase/tests/functions.sql` passes, rolled back. Covers: anonymous denied; duplicate and bad keys rejected with clear messages; project creation adds statuses and the lead; numbering; default status; labels; rank midpoint; status move writes history; second active sprint refused; completion moves open issues; bulk update; recently viewed kept to one row; search literal and visible-only; soft delete; home; another workspace sees nothing.
+- [ ] Applied to the Tikka project: waiting for your approval.
+- [ ] PR opened on top of M2. After PR #3 merges, retarget to `dev`.
+
 ## Blockers
 
-- None for M2. The policies are live; PR #3 is waiting for review.
+- M3 is stacked on M2 (PR #3 not merged yet). Retarget after #3 merges.
 - None for M1.
 - Dashboard checks for Supabase Auth (see PLAN.md, human steps).
 
