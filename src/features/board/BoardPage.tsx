@@ -195,7 +195,7 @@ export function BoardPage() {
 
   return (
     <div className="-m-6 flex min-h-screen flex-1 flex-col">
-      <header className="flex flex-col gap-3 border-border border-b bg-surface-selected px-6 py-4">
+      <header className="flex flex-col gap-3 border-border border-b bg-surface-header px-6 py-4">
         <p className="text-[13px] leading-[18px] text-text-secondary">
           {project.name} <span className="mx-1">/</span> Board
         </p>
