@@ -7,6 +7,7 @@ import { useParams, useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
 import { Select } from '../../components/Select'
+import { MemberFilter } from './MemberFilter'
 import { useSession } from '../../app/session-context'
 import { supabase } from '../../lib/supabase'
 import { BoardColumn } from './BoardColumn'
@@ -144,7 +145,6 @@ export function BoardPage() {
     : null
 
   const activeIssue = activeId ? cards.find((i) => i.id === activeId) : undefined
-  const memberIds = [...new Set(scoped.map((i) => i.assignee_id).filter((id): id is string => Boolean(id)))]
 
   function onDragStart(event: DragStartEvent) {
     setActiveId(String(event.active.id))
@@ -253,26 +253,11 @@ export function BoardPage() {
           />
         </label>
 
-        <div className="flex items-center -space-x-1.5 pl-2">
-          {memberIds.slice(0, 6).map((id) => {
-            const m = memberMap.get(id)
-            if (!m) return null
-            const selected = assigneeFilter === id
-            return (
-              <button
-                key={id}
-                type="button"
-                title={m.name}
-                aria-label={`Show issues for ${m.name}`}
-                aria-pressed={selected}
-                onClick={() => setAssigneeFilter(selected ? null : id)}
-                className={`grid size-7 cursor-pointer place-items-center rounded-full border-2 text-[10px] font-medium text-primary-subtle-text ${selected ? 'border-primary bg-surface-selected' : 'border-surface-page bg-surface-selected'}`}
-              >
-                {m.name.split(' ').map((p) => p[0]).join('').slice(0, 2).toUpperCase()}
-              </button>
-            )
-          })}
-        </div>
+        <MemberFilter
+          members={members.data ?? []}
+          selectedId={assigneeFilter}
+          onSelect={setAssigneeFilter}
+        />
 
         <button
           type="button"

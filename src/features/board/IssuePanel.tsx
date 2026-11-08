@@ -52,7 +52,7 @@ export function IssuePanel(props: Props) {
     <Dialog.Root open={props.issueId !== null} onOpenChange={(open) => { if (!open) props.onClose() }}>
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 bg-black/20" />
-        <Dialog.Popup className="fixed top-0 right-0 z-50 flex h-full w-[560px] max-w-full flex-col overflow-y-auto border-border border-l bg-surface-raised text-text-primary">
+        <Dialog.Popup className="fixed top-0 right-0 z-50 flex h-full w-[560px] max-w-full flex-col overflow-hidden border-border border-l bg-surface-raised text-text-primary">
           {detail.data ? (
             <IssueForm key={`${detail.data.id}-${detail.data.updated_at}`} issue={detail.data} {...props} />
           ) : (
@@ -180,7 +180,8 @@ function IssueForm({ issue, onClose, workspaceSlug, projectKey, projectId, curre
   const TypeIcon = TYPE_ICON[issue.type].icon
 
   return (
-    <div className="flex flex-1 flex-col gap-6 p-6">
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="flex min-h-0 flex-1 flex-col gap-6 overflow-y-auto p-6">
       <header className="flex items-center gap-2">
         <TypeIcon className={`size-4 shrink-0 ${TYPE_ICON[issue.type].color}`} aria-hidden="true" />
         <span className="font-mono text-xs text-text-secondary">{issue.key}</span>
@@ -358,12 +359,6 @@ function IssueForm({ issue, onClose, workspaceSlug, projectKey, projectId, curre
 
       {serverError && <p role="alert" className="rounded-sm bg-danger-bg p-2 text-sm text-danger-text">{serverError}</p>}
 
-      {canEdit && (
-        <div className="flex justify-end">
-          <Button variant="primary" type="button" onClick={save} disabled={pending}>{pending ? 'Saving' : 'Save'}</Button>
-        </div>
-      )}
-
       <AttachmentsSection issueId={issue.id} canEdit={canEdit} currentUserId={currentUserId} />
 
       <SubtasksSection issueId={issue.id} projectId={projectId} canEdit={canEdit} statuses={statuses} members={members} extras={extras} />
@@ -371,6 +366,13 @@ function IssueForm({ issue, onClose, workspaceSlug, projectKey, projectId, curre
       <LinksSection canEdit={canEdit} statuses={statuses} extras={extras} currentUserId={currentUserId} />
 
       <ActivitySection issueId={issue.id} currentUserId={currentUserId} members={members} statuses={statuses} sprints={sprints} extras={extras} />
+      </div>
+
+      {canEdit && (
+        <div className="flex shrink-0 justify-end border-border border-t bg-surface-raised px-6 py-3">
+          <Button variant="primary" type="button" onClick={save} disabled={pending}>{pending ? 'Saving' : 'Save'}</Button>
+        </div>
+      )}
     </div>
   )
 }
