@@ -33,11 +33,24 @@
 - Hard delete is possible for comments and projects. Issues use soft delete (`deleted_at`).
 - `comments.updated_at` added, because BRD §6.2 sets it by trigger.
 
+## M2 Security (branch `feature/m2-security`)
+
+- [x] Private helpers in schema `private`: `is_workspace_member`, `workspace_role`, `can_see_project`, `can_edit_project`, `shares_workspace_with`, `is_assignable`. Security definer, stable, empty search path, execute only for `authenticated`.
+- [x] BRD §6.5 policies on all 16 tables. Guests can read and comment; they cannot change issues, sprints or project settings.
+- [x] Grants match each policy, and only the listed columns (for example `projects.next_number` is not writable by API users).
+- [x] Guard trigger: an issue cannot change project, number or key.
+- [x] Reporter must be the caller, and assignees must be non-guest members of the workspace.
+- [x] `supabase/tests/rls.sql`: passes (all checks, including anonymous access denied and guests blocked).
+- [x] Found and fixed while testing: the numbering trigger needed to update a column API users cannot touch, so it now runs as its owner.
+- [ ] Applied to the Tikka project (`db push --remote`): waiting for your approval.
+- [ ] PR into `dev` reported and merged after your review.
+
 ## Blockers
 
+- None for M2 code. The apply step needs your approval.
 - None for M1.
 - Dashboard checks for Supabase Auth (see PLAN.md, human steps).
 
 ## Next
 
-- M2 Security (`feature/m2-security`): helper functions, §6.5 policies, grants per policy, and `supabase/tests/rls.sql`.
+- M3 Functions (`feature/m3-functions`): §6.4 functions and `supabase/tests/functions.sql`. `create_project` must also add the caller to `project_members`, so the invite-only project stays visible to its lead.
