@@ -68,8 +68,6 @@ export function BoardPage() {
   const cards = issues
   const toOption = (i: BoardIssue): ProjectOption => ({ id: i.id, key: i.key, title: i.title })
   const epicOptions = issues.filter((i) => i.type === 'epic').map(toOption)
-  // Only stories, tasks and bugs can be the parent of a sub-task.
-  const parentOptions = issues.filter((i) => i.type === 'story' || i.type === 'task' || i.type === 'bug').map(toOption)
   const activeIssue = activeId ? cards.find((i) => i.id === activeId) : undefined
 
   const byStatus = new Map<string, BoardIssue[]>()
@@ -180,11 +178,11 @@ export function BoardPage() {
         projectId={project.id}
         workspaceSlug={workspace}
         projectKey={key}
+        currentUserId={session?.user.id}
         members={members.data ?? []}
         statuses={statuses}
         sprints={sprints.data ?? []}
         epics={epicOptions}
-        parents={parentOptions}
         todoStatusId={todo?.id}
       />
 
@@ -193,6 +191,7 @@ export function BoardPage() {
         onClose={() => setOpenIssueId(null)}
         workspaceSlug={workspace}
         projectKey={key}
+        projectId={project.id}
         currentUserId={session?.user.id}
         statuses={statuses}
         members={members.data ?? []}

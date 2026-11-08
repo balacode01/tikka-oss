@@ -3,7 +3,6 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useState, type FormEvent } from 'react'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
-import { Field } from '../../components/Field'
 import { Select } from '../../components/Select'
 import { supabase } from '../../lib/supabase'
 import type { BoardMember, BoardStatus, ProjectOption } from './useBoard'
@@ -14,34 +13,42 @@ type Props = {
   projectId: string
   workspaceSlug: string
   projectKey: string
+  currentUserId: string | undefined
   members: BoardMember[]
   statuses: BoardStatus[]
   sprints: ProjectOption[]
   epics: ProjectOption[]
-  parents: ProjectOption[]
   todoStatusId?: string
 }
 
-const TYPES = ['task', 'story', 'bug', 'epic', 'subtask'] as const
-type IssueType = (typeof TYPES)[number]
+// Types as shown in the design. Sub-tasks are added from a parent issue's panel.
+const TYPES = [
+  { value: 'story', label: 'Story' },
+  { value: 'task', label: 'Task' },
+  { value: 'bug', label: 'Bug' },
+  { value: 'epic', label: 'Epic' },
+] as const
+type IssueType = (typeof TYPES)[number]['value']
+
 const PRIORITIES = ['urgent', 'high', 'medium', 'low'] as const
 type Priority = (typeof PRIORITIES)[number]
 
-const labelClass = 'flex flex-col gap-1.5 text-sm font-medium'
+const labelClass = 'flex flex-col gap-1.5 text-sm font-medium text-text-primary'
+const inputClass = 'h-8 w-full rounded-sm border border-border-strong bg-surface-raised px-3 text-sm font-normal text-text-primary placeholder:text-text-secondary'
 
-// Create issue (BRD §7.1, key C). Optional details sit in the same form.
-// The server picks the next key, and the To do status when none is chosen.
+// Create issue (BRD §7.1, key C). Layout follows the "Create issue" artboard: 640px modal,
+// type as buttons, a required title, and "Assign to me" under the assignee.
 export function CreateIssueDialog({
   open,
   onOpenChange,
   projectId,
   workspaceSlug,
   projectKey,
+  currentUserId,
   members,
   statuses,
   sprints,
   epics,
-  parents,
   todoStatusId,
 }: Props) {
   const queryClient = useQueryClient()
@@ -52,7 +59,6 @@ export function CreateIssueDialog({
   const [priority, setPriority] = useState<Priority>('medium')
   const [sprint, setSprint] = useState('')
   const [epic, setEpic] = useState('')
-  const [parent, setParent] = useState('')
   const [assignee, setAssignee] = useState('')
   const [points, setPoints] = useState('')
   const [dueDate, setDueDate] = useState('')
@@ -62,10 +68,7 @@ export function CreateIssueDialog({
   const [serverError, setServerError] = useState('')
   const [pending, setPending] = useState(false)
 
-  const titleError = submitted && title.trim().length === 0 ? 'Give the issue a title' : undefined
-  const parentError = submitted && type === 'subtask' && parent === ''
-    ? 'A sub-task needs a parent issue. Choose one above.'
-    : undefined
+  const titleError = submitted && title.trim().length === 0 ? 'Enter a title' : undefined
   const pointsError = submitted && points !== '' && Number(points) < 0 ? 'Points cannot be negative' : undefined
 
   function reset() {
@@ -74,7 +77,6 @@ export function CreateIssueDialog({
     setPoints('')
     setDueDate('')
     setLabels('')
-    setParent('')
     setSubmitted(false)
     setServerError('')
   }
@@ -83,7 +85,7 @@ export function CreateIssueDialog({
     event.preventDefault()
     setSubmitted(true)
     setServerError('')
-    if (titleError || parentError || pointsError) return
+    if (titleError || pointsError) return
 
     setPending(true)
     const { data, error } = await supabase.rpc('create_issue', {
@@ -96,7 +98,7 @@ export function CreateIssueDialog({
       p_assignee: assignee || null,
       p_sprint: sprint || null,
       p_epic: type === 'epic' || epic === '' ? null : epic,
-      p_parent: type === 'subtask' ? parent : null,
+      p_parent: null,
       p_points: points === '' ? null : Number(points),
       p_due: dueDate || null,
       p_labels: labels.split(',').map((l) => l.trim()).filter(Boolean),
@@ -118,38 +120,47 @@ export function CreateIssueDialog({
     <Dialog.Root open={open} onOpenChange={(next) => { if (!next) reset(); onOpenChange(next) }}>
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 bg-black/40" />
-        <Dialog.Popup className="fixed top-1/2 left-1/2 z-50 flex max-h-[85vh] w-[min(600px,calc(100vw-32px))] -translate-x-1/2 -translate-y-1/2 flex-col gap-4 overflow-y-auto rounded-lg border border-border bg-surface-raised p-6 text-text-primary shadow-modal">
+        <Dialog.Popup className="fixed top-1/2 left-1/2 z-50 flex max-h-[90vh] w-[min(640px,calc(100vw-32px))] -translate-x-1/2 -translate-y-1/2 flex-col gap-5 overflow-y-auto rounded-lg border border-border bg-surface-raised p-6 text-text-primary shadow-modal">
           <Dialog.Title className="font-semibold text-xl">Create</Dialog.Title>
 
           <form noValidate onSubmit={onSubmit} className="flex flex-col gap-5">
-            <div className="grid grid-cols-2 gap-x-4 gap-y-5">
-              <label className={labelClass}>
-                Type
-                <Select value={type} onChange={(e) => setType(e.target.value as IssueType)}>
-                  {TYPES.map((t) => (
-                    <option key={t} value={t}>{t === 'subtask' ? 'Sub-task' : t[0].toUpperCase() + t.slice(1)}</option>
-                  ))}
-                </Select>
-              </label>
-              <label className={labelClass}>
-                Priority
-                <Select value={priority} onChange={(e) => setPriority(e.target.value as Priority)}>
-                  {PRIORITIES.map((p) => (
-                    <option key={p} value={p}>{p[0].toUpperCase() + p.slice(1)}</option>
-                  ))}
-                </Select>
-              </label>
+            <div className="flex flex-col gap-1.5">
+              <span className="text-sm font-medium">Issue type</span>
+              <div role="radiogroup" aria-label="Issue type" className="inline-flex w-fit gap-1 rounded-sm border border-border-strong p-0.5">
+                {TYPES.map((t) => (
+                  <button
+                    key={t.value}
+                    type="button"
+                    role="radio"
+                    aria-checked={type === t.value}
+                    onClick={() => setType(t.value)}
+                    className={[
+                      'h-7 cursor-pointer rounded-sm px-3 text-sm',
+                      type === t.value ? 'bg-surface-selected font-medium text-primary-subtle-text' : 'text-text-secondary hover:bg-surface-hover',
+                    ].join(' ')}
+                  >
+                    {t.label}
+                  </button>
+                ))}
+              </div>
             </div>
 
-            <Field
-              id="ci-title"
-              label="Title"
-              placeholder="What needs to happen?"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              error={titleError}
-              maxLength={255}
-            />
+            <label className={labelClass}>
+              <span className="flex items-center gap-2">
+                Title
+                <span className="text-xs font-normal text-text-secondary">Required</span>
+              </span>
+              <input
+                id="ci-title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="What needs to happen?"
+                maxLength={255}
+                aria-invalid={titleError ? true : undefined}
+                className={`${inputClass} ${titleError ? 'border-danger' : ''}`}
+              />
+              {titleError && <span className="text-xs font-normal text-danger-text">{titleError}</span>}
+            </label>
 
             <label className={labelClass}>
               Description
@@ -157,7 +168,7 @@ export function CreateIssueDialog({
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={4}
-                placeholder="Add context, steps or links. Markdown works."
+                placeholder="Add context, steps or links"
                 className="rounded-sm border border-border-strong bg-surface-raised px-3 py-2 text-sm font-normal text-text-primary placeholder:text-text-secondary"
               />
             </label>
@@ -172,6 +183,33 @@ export function CreateIssueDialog({
                 </Select>
               </label>
               <label className={labelClass}>
+                Priority
+                <Select value={priority} onChange={(e) => setPriority(e.target.value as Priority)}>
+                  {PRIORITIES.map((p) => (
+                    <option key={p} value={p}>{p[0].toUpperCase() + p.slice(1)}</option>
+                  ))}
+                </Select>
+              </label>
+
+              <div className={labelClass}>
+                <label htmlFor="ci-assignee">Assignee</label>
+                <Select id="ci-assignee" value={assignee} onChange={(e) => setAssignee(e.target.value)}>
+                  <option value="">Unassigned</option>
+                  {members.map((m) => (
+                    <option key={m.id} value={m.id}>{m.name}</option>
+                  ))}
+                </Select>
+                {currentUserId && (
+                  <button
+                    type="button"
+                    onClick={() => setAssignee(currentUserId)}
+                    className="self-start text-xs font-medium text-primary hover:text-primary-hover"
+                  >
+                    Assign to me
+                  </button>
+                )}
+              </div>
+              <label className={labelClass}>
                 Sprint
                 <Select value={sprint} onChange={(e) => setSprint(e.target.value)}>
                   <option value="">Backlog</option>
@@ -180,9 +218,7 @@ export function CreateIssueDialog({
                   ))}
                 </Select>
               </label>
-            </div>
 
-            <div className="grid grid-cols-2 gap-x-4 gap-y-5">
               <label className={labelClass}>
                 Epic
                 <Select value={epic} onChange={(e) => setEpic(e.target.value)} disabled={type === 'epic'}>
@@ -193,68 +229,40 @@ export function CreateIssueDialog({
                 </Select>
               </label>
               <label className={labelClass}>
-                Assignee
-                <Select value={assignee} onChange={(e) => setAssignee(e.target.value)}>
-                  <option value="">Unassigned</option>
-                  {members.map((m) => (
-                    <option key={m.id} value={m.id}>{m.name}</option>
-                  ))}
-                </Select>
+                Story points
+                <input
+                  type="number"
+                  min={0}
+                  step="0.5"
+                  value={points}
+                  onChange={(e) => setPoints(e.target.value)}
+                  aria-invalid={pointsError ? true : undefined}
+                  className={`${inputClass} ${pointsError ? 'border-danger' : ''}`}
+                />
+                {pointsError && <span className="text-xs font-normal text-danger-text">{pointsError}</span>}
               </label>
-            </div>
 
-            {type === 'subtask' && (
               <label className={labelClass}>
-                Parent issue
-                <Select
-                  value={parent}
-                  onChange={(e) => setParent(e.target.value)}
-                  aria-invalid={parentError ? true : undefined}
-                  className={parentError ? 'border-danger' : ''}
-                >
-                  <option value="">Choose a parent</option>
-                  {parents.map((p) => (
-                    <option key={p.id} value={p.id}>{p.key} {p.title}</option>
-                  ))}
-                </Select>
-                {parentError && <span className="text-xs font-normal text-danger-text">{parentError}</span>}
+                Due date
+                <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} className={inputClass} />
               </label>
-            )}
-
-            <div className="grid grid-cols-2 gap-x-4 gap-y-5">
-              <Field
-                id="ci-points"
-                label="Story points"
-                type="number"
-                min={0}
-                step="0.5"
-                value={points}
-                onChange={(e) => setPoints(e.target.value)}
-                error={pointsError}
-              />
-              <Field
-                id="ci-due"
-                label="Due date"
-                type="date"
-                value={dueDate}
-                onChange={(e) => setDueDate(e.target.value)}
-              />
+              <label className={labelClass}>
+                Labels
+                <input
+                  value={labels}
+                  onChange={(e) => setLabels(e.target.value)}
+                  placeholder="frontend, auth"
+                  className={inputClass}
+                />
+                <span className="text-xs font-normal text-text-secondary">Separate labels with commas</span>
+              </label>
             </div>
-
-            <Field
-              id="ci-labels"
-              label="Labels"
-              placeholder="frontend, auth"
-              value={labels}
-              onChange={(e) => setLabels(e.target.value)}
-              hint="Separate labels with commas"
-            />
 
             {serverError && (
               <p role="alert" className="rounded-sm bg-danger-bg p-2 text-sm text-danger-text">{serverError}</p>
             )}
 
-            <div className="flex items-center justify-between gap-3 pt-2">
+            <div className="flex items-center justify-between gap-3 border-border border-t pt-5">
               <label className="flex items-center gap-2 text-sm">
                 <input
                   type="checkbox"
