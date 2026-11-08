@@ -4,6 +4,7 @@ import { useState, type FormEvent } from 'react'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
 import { Field } from '../../components/Field'
+import { Select } from '../../components/Select'
 import { supabase } from '../../lib/supabase'
 import type { BoardMember, BoardStatus, ProjectOption } from './useBoard'
 
@@ -26,7 +27,6 @@ type IssueType = (typeof TYPES)[number]
 const PRIORITIES = ['urgent', 'high', 'medium', 'low'] as const
 type Priority = (typeof PRIORITIES)[number]
 
-const selectClass = 'h-8 w-full rounded-sm border border-border-strong bg-surface-raised px-2 text-sm font-normal text-text-primary'
 const labelClass = 'flex flex-col gap-1 text-sm font-medium'
 
 // Create issue (BRD §7.1, key C). Optional details sit in the same form.
@@ -125,19 +125,19 @@ export function CreateIssueDialog({
             <div className="grid grid-cols-2 gap-3">
               <label className={labelClass}>
                 Type
-                <select value={type} onChange={(e) => setType(e.target.value as IssueType)} className={selectClass}>
+                <Select value={type} onChange={(e) => setType(e.target.value as IssueType)}>
                   {TYPES.map((t) => (
                     <option key={t} value={t}>{t === 'subtask' ? 'Sub-task' : t[0].toUpperCase() + t.slice(1)}</option>
                   ))}
-                </select>
+                </Select>
               </label>
               <label className={labelClass}>
                 Priority
-                <select value={priority} onChange={(e) => setPriority(e.target.value as Priority)} className={selectClass}>
+                <Select value={priority} onChange={(e) => setPriority(e.target.value as Priority)}>
                   {PRIORITIES.map((p) => (
                     <option key={p} value={p}>{p[0].toUpperCase() + p.slice(1)}</option>
                   ))}
-                </select>
+                </Select>
               </label>
             </div>
 
@@ -165,63 +165,58 @@ export function CreateIssueDialog({
             <div className="grid grid-cols-2 gap-3">
               <label className={labelClass}>
                 Status
-                <select value={status || todoStatusId || ''} onChange={(e) => setStatus(e.target.value)} className={selectClass}>
+                <Select value={status || todoStatusId || ''} onChange={(e) => setStatus(e.target.value)}>
                   {statuses.map((s) => (
                     <option key={s.id} value={s.id}>{s.name}</option>
                   ))}
-                </select>
+                </Select>
               </label>
               <label className={labelClass}>
                 Sprint
-                <select value={sprint} onChange={(e) => setSprint(e.target.value)} className={selectClass}>
+                <Select value={sprint} onChange={(e) => setSprint(e.target.value)}>
                   <option value="">Backlog</option>
                   {sprints.map((s) => (
                     <option key={s.id} value={s.id}>{s.title}{s.state === 'active' ? ' (active)' : ''}</option>
                   ))}
-                </select>
+                </Select>
               </label>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <label className={labelClass}>
                 Epic
-                <select
-                  value={epic}
-                  onChange={(e) => setEpic(e.target.value)}
-                  disabled={type === 'epic'}
-                  className={selectClass}
-                >
+                <Select value={epic} onChange={(e) => setEpic(e.target.value)} disabled={type === 'epic'}>
                   <option value="">No epic</option>
                   {epics.map((e) => (
                     <option key={e.id} value={e.id}>{e.key} {e.title}</option>
                   ))}
-                </select>
+                </Select>
               </label>
               <label className={labelClass}>
                 Assignee
-                <select value={assignee} onChange={(e) => setAssignee(e.target.value)} className={selectClass}>
+                <Select value={assignee} onChange={(e) => setAssignee(e.target.value)}>
                   <option value="">Unassigned</option>
                   {members.map((m) => (
                     <option key={m.id} value={m.id}>{m.name}</option>
                   ))}
-                </select>
+                </Select>
               </label>
             </div>
 
             {type === 'subtask' && (
               <label className={labelClass}>
                 Parent issue
-                <select
+                <Select
                   value={parent}
                   onChange={(e) => setParent(e.target.value)}
                   aria-invalid={parentError ? true : undefined}
-                  className={`${selectClass} ${parentError ? 'border-danger' : ''}`}
+                  className={parentError ? 'border-danger' : ''}
                 >
                   <option value="">Choose a parent</option>
                   {parents.map((p) => (
                     <option key={p.id} value={p.id}>{p.key} {p.title}</option>
                   ))}
-                </select>
+                </Select>
                 {parentError && <span className="text-xs font-normal text-danger-text">{parentError}</span>}
               </label>
             )}
