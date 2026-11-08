@@ -343,9 +343,22 @@ export function ListPage() {
           </table>
           {list.isPending && <p className="px-4 py-6 text-sm text-text-secondary">Loading issues</p>}
           {!list.isPending && rows.length === 0 && (
-            <div className="flex flex-col items-center gap-2 px-4 py-10 text-center text-sm text-text-secondary">
-              <p>No issues match these filters.</p>
-              {hasFilters && <button type="button" onClick={() => setFilters({ ...filters, q: '', type: [], status: [], assignee: [], priority: [], sprint: [], epic: [] })} className="font-medium text-primary">Clear filters</button>}
+            <div className="flex flex-col items-center gap-2 px-4 py-16 text-center">
+              {hasFilters ? (
+                <>
+                  <p className="font-medium text-base text-text-primary">No issues match these filters</p>
+                  <p className="text-sm text-text-secondary">Try removing a filter to see more issues.</p>
+                  <button
+                    type="button"
+                    onClick={() => setFilters({ ...filters, q: '', type: [], status: [], assignee: [], priority: [], sprint: [], epic: [] })}
+                    className="mt-2 h-8 cursor-pointer rounded-sm border border-border-strong bg-surface-raised px-3 text-sm font-medium text-text-primary hover:bg-surface-hover"
+                  >
+                    Clear filters
+                  </button>
+                </>
+              ) : (
+                <p className="text-sm text-text-secondary">This project has no issues yet.</p>
+              )}
             </div>
           )}
         </div>
