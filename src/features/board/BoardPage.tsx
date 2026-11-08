@@ -3,7 +3,7 @@ import { arrayMove } from '@dnd-kit/sortable'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Search } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
-import { useParams } from 'react-router'
+import { useParams, useSearchParams } from 'react-router'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
 import { useSession } from '../../app/session-context'
@@ -26,6 +26,8 @@ export function BoardPage() {
   const queryClient = useQueryClient()
   const { session } = useSession()
   const currentUserId = session?.user.id
+  // ?issue=KEY opens that issue's panel (set by quick search and shared links).
+  const [searchParams, setSearchParams] = useSearchParams()
 
   // Captured once per visit, so the "days left" count does not change on every render.
   const [openedAt] = useState(() => Date.now())
@@ -86,6 +88,8 @@ export function BoardPage() {
   }
 
   const { project, statuses, issues } = board.data
+  const issueKey = searchParams.get('issue')
+  const issueFromUrl = issueKey ? issues.find((i) => i.key === issueKey)?.id ?? null : null
   const todo = statuses.find((s) => s.category === 'todo')
   const doneIds = new Set(statuses.filter((s) => s.category === 'done').map((s) => s.id))
   const sprint = activeSprint.data
@@ -365,8 +369,8 @@ export function BoardPage() {
       />
 
       <IssuePanel
-        issueId={openIssueId}
-        onClose={() => setOpenIssueId(null)}
+        issueId={openIssueId ?? issueFromUrl}
+        onClose={() => { setOpenIssueId(null); setSearchParams({}) }}
         workspaceSlug={workspace}
         projectKey={key}
         projectId={project.id}

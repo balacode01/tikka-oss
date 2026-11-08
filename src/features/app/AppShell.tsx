@@ -1,11 +1,12 @@
 import { Bell, ChevronDown, ChevronRight, ChevronsUpDown, LayoutGrid, Layers, List, Search, Settings, User, UserPlus } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router'
 import { toast } from 'sonner'
 import { supabase } from '../../lib/supabase'
 import { useSession } from '../../app/session-context'
 import { readThemePreference, applyTheme, saveThemePreference, type ThemePreference } from '../../app/theme'
 import { useWorkspaceProjects } from './useWorkspaceProjects'
+import { QuickSearch } from '../search/QuickSearch'
 
 // Sidebar and top bar follow the "Board" artboard in the design canvas (indigo sidebar).
 const navBase = 'flex h-8 items-center gap-2.5 rounded-sm px-2.5 text-[13px] leading-[18px] text-on-primary hover:bg-primary-hover'
@@ -28,6 +29,19 @@ export function AppShell() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [theme, setTheme] = useState<ThemePreference>(() => readThemePreference())
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
+  const [searchOpen, setSearchOpen] = useState(false)
+
+  // Ctrl+K (or Cmd+K) opens quick search from anywhere in the app.
+  useEffect(() => {
+    function onKey(event: KeyboardEvent) {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault()
+        setSearchOpen((open) => !open)
+      }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
 
   const name = (session?.user.user_metadata?.display_name as string | undefined) ?? session?.user.email ?? 'You'
   const initials = name.split(' ').map((p) => p[0]).join('').slice(0, 2).toUpperCase()
@@ -122,7 +136,7 @@ export function AppShell() {
         <header className="flex h-12 items-center gap-3 border-border border-b bg-surface-selected px-6">
           <button
             type="button"
-            onClick={() => toast('Quick search arrives in M6')}
+            onClick={() => setSearchOpen(true)}
             aria-label="Search issues (Ctrl or Cmd+K)"
             className="flex h-8 w-80 cursor-pointer items-center gap-2 rounded-sm border border-border-strong bg-surface-raised px-3 text-sm text-text-secondary"
           >
@@ -174,6 +188,13 @@ export function AppShell() {
             </div>
           </div>
         </header>
+        <QuickSearch
+          open={searchOpen}
+          onOpenChange={setSearchOpen}
+          workspaceId={data?.workspace?.id}
+          workspaceSlug={workspace}
+          projects={data?.projects ?? []}
+        />
         <main className="flex min-w-0 flex-1 flex-col p-6">
           <Outlet />
         </main>

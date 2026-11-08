@@ -1,7 +1,7 @@
 import { Dialog } from '@base-ui/react/dialog'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Bookmark, Bug, ChevronDown, Eye, EyeOff, Share2, SquareCheck, X, Zap, type LucideIcon } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
 import { Select } from '../../components/Select'
@@ -87,6 +87,13 @@ function IssueForm({ issue, onClose, workspaceSlug, projectKey, projectId, curre
   const [pending, setPending] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [newLabel, setNewLabel] = useState('')
+
+  // Opening an issue counts as a view. record_view keeps the newest 20 per user.
+  useEffect(() => {
+    supabase.rpc('record_view', { p_issue: issue.id }).then(({ error }) => {
+      if (!error) queryClient.invalidateQueries({ queryKey: ['recent-issues'] })
+    })
+  }, [issue.id, queryClient])
 
   const labels = useQuery({
     queryKey: ['labels', issue.id],
