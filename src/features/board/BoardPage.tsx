@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { useParams } from 'react-router'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
+import { arrayMove } from '@dnd-kit/sortable'
 import { BoardColumn } from './BoardColumn'
 import { CardBody } from './IssueCard'
 import { CreateIssueDialog } from './CreateIssueDialog'
@@ -83,17 +84,27 @@ export function BoardPage() {
       ?? cards.find((i) => i.id === over.id)?.status_id
     if (!statusId) return
 
-    // Neighbours are taken from the target column without the moved card.
-    const column = (byStatus.get(statusId) ?? []).filter((i) => i.id !== issue.id)
-    const overIndex = column.findIndex((i) => i.id === over.id)
-    const index = overIndex === -1 ? column.length : overIndex
-    const before = column[index - 1]?.id ?? null
-    const after = column[index]?.id ?? null
+    let before: string | null
+    let after: string | null
 
-    // Nothing to save: same column and the same spot.
-    const originalColumn = byStatus.get(issue.status_id) ?? []
-    const originalIndex = originalColumn.findIndex((i) => i.id === issue.id)
-    if (statusId === issue.status_id && originalIndex === index) return
+    if (statusId === issue.status_id) {
+      // Reorder inside the same column: move the card in the list, then read its new neighbours.
+      const column = byStatus.get(statusId) ?? []
+      const from = column.findIndex((i) => i.id === issue.id)
+      const to = column.findIndex((i) => i.id === over.id)
+      if (from === -1 || to === -1 || from === to) return
+
+      const reordered = arrayMove(column, from, to)
+      before = reordered[to - 1]?.id ?? null
+      after = reordered[to + 1]?.id ?? null
+    } else {
+      // Move to another column: the card lands above the card it was dropped on, or at the end.
+      const column = (byStatus.get(statusId) ?? []).filter((i) => i.id !== issue.id)
+      const overIndex = column.findIndex((i) => i.id === over.id)
+      const index = overIndex === -1 ? column.length : overIndex
+      before = column[index - 1]?.id ?? null
+      after = column[index]?.id ?? null
+    }
 
     move.mutate(
       { issueId: issue.id, statusId, beforeId: before, afterId: after },
