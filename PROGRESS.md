@@ -42,12 +42,12 @@
 - [x] Reporter must be the caller, and assignees must be non-guest members of the workspace.
 - [x] `supabase/tests/rls.sql`: passes (all checks, including anonymous access denied and guests blocked).
 - [x] Found and fixed while testing: the numbering trigger needed to update a column API users cannot touch, so it now runs as its owner.
-- [ ] Applied to the Tikka project (`db push --remote`): waiting for your approval.
+- [x] Applied to the Tikka project (`db push --remote --yes`): 25 policies, 6 helpers, no `anon` table grants, anonymous read denied.
 - [ ] PR into `dev` reported and merged after your review.
 
 ## Blockers
 
-- None for M2 code. The apply step needs your approval.
+- None for M2. The policies are live; PR #3 is waiting for review.
 - None for M1.
 - Dashboard checks for Supabase Auth (see PLAN.md, human steps).
 
