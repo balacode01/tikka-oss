@@ -119,7 +119,7 @@ export function CreateIssueDialog({
       <Dialog.Portal>
         <Dialog.Backdrop className="fixed inset-0 bg-black/40" />
         <Dialog.Popup className="fixed top-1/2 left-1/2 z-50 flex max-h-[85vh] w-[min(600px,calc(100vw-32px))] -translate-x-1/2 -translate-y-1/2 flex-col gap-4 overflow-y-auto rounded-lg border border-border bg-surface-raised p-6 text-text-primary shadow-modal">
-          <Dialog.Title className="font-semibold text-xl">Create issue</Dialog.Title>
+          <Dialog.Title className="font-semibold text-xl">Create</Dialog.Title>
 
           <form noValidate onSubmit={onSubmit} className="flex flex-col gap-4">
             <div className="grid grid-cols-2 gap-3">
