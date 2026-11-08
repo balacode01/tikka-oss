@@ -9,6 +9,7 @@ import { CreateIssueDialog } from '../board/CreateIssueDialog'
 import type { ProjectOption } from '../board/useBoard'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
+import { DatePicker } from '../../components/DatePicker'
 import { Select } from '../../components/Select'
 import { StatusPill } from '../board/StatusPill'
 import { useBoard, useWorkspaceMembers, type BoardIssue, type BoardStatus, type BoardMember } from '../board/useBoard'
@@ -454,7 +455,7 @@ function StartSprintDialog({ sprint, onClose, onStarted }: { sprint: SprintRow |
         </label>
         <label className="flex flex-col gap-1.5 text-sm font-medium">
           End date
-          <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} className="h-8 rounded-sm border border-border-strong bg-surface-raised px-3 text-sm font-normal" />
+          <DatePicker value={endDate} onChange={setEndDate} aria-label="End date" />
         </label>
         <div className="flex justify-end gap-2">
           <Button onClick={onClose}>Cancel</Button>

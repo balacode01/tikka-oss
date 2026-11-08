@@ -4,6 +4,7 @@ import { Bookmark, Bug, ChevronDown, Eye, EyeOff, Share2, SquareCheck, X, Zap, t
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
+import { DatePicker } from '../../components/DatePicker'
 import { Select } from '../../components/Select'
 import { supabase } from '../../lib/supabase'
 import { ActivitySection } from './ActivitySection'
@@ -310,7 +311,7 @@ function IssueForm({ issue, onClose, workspaceSlug, projectKey, projectId, curre
         </label>
         <label className="flex flex-col gap-1.5">
           <span className={fieldLabel}>Due date</span>
-          <input type="date" value={dueDate} onChange={(e) => setDueDate(e.target.value)} disabled={disabled} className={inputClass} />
+          <DatePicker value={dueDate} onChange={setDueDate} disabled={disabled} aria-label="Due date" />
         </label>
         <div className="col-span-2 flex flex-col gap-1.5">
           <span className={fieldLabel}>Labels</span>
