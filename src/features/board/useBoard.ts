@@ -21,7 +21,36 @@ export type BoardIssue = {
   story_points: number | null
   assignee_id: string | null
   parent_id: string | null
+  epic_id: string | null
+  sprint_id: string | null
   comments: number
+}
+
+export type SprintDetail = {
+  id: string
+  name: string
+  goal: string | null
+  state: 'planned' | 'active' | 'completed'
+  start_date: string | null
+  end_date: string | null
+}
+
+// The active sprint of a project, with dates and goal for the board header.
+export function useActiveSprint(projectId: string | undefined) {
+  return useQuery({
+    queryKey: ['active-sprint', projectId],
+    enabled: Boolean(projectId),
+    queryFn: async (): Promise<SprintDetail | null> => {
+      const { data, error } = await supabase
+        .from('sprints')
+        .select('id, name, goal, state, start_date, end_date')
+        .eq('project_id', projectId!)
+        .eq('state', 'active')
+        .maybeSingle()
+      if (error) throw error
+      return data as SprintDetail | null
+    },
+  })
 }
 
 export type BoardMember = { id: string; name: string }
@@ -89,7 +118,7 @@ export function useBoard(workspaceSlug: string, projectKey: string) {
           .order('position'),
         supabase
           .from('issues')
-          .select('id, key, type, title, priority, status_id, rank, story_points, assignee_id, parent_id, comments(count)')
+          .select('id, key, type, title, priority, status_id, rank, story_points, assignee_id, parent_id, epic_id, sprint_id, comments(count)')
           .eq('project_id', project.id)
           .is('deleted_at', null)
           .order('rank'),

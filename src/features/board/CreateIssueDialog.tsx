@@ -19,6 +19,7 @@ type Props = {
   sprints: ProjectOption[]
   epics: ProjectOption[]
   todoStatusId?: string
+  defaultStatusId?: string
 }
 
 // Types as shown in the design. Sub-tasks are added from a parent issue's panel.
@@ -50,6 +51,7 @@ export function CreateIssueDialog({
   sprints,
   epics,
   todoStatusId,
+  defaultStatusId,
 }: Props) {
   const queryClient = useQueryClient()
   const [type, setType] = useState<IssueType>('task')
@@ -93,7 +95,7 @@ export function CreateIssueDialog({
       p_type: type,
       p_title: title.trim(),
       p_description: description.trim() === '' ? null : description.trim(),
-      p_status: status || todoStatusId || null,
+      p_status: status || defaultStatusId || todoStatusId || null,
       p_priority: priority,
       p_assignee: assignee || null,
       p_sprint: sprint || null,
@@ -176,7 +178,7 @@ export function CreateIssueDialog({
             <div className="grid grid-cols-2 gap-x-4 gap-y-5">
               <label className={labelClass}>
                 Status
-                <Select value={status || todoStatusId || ''} onChange={(e) => setStatus(e.target.value)}>
+                <Select value={status || defaultStatusId || todoStatusId || ''} onChange={(e) => setStatus(e.target.value)}>
                   {statuses.map((s) => (
                     <option key={s.id} value={s.id}>{s.name}</option>
                   ))}

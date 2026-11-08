@@ -2,6 +2,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { Bookmark, Bug, CircleAlert, CornerDownRight, MessageSquare, SignalHigh, SignalLow, SignalMedium, SquareCheck, Zap, type LucideIcon } from 'lucide-react'
 import type { BoardIssue, BoardMember } from './useBoard'
 
+// Icons and colours from the design README: type icons in their type colour, priority as signal bars.
 const TYPE_ICON: Record<BoardIssue['type'], { icon: LucideIcon; color: string; label: string }> = {
   epic: { icon: Zap, color: 'text-type-epic', label: 'Epic' },
   story: { icon: Bookmark, color: 'text-type-story', label: 'Story' },
@@ -10,48 +11,64 @@ const TYPE_ICON: Record<BoardIssue['type'], { icon: LucideIcon; color: string; l
   subtask: { icon: CornerDownRight, color: 'text-type-subtask', label: 'Sub-task' },
 }
 
-const PRIORITY: Record<BoardIssue['priority'], { icon: LucideIcon; label: string; color: string }> = {
-  urgent: { icon: CircleAlert, label: 'Urgent', color: 'text-danger' },
-  high: { icon: SignalHigh, label: 'High', color: 'text-text-secondary' },
-  medium: { icon: SignalMedium, label: 'Medium', color: 'text-text-secondary' },
-  low: { icon: SignalLow, label: 'Low', color: 'text-text-secondary' },
+const PRIORITY_ICON: Record<Exclude<BoardIssue['priority'], 'urgent'>, { icon: LucideIcon; label: string }> = {
+  high: { icon: SignalHigh, label: 'High' },
+  medium: { icon: SignalMedium, label: 'Medium' },
+  low: { icon: SignalLow, label: 'Low' },
 }
 
 function initials(name: string) {
   return name.split(' ').map((p) => p[0]).join('').slice(0, 2).toUpperCase()
 }
 
+export type SubtaskProgress = { done: number; total: number }
+
+type BodyProps = {
+  issue: BoardIssue
+  assignee?: BoardMember
+  subtasks: SubtaskProgress
+  epicTitle?: string
+}
+
 // The visible card. Used in the column and as the floating preview while dragging.
-export function CardBody({ issue, assignee, subtasks }: { issue: BoardIssue; assignee?: BoardMember; subtasks: number }) {
+export function CardBody({ issue, assignee, subtasks, epicTitle }: BodyProps) {
   const type = TYPE_ICON[issue.type]
-  const priority = PRIORITY[issue.priority]
   const TypeIcon = type.icon
-  const PriorityIcon = priority.icon
+  const priority = issue.priority === 'urgent' ? null : PRIORITY_ICON[issue.priority]
+  const PriorityIcon = priority?.icon
 
   return (
     <>
-      <div className="flex items-center gap-1.5">
+      <div className="flex items-center gap-2">
         <TypeIcon className={`size-4 shrink-0 ${type.color}`} aria-hidden="true" />
         <span className="sr-only">{type.label}</span>
         <span className="font-mono text-xs text-text-secondary">{issue.key}</span>
-      </div>
-
-      <p className="line-clamp-2 font-medium text-text-primary" title={issue.title}>
-        {issue.title}
-      </p>
-
-      <div className="flex items-center gap-2 text-[13px] leading-[18px] text-text-secondary tabular-nums">
-        <PriorityIcon className={`size-4 ${priority.color}`} aria-hidden="true" />
-        <span className="sr-only">{priority.label} priority</span>
-        {issue.story_points !== null && <span>{issue.story_points} pts</span>}
-        {subtasks > 0 && <span>{subtasks} sub-tasks</span>}
+        {subtasks.total > 0 && (
+          <span className="flex items-center gap-1 text-[13px] text-text-secondary tabular-nums">
+            <CornerDownRight className="size-3.5" aria-hidden="true" />
+            {subtasks.done}/{subtasks.total}
+          </span>
+        )}
         {issue.comments > 0 && (
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 text-[13px] text-text-secondary tabular-nums">
             <MessageSquare className="size-3.5" aria-hidden="true" />
             {issue.comments}
           </span>
         )}
-        <span className="ml-auto">
+        <span className="ml-auto flex items-center gap-2">
+          {issue.priority === 'urgent' ? (
+            <span className="flex items-center gap-1 rounded-full bg-danger-bg px-2 py-0.5 text-xs font-medium text-danger-text">
+              <CircleAlert className="size-3.5" aria-hidden="true" />
+              Urgent
+            </span>
+          ) : (
+            PriorityIcon && (
+              <>
+                <PriorityIcon className="size-4 text-text-secondary" aria-hidden="true" />
+                <span className="sr-only">{priority?.label} priority</span>
+              </>
+            )
+          )}
           {assignee ? (
             <span
               title={assignee.name}
@@ -60,28 +77,43 @@ export function CardBody({ issue, assignee, subtasks }: { issue: BoardIssue; ass
               {initials(assignee.name)}
             </span>
           ) : (
-            <span className="sr-only">Unassigned</span>
+            <span className="size-6 rounded-full border border-dashed border-border-strong" aria-label="Unassigned" />
           )}
         </span>
+      </div>
+
+      <p className="line-clamp-2 text-sm leading-5 text-text-primary" title={issue.title}>
+        {issue.title}
+      </p>
+
+      <div className="flex items-center gap-2">
+        {epicTitle && (
+          <span className="flex min-w-0 items-center gap-1 rounded-sm bg-surface-hover px-2 py-0.5 text-[13px] text-text-secondary">
+            <Zap className="size-3.5 shrink-0 text-type-epic" aria-hidden="true" />
+            <span className="truncate">{epicTitle}</span>
+          </span>
+        )}
+        {issue.story_points !== null && (
+          <span className="ml-auto grid min-w-6 place-items-center rounded-full bg-surface-hover px-1.5 text-xs font-medium text-text-primary tabular-nums">
+            {issue.story_points}
+          </span>
+        )}
       </div>
     </>
   )
 }
 
-type Props = {
-  issue: BoardIssue
-  assignee?: BoardMember
-  subtasks: number
+type Props = BodyProps & {
   onOpen?: (issueId: string) => void
 }
 
 // A card in its column. While it is dragged, the column keeps an empty slot and the
 // floating preview (DragOverlay in BoardPage) follows the pointer. The real card never moves.
 // A click (not a drag) opens the issue panel.
-export function IssueCard({ issue, assignee, subtasks, onOpen }: Props) {
+export function IssueCard({ onOpen, ...body }: Props) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
-    id: issue.id,
-    data: { statusId: issue.status_id },
+    id: body.issue.id,
+    data: { statusId: body.issue.status_id },
   })
 
   return (
@@ -93,15 +125,15 @@ export function IssueCard({ issue, assignee, subtasks, onOpen }: Props) {
       }}
       {...attributes}
       {...listeners}
-      onClick={() => onOpen?.(issue.id)}
+      onClick={() => onOpen?.(body.issue.id)}
       className={[
-        'flex touch-none cursor-grab flex-col gap-2 rounded-md border p-3 text-sm',
+        'flex touch-none cursor-grab flex-col gap-2 rounded-md border p-3',
         isDragging
           ? 'border-dashed border-primary bg-surface-selected text-transparent'
           : 'border-border bg-surface-raised hover:border-border-strong',
       ].join(' ')}
     >
-      {isDragging ? <span className="block h-16" aria-hidden="true" /> : <CardBody issue={issue} assignee={assignee} subtasks={subtasks} />}
+      {isDragging ? <span className="block h-20" aria-hidden="true" /> : <CardBody {...body} />}
     </article>
   )
 }
