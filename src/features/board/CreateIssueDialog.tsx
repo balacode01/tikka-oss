@@ -27,7 +27,7 @@ type IssueType = (typeof TYPES)[number]
 const PRIORITIES = ['urgent', 'high', 'medium', 'low'] as const
 type Priority = (typeof PRIORITIES)[number]
 
-const labelClass = 'flex flex-col gap-1 text-sm font-medium'
+const labelClass = 'flex flex-col gap-1.5 text-sm font-medium'
 
 // Create issue (BRD §7.1, key C). Optional details sit in the same form.
 // The server picks the next key, and the To do status when none is chosen.
@@ -121,8 +121,8 @@ export function CreateIssueDialog({
         <Dialog.Popup className="fixed top-1/2 left-1/2 z-50 flex max-h-[85vh] w-[min(600px,calc(100vw-32px))] -translate-x-1/2 -translate-y-1/2 flex-col gap-4 overflow-y-auto rounded-lg border border-border bg-surface-raised p-6 text-text-primary shadow-modal">
           <Dialog.Title className="font-semibold text-xl">Create</Dialog.Title>
 
-          <form noValidate onSubmit={onSubmit} className="flex flex-col gap-4">
-            <div className="grid grid-cols-2 gap-3">
+          <form noValidate onSubmit={onSubmit} className="flex flex-col gap-5">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-5">
               <label className={labelClass}>
                 Type
                 <Select value={type} onChange={(e) => setType(e.target.value as IssueType)}>
@@ -162,7 +162,7 @@ export function CreateIssueDialog({
               />
             </label>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-5">
               <label className={labelClass}>
                 Status
                 <Select value={status || todoStatusId || ''} onChange={(e) => setStatus(e.target.value)}>
@@ -182,7 +182,7 @@ export function CreateIssueDialog({
               </label>
             </div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-5">
               <label className={labelClass}>
                 Epic
                 <Select value={epic} onChange={(e) => setEpic(e.target.value)} disabled={type === 'epic'}>
@@ -221,7 +221,7 @@ export function CreateIssueDialog({
               </label>
             )}
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-5">
               <Field
                 id="ci-points"
                 label="Story points"

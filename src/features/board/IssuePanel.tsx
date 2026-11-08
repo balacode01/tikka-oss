@@ -24,7 +24,7 @@ type Props = {
 
 const TYPES = ['task', 'story', 'bug', 'epic'] as const
 const PRIORITIES = ['urgent', 'high', 'medium', 'low'] as const
-const labelClass = 'flex flex-col gap-1 text-sm font-medium'
+const labelClass = 'flex flex-col gap-1.5 text-sm font-medium'
 
 // Side panel opened from a card (BRD §7.1: 560px, from the right).
 // Only the assignee can edit the issue. Everyone else sees it read-only.
@@ -127,7 +127,7 @@ function IssueForm({ issue, workspaceSlug, projectKey, currentUserId, statuses, 
   const disabled = !canEdit
 
   return (
-    <form noValidate onSubmit={save} className="flex flex-1 flex-col gap-4 p-6">
+    <form noValidate onSubmit={save} className="flex flex-1 flex-col gap-5 p-6">
       <div className="flex items-start gap-3">
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <p className="font-mono text-xs text-text-secondary">{issue.key}</p>
@@ -169,7 +169,7 @@ function IssueForm({ issue, workspaceSlug, projectKey, currentUserId, statuses, 
         />
       </label>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-x-4 gap-y-5">
         <label className={labelClass}>
           Status
           <Select value={status} onChange={(e) => setStatus(e.target.value)} disabled={disabled}>
