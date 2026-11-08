@@ -60,8 +60,8 @@ export function AppShell() {
 
   return (
     <div className="flex min-h-screen bg-surface-page text-text-primary">
-      <aside className="flex w-60 shrink-0 flex-col bg-primary text-on-primary" aria-label="Sidebar">
-        <div className="flex items-center gap-2.5 border-white/15 border-b px-3 py-3">
+      <aside className="sticky top-0 flex h-screen w-60 shrink-0 flex-col self-start bg-primary text-on-primary" aria-label="Sidebar">
+        <div className="flex shrink-0 items-center gap-2.5 border-white/15 border-b px-3 py-3">
           <span className="grid size-6 place-items-center rounded-sm bg-surface-raised text-[11px] font-semibold text-primary">
             {workspaceName.slice(0, 2).toUpperCase()}
           </span>
@@ -69,6 +69,7 @@ export function AppShell() {
           <ChevronsUpDown className="size-4 opacity-80" aria-hidden="true" />
         </div>
 
+        <div className="flex min-h-0 flex-1 flex-col overflow-y-auto">
         <nav className="flex flex-col gap-0.5 p-2">
           <NavLink to="/home" className={({ isActive }) => `${navBase} ${isActive ? navActive : ''}`}>
             <User className="size-4" aria-hidden="true" />
@@ -120,7 +121,9 @@ export function AppShell() {
           })}
         </div>
 
-        <div className="mt-auto flex flex-col gap-0.5 border-white/15 border-t p-2">
+        </div>
+
+        <div className="flex shrink-0 flex-col gap-0.5 border-white/15 border-t p-2">
           <button type="button" onClick={() => toast('Invites are not part of the MVP')} className={navBase}>
             <UserPlus className="size-4" aria-hidden="true" />
             Invite people
