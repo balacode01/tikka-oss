@@ -15,6 +15,7 @@ import { StatusPill } from '../board/StatusPill'
 import { useBoard, useWorkspaceMembers, type BoardIssue, type BoardStatus, type BoardMember } from '../board/useBoard'
 import { supabase } from '../../lib/supabase'
 import { useBacklogSprints, useEpicProgress, type SprintRow } from './useBacklog'
+import { BacklogSkeleton } from './BacklogSkeleton'
 
 const TYPE_ICON: Record<BoardIssue['type'], { icon: LucideIcon; color: string }> = {
   epic: { icon: Zap, color: 'text-type-epic' },
@@ -100,7 +101,7 @@ export function BacklogPage() {
     onError: (error) => toast(error.message),
   })
 
-  if (board.isPending) return <p className="text-sm text-text-secondary">Loading the backlog</p>
+  if (board.isPending || sprints.isPending) return <BacklogSkeleton />
   if (!board.data) return <p className="text-sm text-text-secondary">This project was not found, or you cannot see it.</p>
 
   const { project, statuses, issues } = board.data

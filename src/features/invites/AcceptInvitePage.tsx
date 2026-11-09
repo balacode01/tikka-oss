@@ -6,6 +6,7 @@ import { Button } from '../../components/Button'
 import { AuthLayout } from '../auth/AuthLayout'
 import { useSession } from '../../app/session-context'
 import { supabase } from '../../lib/supabase'
+import { AcceptInviteSkeleton } from './AcceptInviteSkeleton'
 
 type InviteInfo = {
   status: 'valid' | 'used' | 'expired' | 'revoked' | 'not_found'
@@ -32,7 +33,7 @@ export function AcceptInvitePage() {
     },
   })
 
-  if (invite.isPending || loading) return <p className="p-8 text-sm text-text-secondary">Loading the invite</p>
+  if (invite.isPending || loading) return <AcceptInviteSkeleton />
 
   const info = invite.data
   const next = `/invite/${token}`

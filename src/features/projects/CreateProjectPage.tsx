@@ -6,6 +6,7 @@ import { toast } from 'sonner'
 import { Button } from '../../components/Button'
 import { supabase } from '../../lib/supabase'
 import { useSession } from '../../app/session-context'
+import { CreateProjectSkeleton } from './CreateProjectSkeleton'
 
 type Template = 'scrum' | 'kanban'
 type Access = 'open' | 'invite_only'
@@ -68,7 +69,7 @@ export function CreateProjectPage() {
     navigate(`/w/${workspace}/p/${data.key}/board`, { replace: true })
   }
 
-  if (ws.isPending) return <p className="text-sm text-text-secondary">Loading</p>
+  if (ws.isPending) return <CreateProjectSkeleton />
   if (!ws.data) return <p className="text-sm text-text-secondary">This workspace was not found, or you cannot see it.</p>
 
   return (
