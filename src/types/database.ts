@@ -397,18 +397,24 @@ export type Database = {
           created_at: string
           display_name: string
           id: string
+          job_title: string | null
+          time_zone: string
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
           display_name: string
           id: string
+          job_title?: string | null
+          time_zone?: string
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
           display_name?: string
           id?: string
+          job_title?: string | null
+          time_zone?: string
         }
         Relationships: []
       }

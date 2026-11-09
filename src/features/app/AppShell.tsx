@@ -1,7 +1,7 @@
 import { Bell, ChevronDown, ChevronRight, ChevronsUpDown, LayoutGrid, Layers, List, Search, Settings, User, UserPlus } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router'
+import { Link, NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router'
 import { toast } from 'sonner'
 import { supabase } from '../../lib/supabase'
 import { useSession } from '../../app/session-context'
@@ -194,6 +194,13 @@ export function AppShell() {
               {menuOpen && (
                 <div className="absolute right-0 top-10 z-10 flex w-56 flex-col gap-1 rounded-md border border-border bg-surface-raised p-1 shadow-popover">
                   <p className="px-2 py-1 text-xs text-text-secondary">{name}</p>
+                  <Link
+                    to="/settings/profile"
+                    onClick={() => setMenuOpen(false)}
+                    className="rounded-sm px-2 py-1.5 text-left text-sm hover:bg-surface-hover"
+                  >
+                    Profile settings
+                  </Link>
                   <p className="px-2 pt-2 text-xs text-text-secondary">Theme</p>
                   {(['light', 'dark', 'system'] as const).map((option) => (
                     <button
