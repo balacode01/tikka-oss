@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Log in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Montserrat:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0}
+[data-theme]{--surface-page:#fafafa;--surface-raised:#ffffff;--surface-hover:#f4f4f5;--surface-selected:#eef2ff;--border:#e4e4e7;--border-strong:#8e8e96;--text-primary:#18181b;--text-secondary:#6b6b73;--primary:#4f46e5;--primary-hover:#4338ca;--on-primary:#ffffff;--primary-subtle-text:#3730a3;--status-todo:#71717a;--status-todo-bg:#f4f4f5;--status-todo-text:#3f3f46;--status-progress:#c2620a;--status-progress-bg:#fef3c7;--status-progress-text:#92400e;--status-done:#15963f;--status-done-bg:#dcfce7;--status-done-text:#166534;--danger:#dc2626;--on-danger:#ffffff;--danger-bg:#fee2e2;--danger-text:#991b1b;--type-epic:#7c3aed;--type-story:#15963f;--type-task:#2563eb;--type-bug:#dc2626;--type-subtask:#71717a;--font-sans:Montserrat,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;--font-mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;color-scheme:light}
+[data-theme="dark"]{--surface-page:#09090b;--surface-raised:#18181b;--surface-hover:#27272a;--surface-selected:#1e1b4b;--border:#27272a;--border-strong:#71717a;--text-primary:#fafafa;--text-secondary:#a1a1aa;--primary:#818cf8;--primary-hover:#a5b4fc;--on-primary:#1e1b4b;--primary-subtle-text:#c7d2fe;--status-todo:#a1a1aa;--status-todo-bg:#27272a;--status-todo-text:#d4d4d8;--status-progress:#f59e0b;--status-progress-bg:#422006;--status-progress-text:#fcd34d;--status-done:#4ade80;--status-done-bg:#052e16;--status-done-text:#86efac;--danger:#f87171;--on-danger:#450a0a;--danger-bg:#450a0a;--danger-text:#fca5a5;--type-epic:#a78bfa;--type-story:#4ade80;--type-task:#60a5fa;--type-bug:#f87171;--type-subtask:#a1a1aa;color-scheme:dark}
+[data-theme] *,[data-theme] *::before,[data-theme] *::after{box-sizing:border-box}
+a{color:var(--primary)}a:hover{color:var(--primary-hover)}
+.ic{display:block;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+.tk-hover:hover{background:var(--surface-hover)!important}
+.tk-primary:hover{background:var(--primary-hover)!important;border-color:var(--primary-hover)!important}
+.tk-link:hover{color:var(--primary-hover)!important;text-decoration:underline}
+input::placeholder,textarea::placeholder{color:var(--text-secondary);opacity:1}
+.su-form{flex:0 0 560px;max-width:100%;min-width:0;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;padding:48px 80px}
+.su-brand{flex:1 1 0;min-width:0;box-sizing:border-box;display:flex;flex-direction:column;justify-content:center;gap:40px;padding:64px;background:var(--surface-selected)}
+.su-board{width:100%;max-width:520px;box-sizing:border-box;padding:16px;border:1px solid var(--border);border-radius:8px;background:var(--surface-raised);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.su-col{display:flex;flex-direction:column;gap:8px;padding:8px;border-radius:8px;background:var(--surface-hover)}
+.su-col-head{display:flex;align-items:center;gap:6px;height:12px}
+.su-dot{width:8px;height:8px;flex-shrink:0;border-radius:9999px}
+.su-tile{display:flex;flex-direction:column;justify-content:center;gap:6px;padding:0 10px;border-radius:8px}
+.su-bar{display:block;height:6px;border-radius:9999px;background:var(--surface-raised)}
+.su-mark{display:none}
+@media (max-width:959px){.su-brand{display:none}.su-form{flex-basis:100%;padding:32px 16px}.su-mark{display:block}}
+</style>
+</helmet>
+<div data-theme="{{ theme }}" style="min-height: 100vh; display: flex; flex-wrap: wrap; background: var(--surface-page); color: var(--text-primary); font-family: var(--font-sans); font-size: 14px; line-height: 20px;">
+  <main class="su-form">
+    <div style="width: 100%; max-width: 400px; margin: 0 auto; display: flex; flex-direction: column; gap: 24px;">
+    <p class="su-mark" style="margin: 0; font: 600 20px/28px var(--font-sans); letter-spacing: -0.01em; color: var(--text-primary);">Tikka</p>
+    <h1 style="margin: 0; font: 600 20px/28px var(--font-sans); letter-spacing: -0.01em; color: var(--text-primary);">Log in to Tikka</h1>
+    <div role="alert" style="display: flex; align-items: flex-start; gap: 8px; padding: 12px; border-radius: 6px; background: var(--danger-bg); color: var(--danger-text); font: 400 14px/20px var(--font-sans);">
+        <svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true" style="color: var(--danger); margin-top: 2px;"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>
+        <p style="margin: 0; font: 400 14px/20px var(--font-sans); color: var(--danger-text);">That email and password don't match. Try again or <a href="ForgotPassword.dc.html" style="color: var(--danger-text); font-weight: 500; text-decoration: underline;">reset your password</a>.</p>
+      </div>
+    <form noValidate="{{ yes }}" onSubmit="{{ onSubmit }}" style="display: flex; flex-direction: column; gap: 16px; margin: 0;">
+        <button type="button" class="tk-hover" style="width: 100%; height: 32px; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary); font: 500 14px/20px var(--font-sans); cursor: pointer;">
+          <span aria-hidden="true" style="width: 16px; height: 16px; flex-shrink: 0; display: grid; place-items: center; border: 1px solid var(--border-strong); border-radius: 9999px; color: var(--text-secondary); font: 500 10px/12px var(--font-sans);">G</span>
+          <span>Continue with Google</span>
+        </button>
+        <div style="display: flex; align-items: center; gap: 12px; font: 400 12px/16px var(--font-sans); color: var(--text-secondary);">
+          <span aria-hidden="true" style="flex: 1 1 auto; height: 1px; background: var(--border);"></span>
+          <span>or</span>
+          <span aria-hidden="true" style="flex: 1 1 auto; height: 1px; background: var(--border);"></span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <label for="li-email" style="font: 500 14px/20px var(--font-sans); color: var(--text-primary);">Email</label>
+          <input id="li-email" type="email" autoComplete="email" placeholder="name@company.com" value="{{ email }}" onChange="{{ onEmail }}" style="width: 100%; height: 32px; margin: 0; padding: 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary); font: 400 14px/20px var(--font-sans);">
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 4px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;"><label for="li-password" style="font: 500 14px/20px var(--font-sans); color: var(--text-primary);">Password</label><a href="ForgotPassword.dc.html" class="tk-link" style="color: var(--primary); font: 400 13px/18px var(--font-sans); text-decoration: none;">Forgot password?</a></div>
+          <div style="position: relative;">
+            <input id="li-password" type="{{ pwType }}" autoComplete="new-password" value="{{ pw }}" onChange="{{ onPw }}" aria-invalid="false" style="width: 100%; height: 32px; margin: 0; padding: 0 40px 0 12px; border: 1px solid var(--border-strong); border-radius: 6px; background: var(--surface-raised); color: var(--text-primary); font: 400 14px/20px var(--font-sans);">
+            <button type="button" onClick="{{ togglePw }}" aria-label="Show password" aria-pressed="{{ pwShown }}" class="tk-hover" style="position: absolute; top: 4px; right: 4px; width: 24px; height: 24px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 6px; background: transparent; color: var(--text-secondary); cursor: pointer;">
+              <sc-if value="{{ pwShown }}" hint-placeholder-val="{{ false }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"></path><path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"></path><path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"></path><line x1="2" x2="22" y1="2" y2="22"></line></svg></sc-if>
+              <sc-if value="{{ pwHidden }}" hint-placeholder-val="{{ true }}"><svg class="ic" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg></sc-if>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="tk-primary" style="width: 100%; height: 32px; display: flex; align-items: center; justify-content: center; padding: 0 12px; border: 1px solid var(--primary); border-radius: 6px; background: var(--primary); color: var(--on-primary); font: 500 14px/20px var(--font-sans); cursor: pointer;">Log in</button>
+      </form>
+    <p style="margin: 0; text-align: center; font: 400 14px/20px var(--font-sans); color: var(--text-secondary);">New to Tikka? <a href="SignUp.dc.html" class="tk-link" style="color: var(--primary); font-weight: 500; text-decoration: none;">Create an account</a></p>
+    </div>
+  </main>
+
+  <aside class="su-brand" aria-label="Tikka">
+    <div style="display: flex; flex-direction: column; gap: 12px; max-width: 520px;">
+      <p style="margin: 0; font: 600 56px/64px var(--font-sans); letter-spacing: -0.02em; color: var(--text-primary);">Tikka</p>
+      <p style="margin: 0; font: 400 20px/28px var(--font-sans); color: var(--primary-subtle-text);">Plan, track and ship work with your team.</p>
+    </div>
+
+    <div aria-hidden="true" class="su-board">
+      <div class="su-col">
+        <div class="su-col-head"><span class="su-dot" style="background: var(--status-todo);"></span><span class="su-bar" style="width: 50%; background: var(--border-strong);"></span></div>
+        <div class="su-tile" style="height: 64px; background: var(--text-primary);"><span class="su-bar" style="width: 60%;"></span><span class="su-bar" style="width: 36%;"></span></div>
+        <div class="su-tile" style="height: 44px; background: var(--primary);"><span class="su-bar" style="width: 48%;"></span></div>
+      </div>
+      <div class="su-col">
+        <div class="su-col-head"><span class="su-dot" style="background: var(--status-progress);"></span><span class="su-bar" style="width: 50%; background: var(--border-strong);"></span></div>
+        <div class="su-tile" style="height: 72px; background: var(--status-progress);"><span class="su-bar" style="width: 56%;"></span><span class="su-bar" style="width: 30%;"></span></div>
+        <div class="su-tile" style="height: 44px; background: var(--primary);"><span class="su-bar" style="width: 42%;"></span></div>
+      </div>
+      <div class="su-col">
+        <div class="su-col-head"><span class="su-dot" style="background: var(--status-done);"></span><span class="su-bar" style="width: 50%; background: var(--border-strong);"></span></div>
+        <div class="su-tile" style="height: 56px; background: var(--status-done);"><span class="su-bar" style="width: 52%;"></span></div>
+        <div class="su-tile" style="height: 44px; background: var(--status-done);"><span class="su-bar" style="width: 64%;"></span><span class="su-bar" style="width: 30%;"></span></div>
+      </div>
+    </div>
+  </aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"theme":{"editor":"enum","options":["Light","Dark"],"default":"Light","section":"Theme"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  constructor(...args) {
+    super(...args);
+    this.state = {};
+  }
+
+  renderVals() {
+    const s = this.state || {};
+    const theme = String(this.props.theme ?? 'Light').toLowerCase() === 'dark' ? 'dark' : 'light';
+    const email = s.email === undefined ? 'priya@lumenlabs.example' : s.email;
+    const pw = s.pw === undefined ? 'lumen-labs-2025' : s.pw;
+    const shown = !!s.pwShown;
+    return {
+      yes: true,
+      theme: theme,
+      email: email,
+      pw: pw,
+      onEmail: (e) => this.setState({ email: e.target.value }),
+      onPw: (e) => this.setState({ pw: e.target.value }),
+      pwType: shown ? 'text' : 'password',
+      pwShown: shown,
+      pwHidden: !shown,
+      togglePw: () => this.setState({ pwShown: !shown }),
+      onSubmit: (e) => e.preventDefault()
+    };
+  }
+}
+</script>
+</body>
+</html>

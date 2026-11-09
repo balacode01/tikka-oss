@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --color-surface-page: var(--surface-page);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-hover: var(--surface-hover);
+  --color-surface-selected: var(--surface-selected);
+  --color-surface-header: var(--surface-header);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-on-primary: var(--on-primary);
+  --color-primary-subtle-text: var(--primary-subtle-text);
+  --color-status-todo: var(--status-todo);
+  --color-status-progress: var(--status-progress);
+  --color-status-done: var(--status-done);
+  --color-danger: var(--danger);
+  --color-on-danger: var(--on-danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-danger-text: var(--danger-text);
+  --color-type-epic: var(--type-epic);
+  --color-type-story: var(--type-story);
+  --color-type-task: var(--type-task);
+  --color-type-bug: var(--type-bug);
+  --color-type-subtask: var(--type-subtask);
+  --shadow-popover: var(--shadow-popover-value);
+  --shadow-modal: var(--shadow-modal-value);
+  --font-sans: Montserrat, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+}
+
+:root {
+  --surface-page:#f7f7f7; --surface-raised:#ffffff; --surface-hover:#e2e6e9; --surface-selected:#d6d9de; --surface-header:#f7f7f7;
+  --border:#dcdcdc; --border-strong:#9a9a9a; --text-primary:#2b2b29; --text-secondary:#6b6b6b;
+  --primary:#071b2b; --primary-hover:#13324d; --on-primary:#ffffff; --primary-subtle-text:#0c2d45;
+  --status-todo:#71717a; --status-todo-bg:#f4f4f5; --status-todo-text:#3f3f46;
+  --status-progress:#c2620a; --status-progress-bg:#fef3c7; --status-progress-text:#92400e;
+  --status-done:#15963f; --status-done-bg:#dcfce7; --status-done-text:#166534;
+  --danger:#dc2626; --on-danger:#ffffff; --danger-bg:#fee2e2; --danger-text:#991b1b;
+  --type-epic:#7c3aed; --type-story:#15963f; --type-task:#2563eb; --type-bug:#dc2626; --type-subtask:#71717a;
+  --shadow-popover-value:0 4px 12px rgba(24,24,27,.08), 0 1px 3px rgba(24,24,27,.06);
+  --shadow-modal-value:0 16px 40px rgba(24,24,27,.16), 0 2px 8px rgba(24,24,27,.08);
+  color-scheme: light;
+}
+:root[data-theme="dark"] {
+  --surface-page:#0b1118; --surface-raised:#12202b; --surface-hover:#1b2c38; --surface-selected:#16303f; --surface-header:#0f1a22;
+  --border:#213340; --border-strong:#4a6172; --text-primary:#eef2f4; --text-secondary:#9fb0bb;
+  --primary:#8fb8d1; --primary-hover:#b3d2e3; --on-primary:#071b2b; --primary-subtle-text:#cfe4f0;
+  --status-todo:#a1a1aa; --status-todo-bg:#27272a; --status-todo-text:#d4d4d8;
+  --status-progress:#f59e0b; --status-progress-bg:#422006; --status-progress-text:#fcd34d;
+  --status-done:#4ade80; --status-done-bg:#052e16; --status-done-text:#86efac;
+  --danger:#f87171; --on-danger:#450a0a; --danger-bg:#450a0a; --danger-text:#fca5a5;
+  --type-epic:#a78bfa; --type-story:#4ade80; --type-task:#60a5fa; --type-bug:#f87171; --type-subtask:#a1a1aa;
+  --shadow-popover-value:0 4px 12px rgba(0,0,0,.5), 0 1px 3px rgba(0,0,0,.4);
+  --shadow-modal-value:0 16px 40px rgba(0,0,0,.6), 0 2px 8px rgba(0,0,0,.5);
+  color-scheme: dark;
+}
+:root {
+  --font-sans: Montserrat, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-6:24px; --space-8:32px; --space-12:48px;
+  --radius-sm:6px; --radius-md:8px; --radius-lg:12px; --radius-full:9999px;
+  --control-height:32px; --topbar-height:48px; --sidebar-width:240px; --sidebar-width-collapsed:56px;
+  --column-width:280px; --panel-width:560px;
+}
+body { margin: 0; background: var(--surface-page); color: var(--text-primary); font: 400 14px/20px var(--font-sans); }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+/* Loading skeletons: a moving highlight over the surface tokens, so it follows light and dark themes. */
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to { background-position: -200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--surface-hover) 25%, var(--surface-selected) 50%, var(--surface-hover) 75%) 0 0 / 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .skeleton { animation: none; }
+}
