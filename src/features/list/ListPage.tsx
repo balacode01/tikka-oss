@@ -13,6 +13,7 @@ import { StatusPill } from '../board/StatusPill'
 import { useBoard, useWorkspaceMembers, type BoardMember, type BoardStatus } from '../board/useBoard'
 import { useBacklogSprints } from '../backlog/useBacklog'
 import { FilterMenu } from './FilterMenu'
+import { ListRowsSkeleton, ListSkeleton } from './ListSkeleton'
 import { useListIssues, type ListFilters, type ListRow, type SortKey } from './useListIssues'
 
 const PAGE = 15
@@ -173,7 +174,7 @@ export function ListPage() {
     onError: (error) => toast(error.message),
   })
 
-  if (board.isPending) return <p className="text-sm text-text-secondary">Loading the list</p>
+  if (board.isPending) return <ListSkeleton />
   if (!board.data) return <p className="text-sm text-text-secondary">This project was not found, or you cannot see it.</p>
 
   const { project, statuses, issues } = board.data
@@ -341,7 +342,7 @@ export function ListPage() {
               })}
             </tbody>
           </table>
-          {list.isPending && <p className="px-4 py-6 text-sm text-text-secondary">Loading issues</p>}
+          {list.isPending && <ListRowsSkeleton />}
           {!list.isPending && rows.length === 0 && (
             <div className="flex flex-col items-center gap-2 px-4 py-16 text-center">
               {hasFilters ? (
