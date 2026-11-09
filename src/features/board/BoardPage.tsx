@@ -14,6 +14,7 @@ import { BoardColumn } from './BoardColumn'
 import { CardBody, type SubtaskProgress } from './IssueCard'
 import { CreateIssueDialog } from './CreateIssueDialog'
 import { IssuePanel } from './IssuePanel'
+import { BoardSkeleton } from './BoardSkeleton'
 import { useActiveSprint, useBoard, useMoveIssue, useProjectSprints, useWorkspaceMembers, type BoardIssue, type BoardMember, type ProjectOption } from './useBoard'
 
 // Sprint board, following the "Board" artboard: sprint header with progress, filter bar, columns.
@@ -83,7 +84,7 @@ export function BoardPage() {
     return map
   }, [members.data])
 
-  if (board.isPending) return <p className="text-sm text-text-secondary">Loading the board</p>
+  if (board.isPending || activeSprint.isPending) return <BoardSkeleton />
   if (board.isError) return <p role="alert" className="text-sm text-danger-text">The board could not load. Refresh the page to try again.</p>
   if (!board.data) {
     return <p className="text-sm text-text-secondary">This project was not found, or you cannot see it.</p>

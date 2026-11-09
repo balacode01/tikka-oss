@@ -7,6 +7,7 @@ import { Select } from '../../components/Select'
 import { useSession } from '../../app/session-context'
 import { applyTheme, readThemePreference, saveThemePreference, type ThemePreference } from '../../app/theme'
 import { supabase } from '../../lib/supabase'
+import { ProfileSkeleton } from './ProfileSkeleton'
 
 const MAX_NAME_LENGTH = 100
 
@@ -58,7 +59,7 @@ export function ProfileSettingsPage() {
     },
   })
 
-  if (profile.isPending) return <p className="text-sm text-text-secondary">Loading</p>
+  if (profile.isPending) return <ProfileSkeleton />
   if (!profile.data || !session) return <p className="text-sm text-text-secondary">Your profile could not be loaded.</p>
 
   return (

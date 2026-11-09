@@ -7,6 +7,7 @@ import { relativeTime } from '../../lib/relativeTime'
 import { supabase } from '../../lib/supabase'
 import { PRIORITY_ICON, TYPE_ICON } from '../board/issueIcons'
 import { StatusPill } from '../board/StatusPill'
+import { HomeSkeleton } from './HomeSkeleton'
 
 type IssueType = 'epic' | 'story' | 'task' | 'bug' | 'subtask'
 type Priority = 'urgent' | 'high' | 'medium' | 'low'
@@ -128,8 +129,10 @@ export function HomePage() {
     },
   })
 
-  if (workspaces.isPending) return <p className="text-sm text-text-secondary">Loading your work</p>
+  if (workspaces.isPending) return <HomeSkeleton />
   if (!workspace) return <NoWorkspace />
+  // Wait for the home data, so empty states never show while it loads.
+  if (home.isPending) return <HomeSkeleton />
 
   const data = home.data
   const noProjects = data && data.projects.length === 0
