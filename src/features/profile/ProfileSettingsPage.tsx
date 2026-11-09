@@ -1,4 +1,5 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { AlertDialog } from '@base-ui/react/alert-dialog'
 import { LoaderCircle, Trash2, Upload } from 'lucide-react'
 import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { toast } from 'sonner'
@@ -129,6 +130,7 @@ function ProfileSection({
   // Photo changes wait here until Save. A new photo is a file to upload; a removal clears the photo on save.
   const [newPhoto, setNewPhoto] = useState<{ file: File; preview: string } | null>(null)
   const [photoRemoved, setPhotoRemoved] = useState(false)
+  const [confirmRemove, setConfirmRemove] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [serverError, setServerError] = useState('')
   const [photoError, setPhotoError] = useState('')
@@ -278,7 +280,7 @@ function ProfileSection({
               <Upload className="size-4" aria-hidden="true" />
               {shownPhoto ? 'Replace photo' : 'Upload photo'}
             </Button>
-            <Button disabled={!shownPhoto || pending} onClick={removePhoto}>
+            <Button disabled={!shownPhoto || pending} onClick={() => setConfirmRemove(true)}>
               <Trash2 className="size-4" aria-hidden="true" />
               Remove
             </Button>
@@ -290,6 +292,28 @@ function ProfileSection({
               aria-label="Choose a profile photo"
               className="hidden"
             />
+            <AlertDialog.Root open={confirmRemove} onOpenChange={setConfirmRemove}>
+              <AlertDialog.Portal>
+                <AlertDialog.Backdrop className="fixed inset-0 bg-black/40" />
+                <AlertDialog.Popup className="fixed top-1/2 left-1/2 z-50 flex w-[min(420px,calc(100vw-32px))] -translate-x-1/2 -translate-y-1/2 flex-col gap-4 rounded-lg border border-border bg-surface-raised p-6 text-text-primary shadow-modal">
+                  <AlertDialog.Title className="font-semibold text-lg">Remove profile photo?</AlertDialog.Title>
+                  <AlertDialog.Description className="text-sm text-text-secondary">
+                    Your photo is removed when you save changes. Your initials show instead.
+                  </AlertDialog.Description>
+                  <div className="flex justify-end gap-2">
+                    <AlertDialog.Close className="inline-flex h-8 cursor-pointer items-center rounded-sm border border-border-strong bg-surface-raised px-3 text-sm font-medium text-text-primary hover:bg-surface-hover">
+                      Cancel
+                    </AlertDialog.Close>
+                    <AlertDialog.Close
+                      onClick={removePhoto}
+                      className="inline-flex h-8 cursor-pointer items-center rounded-sm bg-danger px-3 text-sm font-medium text-on-danger hover:opacity-90"
+                    >
+                      Remove photo
+                    </AlertDialog.Close>
+                  </div>
+                </AlertDialog.Popup>
+              </AlertDialog.Portal>
+            </AlertDialog.Root>
           </div>
           {photoError ? (
             <p role="alert" className="text-xs text-danger-text">{photoError}</p>
