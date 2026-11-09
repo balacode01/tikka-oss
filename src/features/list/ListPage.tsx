@@ -13,6 +13,7 @@ import { StatusPill } from '../board/StatusPill'
 import { useBoard, useWorkspaceMembers, type BoardMember, type BoardStatus } from '../board/useBoard'
 import { useBacklogSprints } from '../backlog/useBacklog'
 import { FilterMenu } from './FilterMenu'
+import { SkeletonBlock } from '../../components/Skeleton'
 import { ListRowsSkeleton, ListSkeleton } from './ListSkeleton'
 import { useListIssues, type ListFilters, type ListRow, type SortKey } from './useListIssues'
 
@@ -340,10 +341,10 @@ export function ListPage() {
                   </tr>
                 )
               })}
+              {(list.isPending || list.isPlaceholderData) && <ListRowsSkeleton rows={list.isPending ? 8 : 3} />}
             </tbody>
           </table>
-          {list.isPending && <ListRowsSkeleton />}
-          {!list.isPending && rows.length === 0 && (
+          {!list.isPending && !list.isPlaceholderData && rows.length === 0 && (
             <div className="flex flex-col items-center gap-2 px-4 py-16 text-center">
               {hasFilters ? (
                 <>
@@ -365,10 +366,15 @@ export function ListPage() {
         </div>
 
         <div className="flex items-center justify-between text-[13px] text-text-secondary">
-          <span className="tabular-nums">Showing {rows.length} of {total}</span>
-          {rows.length < total && (
-            <Button onClick={() => setLimit((l) => l + PAGE)}>Load more</Button>
+          {list.isPending ? (
+            <SkeletonBlock className="h-3.5 w-28" />
+          ) : (
+            <span className="tabular-nums">Showing {rows.length} of {total}</span>
           )}
+          {!list.isPending && rows.length < total && (
+            <Button disabled={list.isPlaceholderData} onClick={() => setLimit((l) => l + PAGE)}>Load more</Button>
+          )}
+          {list.isFetching && <span role="status" className="sr-only">Loading issues</span>}
         </div>
 
         {selected.size > 0 && (
