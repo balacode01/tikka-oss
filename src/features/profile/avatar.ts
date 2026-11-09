@@ -11,52 +11,23 @@ export function avatarFileError(file: File): string | null {
   return null
 }
 
-// Storage path inside the bucket, taken from a public URL, so the old file can be removed.
-function pathFromUrl(url: string) {
-  const marker = `/object/public/${BUCKET}/`
-  const index = url.indexOf(marker)
-  return index === -1 ? null : decodeURIComponent(url.slice(index + marker.length))
-}
-
-async function removeFile(url: string | null) {
-  const path = url ? pathFromUrl(url) : null
-  if (path) await supabase.storage.from(BUCKET).remove([path])
-}
-
-// Uploads the photo to the signed-in person's own folder, saves its URL on the profile, and removes the
-// previous photo. Each upload gets a new random name, so browsers never show an old photo from cache.
-export async function uploadAvatar(userId: string, file: File, previousUrl: string | null): Promise<string> {
+// Uploads the photo to the signed-in person's own folder and returns its public URL. Each upload gets a new
+// random name, so browsers never show an old photo from cache. The profile row is updated by the caller.
+export async function uploadAvatarFile(userId: string, file: File): Promise<string> {
   const extension = file.type === 'image/png' ? 'png' : 'jpg'
   const path = `${userId}/${crypto.randomUUID()}.${extension}`
 
-  const { error: uploadError } = await supabase.storage.from(BUCKET).upload(path, file, { contentType: file.type, cacheControl: '3600' })
-  if (uploadError) throw uploadError
-
-  const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(path)
-  const { error: profileError } = await supabase
-    .from('profiles')
-    .update({ avatar_url: urlData.publicUrl })
-    .eq('id', userId)
-    .select('avatar_url')
-    .single()
-  if (profileError) {
-    await supabase.storage.from(BUCKET).remove([path])
-    throw profileError
-  }
-
-  await removeFile(previousUrl)
-  return urlData.publicUrl
-}
-
-// Clears the photo from the profile, then removes the file.
-export async function removeAvatar(userId: string, previousUrl: string) {
-  const { error } = await supabase
-    .from('profiles')
-    .update({ avatar_url: null })
-    .eq('id', userId)
-    .select('avatar_url')
-    .single()
+  const { error } = await supabase.storage.from(BUCKET).upload(path, file, { contentType: file.type, cacheControl: '3600' })
   if (error) throw error
 
-  await removeFile(previousUrl)
+  return supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl
+}
+
+// Removes a photo file from the bucket, given its public URL. Anything that is not one of our files is ignored.
+export async function deleteAvatarFile(url: string) {
+  const marker = `/object/public/${BUCKET}/`
+  const index = url.indexOf(marker)
+  if (index === -1) return
+  const path = decodeURIComponent(url.slice(index + marker.length))
+  await supabase.storage.from(BUCKET).remove([path])
 }
