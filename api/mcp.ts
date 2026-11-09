@@ -1,3 +1,4 @@
+/// <reference types="node" />
 import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import { WebStandardStreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/webStandardStreamableHttp.js'
 import { createClient } from '@supabase/supabase-js'
@@ -6,8 +7,6 @@ import { z } from 'zod'
 // Tikka's MCP endpoint (/api/mcp). Every request must carry the signed-in person's Supabase access token as
 // "Authorization: Bearer <token>". Tools query Supabase with that token, so Row Level Security decides what
 // the person can see or change. The service role key is never used here.
-export const config = { runtime: 'edge' }
-
 function userClient(token: string) {
   return createClient(process.env.VITE_SUPABASE_URL!, process.env.VITE_SUPABASE_PUBLISHABLE_KEY!, {
     global: { headers: { Authorization: `Bearer ${token}` } },
