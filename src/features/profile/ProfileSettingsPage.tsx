@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { LoaderCircle, Upload } from 'lucide-react'
-import { useState, type FormEvent } from 'react'
+import { LoaderCircle, Trash2, Upload } from 'lucide-react'
+import { useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
 import { Select } from '../../components/Select'
@@ -8,6 +8,7 @@ import { useSession } from '../../app/session-context'
 import { applyTheme, readThemePreference, saveThemePreference, type ThemePreference } from '../../app/theme'
 import { supabase } from '../../lib/supabase'
 import { ProfileSkeleton } from './ProfileSkeleton'
+import { avatarFileError, removeAvatar, uploadAvatar } from './avatar'
 
 const MAX_NAME_LENGTH = 100
 
@@ -51,7 +52,7 @@ export function ProfileSettingsPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from('profiles')
-        .select('display_name, job_title, time_zone')
+        .select('display_name, job_title, time_zone, avatar_url')
         .eq('id', userId!)
         .single()
       if (error) throw error
@@ -87,6 +88,7 @@ export function ProfileSettingsPage() {
           jobTitle: profile.data.job_title ?? '',
           timeZone: profile.data.time_zone,
         }}
+        avatarUrl={profile.data.avatar_url}
         avatarInitials={initialsOf(profile.data.display_name)}
       />
       <AppearanceSection />
@@ -109,14 +111,19 @@ function ProfileSection({
   email,
   verified,
   saved: savedDetails,
+  avatarUrl,
   avatarInitials,
 }: {
   email: string
   verified: boolean
   saved: ProfileDetails
+  avatarUrl: string | null
   avatarInitials: string
 }) {
   const queryClient = useQueryClient()
+  const photoInput = useRef<HTMLInputElement>(null)
+  const [photoBusy, setPhotoBusy] = useState<string | null>(null)
+  const [photoError, setPhotoError] = useState('')
   const [name, setName] = useState(savedDetails.name)
   const [jobTitle, setJobTitle] = useState(savedDetails.jobTitle)
   const [timeZone, setTimeZone] = useState(savedDetails.timeZone)
@@ -133,6 +140,53 @@ function ProfileSection({
       ? `Use ${MAX_NAME_LENGTH} characters or fewer`
       : undefined
   const changed = trimmed !== saved.name || trimmedJobTitle !== saved.jobTitle || timeZone !== saved.timeZone
+
+  // The photo is uploaded or removed as soon as it is chosen. It is saved on the profile straight away,
+  // so the form's Save button does not need to be involved.
+  async function currentUserId() {
+    const { data, error } = await supabase.auth.getUser()
+    if (error || !data.user) throw new Error('Your session has ended. Log in again.')
+    return data.user.id
+  }
+
+  async function choosePhoto(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0]
+    event.target.value = '' // lets the same file be chosen again
+    if (!file) return
+
+    const problem = avatarFileError(file)
+    if (problem) {
+      setPhotoError(problem)
+      return
+    }
+
+    setPhotoError('')
+    setPhotoBusy('Uploading photo')
+    try {
+      await uploadAvatar(await currentUserId(), file, avatarUrl)
+      toast('Photo updated')
+      await queryClient.invalidateQueries({ queryKey: ['my-profile'] })
+    } catch (error) {
+      setPhotoError(error instanceof Error ? error.message : 'The photo could not be uploaded. Try again.')
+    } finally {
+      setPhotoBusy(null)
+    }
+  }
+
+  async function clearPhoto() {
+    if (!avatarUrl) return
+    setPhotoError('')
+    setPhotoBusy('Removing photo')
+    try {
+      await removeAvatar(await currentUserId(), avatarUrl)
+      toast('Photo removed')
+      await queryClient.invalidateQueries({ queryKey: ['my-profile'] })
+    } catch (error) {
+      setPhotoError(error instanceof Error ? error.message : 'The photo could not be removed. Try again.')
+    } finally {
+      setPhotoBusy(null)
+    }
+  }
 
   async function save(event: FormEvent) {
     event.preventDefault()
@@ -188,26 +242,45 @@ function ProfileSection({
       </div>
 
       <form noValidate onSubmit={save} className="flex flex-col gap-4">
-        {pending && (
+        {(pending || photoBusy) && (
           <div role="status" aria-live="polite" className="fixed inset-0 z-50 grid cursor-wait place-items-center bg-surface-page/60">
             <div className="flex items-center gap-3 rounded-md border border-border bg-surface-raised px-5 py-4 text-sm font-medium text-text-primary shadow-popover">
               <LoaderCircle className="size-5 animate-spin text-primary" aria-hidden="true" />
-              Saving your profile
+              {photoBusy ?? 'Saving your profile'}
             </div>
           </div>
         )}
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-4">
-            <span aria-hidden="true" className="grid size-20 shrink-0 place-items-center rounded-full bg-surface-selected text-xl font-medium text-text-primary">
-              {avatarInitials}
-            </span>
-            <Button onClick={() => toast('Photo upload is not available yet')}>
+            {avatarUrl ? (
+              <img src={avatarUrl} alt="Your profile photo" className="size-20 shrink-0 rounded-full object-cover" />
+            ) : (
+              <span aria-hidden="true" className="grid size-20 shrink-0 place-items-center rounded-full bg-surface-selected text-xl font-medium text-text-primary">
+                {avatarInitials}
+              </span>
+            )}
+            <Button disabled={photoBusy !== null} onClick={() => photoInput.current?.click()}>
               <Upload className="size-4" aria-hidden="true" />
-              Upload photo
+              {avatarUrl ? 'Replace photo' : 'Upload photo'}
             </Button>
-            <Button onClick={() => toast('Photo upload is not available yet')}>Remove</Button>
+            <Button disabled={!avatarUrl || photoBusy !== null} onClick={clearPhoto}>
+              <Trash2 className="size-4" aria-hidden="true" />
+              Remove
+            </Button>
+            <input
+              ref={photoInput}
+              type="file"
+              accept="image/jpeg,image/png"
+              onChange={choosePhoto}
+              aria-label="Choose a profile photo"
+              className="hidden"
+            />
           </div>
-          <p className="text-xs text-text-secondary">JPG or PNG, up to 2 MB.</p>
+          {photoError ? (
+            <p role="alert" className="text-xs text-danger-text">{photoError}</p>
+          ) : (
+            <p className="text-xs text-text-secondary">JPG or PNG, up to 2 MB.</p>
+          )}
         </div>
 
         <label className="flex flex-col gap-1">
