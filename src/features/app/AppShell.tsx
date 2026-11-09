@@ -1,4 +1,4 @@
-import { Bell, ChevronDown, ChevronRight, ChevronsUpDown, LayoutGrid, Layers, List, Search, Settings, User, UserPlus } from 'lucide-react'
+import { Bell, ChevronDown, ChevronRight, ChevronsUpDown, CircleHelp, LayoutGrid, Layers, List, Search, Settings, User, UserPlus } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router'
@@ -178,6 +178,9 @@ export function AppShell() {
             >
               + Create
             </button>
+            <Link to="/help" aria-label="Help" className="grid size-8 place-items-center rounded-sm text-text-secondary hover:bg-surface-hover">
+              <CircleHelp className="size-5" aria-hidden="true" />
+            </Link>
             <button type="button" aria-label="Notifications" className="grid size-8 place-items-center rounded-sm text-text-secondary hover:bg-surface-hover">
               <Bell className="size-5" aria-hidden="true" />
             </button>
