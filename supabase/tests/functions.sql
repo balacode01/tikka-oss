@@ -100,8 +100,8 @@ select pg_temp.expect_error(
 
 select set_config('test.proj', (select p.id from public.create_project(current_setting('test.ws')::uuid, 'Mobile app', 'MOB', 'scrum', 'open') as p)::text, true);
 select pg_temp.expect(
-  (select count(*) from public.statuses where project_id = current_setting('test.proj')::uuid) = 3,
-  'create_project should create To do, In progress and Done'
+  (select count(*) from public.statuses where project_id = current_setting('test.proj')::uuid) = 8,
+  'create_project should create the eight default statuses, from To do to Done'
 );
 select pg_temp.expect(
   (select count(*) from public.project_members
@@ -115,9 +115,9 @@ select pg_temp.expect_error(
 );
 
 select set_config('test.todo', (select st.id from public.statuses as st
-  where st.project_id = current_setting('test.proj')::uuid and st.category = 'todo')::text, true);
+  where st.project_id = current_setting('test.proj')::uuid and st.name = 'To do')::text, true);
 select set_config('test.done', (select st.id from public.statuses as st
-  where st.project_id = current_setting('test.proj')::uuid and st.category = 'done')::text, true);
+  where st.project_id = current_setting('test.proj')::uuid and st.name = 'Done')::text, true);
 
 -- ---------------------------------------------------------------------------
 -- Issues: numbering, labels, default status, rank and history

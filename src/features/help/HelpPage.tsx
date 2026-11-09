@@ -59,9 +59,9 @@ const NOT_AVAILABLE = [
 ]
 
 const STATUS_EXAMPLES = [
-  { name: 'To do', category: 'todo' as const, detail: 'Not started yet.' },
-  { name: 'In progress', category: 'in_progress' as const, detail: 'Being worked on.' },
-  { name: 'Done', category: 'done' as const, detail: 'Finished. Done issues leave the Open tab on Your work.' },
+  { name: 'To do', category: 'todo' as const, detail: 'Not started yet. Also includes Weekly Target and Today’s Task.' },
+  { name: 'In progress', category: 'in_progress' as const, detail: 'Being worked on. Also includes Unit Testing and On-hold.' },
+  { name: 'Done', category: 'done' as const, detail: 'Finished. Also includes Fixed. Done issues leave the Open tab on Your work.' },
 ]
 
 // Help for new and existing users. Each topic is its own card: a numbered heading, a one-line summary,
