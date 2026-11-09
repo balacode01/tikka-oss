@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { supabase } from '../../lib/supabase'
 
 export type ListFilters = {
@@ -42,10 +42,13 @@ function cleanSearch(text: string) {
 }
 
 // Issues in a project as a list, filtered and sorted on the server. Pages of 15 with an exact total.
+// While a new page or filter loads, the previous rows stay on screen (isPlaceholderData), so the table
+// does not blank out.
 export function useListIssues(projectId: string | undefined, filters: ListFilters, limit: number) {
   return useQuery({
     queryKey: ['list-issues', projectId, filters, limit],
     enabled: Boolean(projectId),
+    placeholderData: keepPreviousData,
     queryFn: async (): Promise<{ rows: ListRow[]; total: number }> => {
       let query = supabase
         .from('issues')
