@@ -1,7 +1,7 @@
-import { Bell, ChevronDown, ChevronRight, ChevronsUpDown, LayoutGrid, Layers, List, Search, Settings, User, UserPlus } from 'lucide-react'
+import { Bell, ChevronDown, ChevronRight, ChevronsUpDown, CircleHelp, LayoutGrid, Layers, List, Search, Settings, User, UserPlus } from 'lucide-react'
 import { useQuery } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import { NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router'
+import { Link, NavLink, Outlet, useLocation, useNavigate, useParams } from 'react-router'
 import { toast } from 'sonner'
 import { supabase } from '../../lib/supabase'
 import { useSession } from '../../app/session-context'
@@ -9,6 +9,7 @@ import { readThemePreference, applyTheme, saveThemePreference, type ThemePrefere
 import { useWorkspaceProjects } from './useWorkspaceProjects'
 import { QuickSearch } from '../search/QuickSearch'
 import { InviteDialog } from '../invites/InviteDialog'
+import { GlobalCreateIssue } from '../board/GlobalCreateIssue'
 import { useMyWorkspaceRole } from '../invites/useInvites'
 
 // Sidebar and top bar follow the "Board" artboard in the design canvas (indigo sidebar).
@@ -43,6 +44,7 @@ export function AppShell() {
   const [theme, setTheme] = useState<ThemePreference>(() => readThemePreference())
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({})
   const [searchOpen, setSearchOpen] = useState(false)
+  const [createOpen, setCreateOpen] = useState(false)
   const [inviteOpen, setInviteOpen] = useState(false)
   const myRole = useMyWorkspaceRole(data?.workspace?.id).data
 
@@ -125,10 +127,13 @@ export function AppShell() {
                       <Layers className="size-4" aria-hidden="true" />
                       Backlog
                     </NavLink>
-                    <button type="button" onClick={() => toast('List view is not part of the MVP')} className={navBase}>
+                    <NavLink
+                      to={`/w/${activeSlug}/p/${p.key}/list`}
+                      className={({ isActive }) => `${navBase} ${isActive ? navActive : ''}`}
+                    >
                       <List className="size-4" aria-hidden="true" />
                       List
-                    </button>
+                    </NavLink>
                   </div>
                 )}
               </div>
@@ -168,11 +173,14 @@ export function AppShell() {
           <div className="ml-auto flex items-center gap-3">
             <button
               type="button"
-              onClick={() => toast('Create is available on the Board')}
+              onClick={() => (data?.projects.length ? setCreateOpen(true) : toast('Create a project first'))}
               className="inline-flex h-8 cursor-pointer items-center gap-1.5 rounded-sm bg-primary px-3 text-sm font-medium text-on-primary hover:bg-primary-hover"
             >
               + Create
             </button>
+            <Link to="/help" aria-label="Help" className="grid size-8 place-items-center rounded-sm text-text-secondary hover:bg-surface-hover">
+              <CircleHelp className="size-5" aria-hidden="true" />
+            </Link>
             <button type="button" aria-label="Notifications" className="grid size-8 place-items-center rounded-sm text-text-secondary hover:bg-surface-hover">
               <Bell className="size-5" aria-hidden="true" />
             </button>
@@ -189,6 +197,13 @@ export function AppShell() {
               {menuOpen && (
                 <div className="absolute right-0 top-10 z-10 flex w-56 flex-col gap-1 rounded-md border border-border bg-surface-raised p-1 shadow-popover">
                   <p className="px-2 py-1 text-xs text-text-secondary">{name}</p>
+                  <Link
+                    to="/settings/profile"
+                    onClick={() => setMenuOpen(false)}
+                    className="rounded-sm px-2 py-1.5 text-left text-sm hover:bg-surface-hover"
+                  >
+                    Profile settings
+                  </Link>
                   <p className="px-2 pt-2 text-xs text-text-secondary">Theme</p>
                   {(['light', 'dark', 'system'] as const).map((option) => (
                     <button
@@ -215,6 +230,14 @@ export function AppShell() {
             workspaceId={data.workspace.id}
             myRole={myRole}
             projects={data.projects}
+          />
+        )}
+        {createOpen && data?.workspace && data.projects.length > 0 && (
+          <GlobalCreateIssue
+            workspaceSlug={data.workspace.slug}
+            projects={data.projects}
+            initialProjectKey={key || data.projects[0].key}
+            onClose={() => setCreateOpen(false)}
           />
         )}
         <QuickSearch
