@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { LoaderCircle, Trash2, Upload } from 'lucide-react'
-import { useRef, useState, type ChangeEvent, type FormEvent } from 'react'
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react'
 import { toast } from 'sonner'
 import { Button } from '../../components/Button'
 import { Select } from '../../components/Select'
@@ -8,7 +8,7 @@ import { useSession } from '../../app/session-context'
 import { applyTheme, readThemePreference, saveThemePreference, type ThemePreference } from '../../app/theme'
 import { supabase } from '../../lib/supabase'
 import { ProfileSkeleton } from './ProfileSkeleton'
-import { avatarFileError, removeAvatar, uploadAvatar } from './avatar'
+import { avatarFileError, deleteAvatarFile, uploadAvatarFile } from './avatar'
 
 const MAX_NAME_LENGTH = 100
 
@@ -122,15 +122,22 @@ function ProfileSection({
 }) {
   const queryClient = useQueryClient()
   const photoInput = useRef<HTMLInputElement>(null)
-  const [photoBusy, setPhotoBusy] = useState<string | null>(null)
-  const [photoError, setPhotoError] = useState('')
   const [name, setName] = useState(savedDetails.name)
   const [jobTitle, setJobTitle] = useState(savedDetails.jobTitle)
   const [timeZone, setTimeZone] = useState(savedDetails.timeZone)
   const [saved, setSaved] = useState(savedDetails)
+  // Photo changes wait here until Save. A new photo is a file to upload; a removal clears the photo on save.
+  const [newPhoto, setNewPhoto] = useState<{ file: File; preview: string } | null>(null)
+  const [photoRemoved, setPhotoRemoved] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [serverError, setServerError] = useState('')
+  const [photoError, setPhotoError] = useState('')
   const [pending, setPending] = useState(false)
+
+  // Free the preview address when the chosen photo changes or the section unmounts.
+  useEffect(() => () => {
+    if (newPhoto) URL.revokeObjectURL(newPhoto.preview)
+  }, [newPhoto])
 
   const trimmed = name.trim()
   const trimmedJobTitle = jobTitle.trim()
@@ -139,17 +146,11 @@ function ProfileSection({
     : submitted && trimmed.length > MAX_NAME_LENGTH
       ? `Use ${MAX_NAME_LENGTH} characters or fewer`
       : undefined
-  const changed = trimmed !== saved.name || trimmedJobTitle !== saved.jobTitle || timeZone !== saved.timeZone
+  const photoChanged = newPhoto !== null || photoRemoved
+  const changed = trimmed !== saved.name || trimmedJobTitle !== saved.jobTitle || timeZone !== saved.timeZone || photoChanged
+  const shownPhoto = newPhoto ? newPhoto.preview : photoRemoved ? null : avatarUrl
 
-  // The photo is uploaded or removed as soon as it is chosen. It is saved on the profile straight away,
-  // so the form's Save button does not need to be involved.
-  async function currentUserId() {
-    const { data, error } = await supabase.auth.getUser()
-    if (error || !data.user) throw new Error('Your session has ended. Log in again.')
-    return data.user.id
-  }
-
-  async function choosePhoto(event: ChangeEvent<HTMLInputElement>) {
+  function choosePhoto(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0]
     event.target.value = '' // lets the same file be chosen again
     if (!file) return
@@ -161,33 +162,29 @@ function ProfileSection({
     }
 
     setPhotoError('')
-    setPhotoBusy('Uploading photo')
-    try {
-      await uploadAvatar(await currentUserId(), file, avatarUrl)
-      toast('Photo updated')
-      await queryClient.invalidateQueries({ queryKey: ['my-profile'] })
-    } catch (error) {
-      setPhotoError(error instanceof Error ? error.message : 'The photo could not be uploaded. Try again.')
-    } finally {
-      setPhotoBusy(null)
-    }
+    setPhotoRemoved(false)
+    setNewPhoto({ file, preview: URL.createObjectURL(file) })
   }
 
-  async function clearPhoto() {
-    if (!avatarUrl) return
+  function removePhoto() {
     setPhotoError('')
-    setPhotoBusy('Removing photo')
-    try {
-      await removeAvatar(await currentUserId(), avatarUrl)
-      toast('Photo removed')
-      await queryClient.invalidateQueries({ queryKey: ['my-profile'] })
-    } catch (error) {
-      setPhotoError(error instanceof Error ? error.message : 'The photo could not be removed. Try again.')
-    } finally {
-      setPhotoBusy(null)
-    }
+    setNewPhoto(null)
+    setPhotoRemoved(true)
   }
 
+  function discard() {
+    setName(saved.name)
+    setJobTitle(saved.jobTitle)
+    setTimeZone(saved.timeZone)
+    setNewPhoto(null)
+    setPhotoRemoved(false)
+    setPhotoError('')
+    setServerError('')
+    setSubmitted(false)
+  }
+
+  // Saves the name, job title, time zone and photo together. The new photo is uploaded first. If the profile
+  // update then fails, the uploaded file is removed again, so nothing is left behind.
   async function save(event: FormEvent) {
     event.preventDefault()
     setSubmitted(true)
@@ -204,33 +201,51 @@ function ProfileSection({
       return
     }
 
+    let uploadedUrl: string | null = null
+    if (newPhoto) {
+      try {
+        uploadedUrl = await uploadAvatarFile(currentUserId, newPhoto.file)
+      } catch (error) {
+        setPending(false)
+        setServerError(error instanceof Error ? error.message : 'The photo could not be uploaded. Try again.')
+        return
+      }
+    }
+
     const next: ProfileDetails = { name: trimmed, jobTitle: trimmedJobTitle, timeZone }
+    const photoFields = uploadedUrl !== null ? { avatar_url: uploadedUrl } : photoRemoved ? { avatar_url: null } : {}
     const { error: profileError } = await supabase
       .from('profiles')
-      .update({ display_name: next.name, job_title: next.jobTitle || null, time_zone: next.timeZone })
+      .update({ display_name: next.name, job_title: next.jobTitle || null, time_zone: next.timeZone, ...photoFields })
       .eq('id', currentUserId)
       .select('display_name')
       .single()
 
     if (profileError) {
+      if (uploadedUrl) await deleteAvatarFile(uploadedUrl)
       setPending(false)
       setServerError(profileError.message)
       return
     }
 
-    const { error: authError } = await supabase.auth.updateUser({ data: { display_name: next.name } })
-    setPending(false)
+    // The old photo file is no longer used once the profile points at the new one or at nothing.
+    if (photoChanged && avatarUrl) await deleteAvatarFile(avatarUrl)
 
-    if (authError) {
-      setServerError(authError.message)
-      return
-    }
+    const { error: authError } = await supabase.auth.updateUser({ data: { display_name: next.name } })
 
     setSaved(next)
     setName(next.name)
     setJobTitle(next.jobTitle)
     setSubmitted(false)
     await queryClient.invalidateQueries()
+    setNewPhoto(null)
+    setPhotoRemoved(false)
+    setPending(false)
+
+    if (authError) {
+      setServerError(authError.message)
+      return
+    }
     toast('Profile saved')
   }
 
@@ -242,28 +257,28 @@ function ProfileSection({
       </div>
 
       <form noValidate onSubmit={save} className="flex flex-col gap-4">
-        {(pending || photoBusy) && (
+        {pending && (
           <div role="status" aria-live="polite" className="fixed inset-0 z-50 grid cursor-wait place-items-center bg-surface-page/60">
             <div className="flex items-center gap-3 rounded-md border border-border bg-surface-raised px-5 py-4 text-sm font-medium text-text-primary shadow-popover">
               <LoaderCircle className="size-5 animate-spin text-primary" aria-hidden="true" />
-              {photoBusy ?? 'Saving your profile'}
+              Saving your profile
             </div>
           </div>
         )}
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-4">
-            {avatarUrl ? (
-              <img src={avatarUrl} alt="Your profile photo" className="size-20 shrink-0 rounded-full object-cover" />
+            {shownPhoto ? (
+              <img src={shownPhoto} alt="Your profile photo" className="size-20 shrink-0 rounded-full object-cover" />
             ) : (
               <span aria-hidden="true" className="grid size-20 shrink-0 place-items-center rounded-full bg-surface-selected text-xl font-medium text-text-primary">
                 {avatarInitials}
               </span>
             )}
-            <Button disabled={photoBusy !== null} onClick={() => photoInput.current?.click()}>
+            <Button disabled={pending} onClick={() => photoInput.current?.click()}>
               <Upload className="size-4" aria-hidden="true" />
-              {avatarUrl ? 'Replace photo' : 'Upload photo'}
+              {shownPhoto ? 'Replace photo' : 'Upload photo'}
             </Button>
-            <Button disabled={!avatarUrl || photoBusy !== null} onClick={clearPhoto}>
+            <Button disabled={!shownPhoto || pending} onClick={removePhoto}>
               <Trash2 className="size-4" aria-hidden="true" />
               Remove
             </Button>
@@ -278,6 +293,8 @@ function ProfileSection({
           </div>
           {photoError ? (
             <p role="alert" className="text-xs text-danger-text">{photoError}</p>
+          ) : photoChanged ? (
+            <p className="text-xs text-text-secondary">Click Save changes to keep this photo.</p>
           ) : (
             <p className="text-xs text-text-secondary">JPG or PNG, up to 2 MB.</p>
           )}
@@ -325,11 +342,12 @@ function ProfileSection({
 
         {serverError && <p role="alert" className="rounded-sm bg-danger-bg p-2 text-sm text-danger-text">{serverError}</p>}
 
-        <div>
+        <div className="flex items-center gap-2">
           <Button variant="primary" type="submit" disabled={!changed || pending}>
             {pending && <LoaderCircle className="size-4 animate-spin" aria-hidden="true" />}
             {pending ? 'Saving' : 'Save changes'}
           </Button>
+          <Button disabled={!changed || pending} onClick={discard}>Discard</Button>
         </div>
       </form>
     </section>
