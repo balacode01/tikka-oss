@@ -36,14 +36,19 @@ function buildServer(token: string) {
   return server
 }
 
-function json(status: number, body: unknown) {
-  return new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } })
-}
-
 async function handle(request: Request) {
   const token = request.headers.get('authorization')?.match(/^Bearer\s+(.+)$/i)?.[1]
   if (!token) {
-    return json(401, { error: 'Send your Tikka access token as "Authorization: Bearer <token>".' })
+    // The WWW-Authenticate header tells OAuth clients where to find the sign-in details, so they can start the
+    // browser sign-in on their own.
+    const origin = new URL(request.url).origin
+    return new Response(JSON.stringify({ error: 'Sign in to Tikka to connect this app.' }), {
+      status: 401,
+      headers: {
+        'content-type': 'application/json',
+        'www-authenticate': `Bearer resource_metadata="${origin}/.well-known/oauth-protected-resource"`,
+      },
+    })
   }
 
   const server = buildServer(token)

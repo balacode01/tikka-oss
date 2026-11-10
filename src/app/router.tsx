@@ -13,6 +13,7 @@ import { HomePage } from '../features/home/HomePage'
 import { CreateWorkspacePage } from '../features/onboarding/CreateWorkspacePage'
 import { ProfileSettingsPage } from '../features/profile/ProfileSettingsPage'
 import { HelpPage } from '../features/help/HelpPage'
+import { ConsentPage } from '../features/oauth/ConsentPage'
 import { RequireAuth } from './RequireAuth'
 
 // Routes from BRD §7.1. Later milestones replace the ComingSoon placeholders.
@@ -23,6 +24,7 @@ export const router = createBrowserRouter([
   { path: '/forgot', element: <ForgotPasswordPage /> },
   { path: '/reset', element: <ResetPasswordPage /> },
   { path: '/invite/:token', element: <AcceptInvitePage /> },
+  { path: '/oauth/consent', element: <ConsentPage /> },
   {
     path: '/onboarding',
     element: (
