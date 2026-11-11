@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from 'react-router'
+import { createBrowserRouter } from 'react-router'
 import { AppShell } from '../features/app/AppShell'
 import { ComingSoon } from '../features/app/ComingSoon'
 import { BacklogPage } from '../features/backlog/BacklogPage'
@@ -14,11 +14,12 @@ import { CreateWorkspacePage } from '../features/onboarding/CreateWorkspacePage'
 import { ProfileSettingsPage } from '../features/profile/ProfileSettingsPage'
 import { HelpPage } from '../features/help/HelpPage'
 import { ConsentPage } from '../features/oauth/ConsentPage'
+import { LandingPage } from '../features/landing/LandingPage'
 import { RequireAuth } from './RequireAuth'
 
 // Routes from BRD §7.1. Later milestones replace the ComingSoon placeholders.
 export const router = createBrowserRouter([
-  { path: '/', element: <Navigate to="/home" replace /> },
+  { path: '/', element: <LandingPage /> },
   { path: '/signup', element: <SignUpPage /> },
   { path: '/login', element: <LogInPage /> },
   { path: '/forgot', element: <ForgotPasswordPage /> },
