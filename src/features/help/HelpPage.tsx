@@ -14,6 +14,7 @@ const SECTIONS = [
   { id: 'roles', title: 'Roles' },
   { id: 'shortcuts', title: 'Keyboard shortcuts' },
   { id: 'missing', title: 'Not available yet' },
+  { id: 'claude-code', title: 'Claude Code' },
 ]
 
 const HIERARCHY = [
@@ -267,6 +268,15 @@ export function HelpPage() {
             </li>
           ))}
         </ul>
+      </HelpSection>
+
+      <HelpSection id="claude-code" number={9} title="Claude Code" summary="Ask Claude Code about your Tikka work in plain language.">
+        <p className="text-[15px] leading-6">
+          Add Tikka to Claude Code once, then sign in from the <span className="font-mono">/mcp</span> menu. Claude Code then works with your projects, sprints and issues, with the same permissions you have here.
+        </p>
+        <Link to="/#claude-code" className="mt-4 inline-flex text-sm font-medium text-primary hover:underline">
+          Set up Claude Code
+        </Link>
       </HelpSection>
     </div>
   )
