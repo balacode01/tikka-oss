@@ -98,7 +98,7 @@ export function LandingPage() {
         </Link>
         <nav aria-label="Main" className="flex items-center gap-3">
           <a href="#claude-code" className="hidden text-sm font-medium text-text-secondary hover:text-text-primary sm:inline">
-            Claude Code
+            MCP server
           </a>
           {signedIn ? (
             <Link to="/home">
