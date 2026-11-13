@@ -3,7 +3,8 @@ import { Link, useLocation } from 'react-router'
 import { Button } from '../../components/Button'
 import { useSession } from '../../app/session-context'
 
-const MCP_URL = 'https://tikka-mzeh.vercel.app/api/mcp'
+// The address of wherever this copy of Tikka is running, so self-hosted copies show their own endpoint.
+const MCP_URL = `${window.location.origin}/api/mcp`
 const ADD_COMMAND = `claude mcp add --transport http tikka ${MCP_URL}`
 
 const FEATURES = [
@@ -222,7 +223,16 @@ export function LandingPage() {
       </main>
 
       <footer className="flex flex-wrap items-center justify-between gap-3 border-border border-t px-4 py-6 text-sm text-text-secondary md:px-16">
-        <span>Tikka</span>
+        <span>
+          Tikka is open source under the{' '}
+          <a href="https://github.com/balacode01/tikka/blob/main/LICENSE" className="hover:text-text-primary">
+            MIT License
+          </a>
+          {' · '}
+          <a href="https://github.com/balacode01/tikka" className="hover:text-text-primary">
+            Source on GitHub
+          </a>
+        </span>
         <nav aria-label="Footer" className="flex flex-wrap gap-4">
           <Link to="/login" className="hover:text-text-primary">Log in</Link>
           <Link to="/signup" className="hover:text-text-primary">Sign up</Link>
