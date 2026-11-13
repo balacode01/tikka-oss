@@ -225,11 +225,11 @@ export function LandingPage() {
       <footer className="flex flex-wrap items-center justify-between gap-3 border-border border-t px-4 py-6 text-sm text-text-secondary md:px-16">
         <span>
           Tikka is open source under the{' '}
-          <a href="https://github.com/balacode01/tikka/blob/main/LICENSE" className="hover:text-text-primary">
+          <a href="https://github.com/balacode01/tikka-oss/blob/main/LICENSE" className="hover:text-text-primary">
             MIT License
           </a>
           {' · '}
-          <a href="https://github.com/balacode01/tikka" className="hover:text-text-primary">
+          <a href="https://github.com/balacode01/tikka-oss" className="hover:text-text-primary">
             Source on GitHub
           </a>
         </span>
