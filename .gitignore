@@ -13,6 +13,7 @@ dist-ssr
 *.local
 .env
 .env.*
+!.env.example
 .vercel
 supabase/.temp
 
@@ -26,3 +27,7 @@ supabase/.temp
 *.njsproj
 *.sln
 *.sw?
+
+# Third-party agent skills: kept locally, not published
+.agents/
+skills-lock.json
