@@ -1,5 +1,11 @@
 {
   "name": "tikka",
+  "description": "An open-source alternative to Jira for small teams: board, backlog and sprints, self-hosted on Supabase and Vercel.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/balacode01/tikka-oss.git"
+  },
   "private": true,
   "version": "0.0.0",
   "type": "module",
